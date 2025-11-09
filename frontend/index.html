@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MUTIT PAY - Boutique de Luxo em Moçambique</title>
+    <meta name="description" content="A sua boutique de luxo em Moçambique. Seleção exclusiva das marcas mais prestigiadas do mundo, com garantia de autenticidade e atendimento premium." />
+    <meta name="keywords" content="boutique, luxo, marcas prestigiadas, Moçambique, moda, acessórios, autenticidade, atendimento premium, MUTIT PAY" />
+    <meta name="author" content="MUTIT PAY" />
+
+    <meta property="og:title" content="MUTIT PAY - Boutique de Luxo em Moçambique" />
+    <meta property="og:description" content="A sua boutique de luxo em Moçambique. Seleção exclusiva das marcas mais prestigiadas do mundo, com garantia de autenticidade e atendimento premium." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://mutitpay.com" />
+    <meta property="og:image" content="/mutitpay-logo.svg" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="MUTIT PAY - Boutique de Luxo em Moçambique" />
+    <meta name="twitter:description" content="A sua boutique de luxo em Moçambique com marcas prestigiadas" />
+    <meta name="twitter:image" content="/mutitpay-logo.svg" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/mutitpay-logo.svg" />
+    <link rel="apple-touch-icon" href="/mutitpay-logo.svg" />
+    <meta name="theme-color" content="#0054A6" />
+
+    <link rel="canonical" href="https://mutitpay.com" />
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Unregister any existing service workers -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+          for(let registration of registrations) {
+            registration.unregister().then(function(boolean) {
+              console.log('Service worker unregistered:', boolean);
+            });
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,283 @@
+from pathlib import Path
+from decouple import config, AutoConfig
+import os
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load environment variables from .env file
+config = AutoConfig(search_path=BASE_DIR)
+# Paysuite configuration (keep real secrets in environment/.env)
+PAYSUITE_BASE_URL = config('PAYSUITE_BASE_URL', default='https://api.paysuite.co.mz')
+PAYSUITE_API_KEY = config('PAYSUITE_API_KEY', default='')
+PAYSUITE_API_SECRET = config('PAYSUITE_API_SECRET', default='')
+
+# ==========================================
+# WEBHOOK CONFIGURATION FOR PRODUCTION
+# ==========================================
+
+# Base URL for webhook callbacks (MUST be publicly accessible)
+# Examples:
+#   Development: http://127.0.0.1:8000 (with ngrok)
+#   Production: https://api.chivacomputer.co.mz
+WEBHOOK_BASE_URL = config(
+    'WEBHOOK_BASE_URL',
+    default='http://127.0.0.1:8000'  # Default for development
+)
+
+# Paysuite webhook secret for signature validation (optional but recommended)
+PAYSUITE_WEBHOOK_SECRET = config('PAYSUITE_WEBHOOK_SECRET', default='')
+
+
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = config('SECRET_KEY', default="django-insecure-jpz$&f8lx9!)+oyf9bj8l6-xqfkx&82#xa9blp51*pafj&9r&@")
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = config('DEBUG', default=True, cast=bool)
+
+# Validate webhook URL in production
+if not DEBUG and WEBHOOK_BASE_URL.startswith(('http://127.0.0.1', 'http://localhost')):
+    import warnings
+    warnings.warn(
+        "⚠️ WARNING: WEBHOOK_BASE_URL is using localhost in production! "
+        "Webhooks from Paysuite will not work. "
+        "Set WEBHOOK_BASE_URL environment variable to your public domain."
+    )
+
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,0.0.0.0', cast=lambda v: [host.strip() for host in v.split(',')])
+
+# Add production hosts here (example: the droplet IP and the production domain)
+# You can override via environment: ALLOWED_HOSTS="localhost,127.0.0.1,0.0.0.0,157.230.16.193,chivacomputer.co.mz"
+
+
+
+# Application definition
+
+INSTALLED_APPS = [
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "rest_framework",
+    "corsheaders",
+    "django_filters",
+    "drf_spectacular",
+    "products",
+    "cart",
+    "customers",
+    "promotions",
+]
+
+MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    # "django.middleware.cache.UpdateCacheMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    # "django.middleware.cache.FetchFromCacheMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "chiva_backend.middleware.AdminPathIsAdminMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+ROOT_URLCONF = "chiva_backend.urls"
+
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ],
+        },
+    },
+]
+
+WSGI_APPLICATION = "chiva_backend.wsgi.application"
+
+
+# Database
+# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME', default='mutit_pay'),
+        'USER': config('DB_USER', default='postgres'),
+        'PASSWORD': config('DB_PASSWORD', default=''),
+        'HOST': config('DB_HOST', default='localhost'),
+        'PORT': config('DB_PORT', default='5432'),
+    }
+}
+
+
+# Password validation
+# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    },
+]
+
+
+# Internationalization
+# https://docs.djangoproject.com/en/5.2/topics/i18n/
+
+LANGUAGE_CODE = "en-us"
+
+TIME_ZONE = "UTC"
+
+USE_I18N = True
+
+USE_TZ = True
+
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.2/howto/static-files/
+
+STATIC_URL = "static/"
+
+# Media files (uploads)
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Django REST Framework
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'chiva_backend.firebase_auth.FirebaseAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ],
+}
+
+# Spectacular settings for API documentation
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Chiva Store API',
+    'DESCRIPTION': 'API para a loja de computadores Chiva',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SCHEMA_PATH_PREFIX': '/api/',
+    'COMPONENT_SPLIT_REQUEST': True,
+}
+
+# CORS settings
+CORS_ALLOWED_ORIGINS = config(
+    'CORS_ALLOWED_ORIGINS',
+    default='http://localhost:3000,http://127.0.0.1:3000,http://localhost:5173,http://127.0.0.1:5173,http://localhost:8080,http://127.0.0.1:8080,http://localhost:8081,http://127.0.0.1:8081,http://localhost:8082,http://127.0.0.1:8082,http://localhost:8083,http://127.0.0.1:8083,https://chivacomputer.co.mz,http://157.230.16.193',
+    cast=lambda v: [origin.strip() for origin in v.split(',')]
+)
+
+CORS_ALLOW_CREDENTIALS = True
+
+# Allow all origins during development
+CORS_ALLOW_ALL_ORIGINS = config('CORS_ALLOW_ALL_ORIGINS', default=True, cast=bool)
+
+# Additional CORS headers
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.2/howto/static-files/
+
+STATIC_URL = '/static/'
+STATIC_ROOT = config('STATIC_ROOT', default=BASE_DIR / 'staticfiles')
+
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = config('MEDIA_ROOT', default=BASE_DIR / 'media')
+
+# File Upload Settings
+FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10MB
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10MB
+
+# Allowed file extensions for uploads
+ALLOWED_IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.webp']
+MAX_IMAGE_SIZE = 5 * 1024 * 1024  # 5MB
+
+# Trusted origins for CSRF (add https://yourdomain and http://ip if needed)
+CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='https://chivacomputer.co.mz,http://157.230.16.193', cast=lambda v: [origin.strip() for origin in v.split(',')])
+
+# Optional: session/cookie domain for production
+SESSION_COOKIE_DOMAIN = config('SESSION_COOKIE_DOMAIN', default=None)
+
+# ------------------------------------------
+# Reverse proxy / HTTPS settings (for Nginx)
+# Ensure Django knows when the original request was HTTPS so absolute URLs and
+# request.is_secure() reflect the correct scheme behind a proxy.
+# ------------------------------------------
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Cookies and redirect security (enable in production)
+SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=not DEBUG, cast=bool)
+CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=not DEBUG, cast=bool)
+SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=not DEBUG, cast=bool)
+
+# ==========================================
+# EMAIL CONFIGURATION (BREVO/SENDINBLUE)
+# ==========================================
+
+# Brevo API Configuration (Free: 300 emails/day)
+BREVO_API_KEY = config('BREVO_API_KEY', default='')
+BREVO_SENDER_EMAIL = config('BREVO_SENDER_EMAIL', default='chivacomputer@gmail.com')
+BREVO_SENDER_NAME = config('BREVO_SENDER_NAME', default='Chiva Computer')
+
+# Admin notification email - emails de nova venda vão para este endereço
+ADMIN_EMAIL = config('ADMIN_EMAIL', default='chivacomputer@gmail.com')
+
+# Email feature toggles
+EMAIL_NOTIFICATIONS_ENABLED = config('EMAIL_NOTIFICATIONS_ENABLED', default=True, cast=bool)
+SEND_ORDER_CONFIRMATION = config('SEND_ORDER_CONFIRMATION', default=True, cast=bool)
+SEND_PAYMENT_STATUS = config('SEND_PAYMENT_STATUS', default=True, cast=bool)
+SEND_SHIPPING_UPDATES = config('SEND_SHIPPING_UPDATES', default=True, cast=bool)
+SEND_CART_RECOVERY = config('SEND_CART_RECOVERY', default=True, cast=bool)
+SEND_ADMIN_NOTIFICATIONS = config('SEND_ADMIN_NOTIFICATIONS', default=True, cast=bool)
+
+# Cart abandonment settings
+CART_ABANDONMENT_HOURS = config('CART_ABANDONMENT_HOURS', default=2, cast=int)
+MAX_RECOVERY_EMAILS = config('MAX_RECOVERY_EMAILS', default=3, cast=int)

@@ -1,0 +1,51 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME:-mutit_pay}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: /entrypoint.sh
+    env_file:
+      - .env
+    environment:
+      - DJANGO_DEBUG=${DEBUG}
+      - DB_HOST=db
+      - DB_NAME=${DB_NAME:-mutit_pay}
+      - DB_USER=${DB_USER:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-postgres}
+
+    depends_on:
+      - db
+    volumes:
+      - ./media:/app/media
+      - ./backend:/app
+    ports:
+      - '8000:8000'
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        BUILD_FRONTEND: "true"
+    ports:
+      - '80:80'
+    depends_on:
+      - backend
+    volumes:
+      - ./media:/media:ro
+      # Note: nginx default.conf is already copied into the image during build. Do not bind-mount
+      # the host file here unless you deliberately want to override the image file.
+
+volumes:
+  db_data:
