@@ -84,15 +84,17 @@ export default function PaymentMethodSelector({ isOpen, onClose, onSubmit, total
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle>Escolha o Método de Pagamento</DialogTitle>
+      <DialogContent className="max-w-md border-2 border-accent/20">
+        <DialogHeader className="border-b border-accent/10 pb-4">
+          <DialogTitle className="text-2xl font-bold">
+            Escolha o Método de <span className="text-gradient-gold">Pagamento</span>
+          </DialogTitle>
         </DialogHeader>
 
         <div className="mb-4">
-          <div className="bg-accent/50 p-3 rounded-lg">
-            <p className="text-sm text-muted-foreground">Total a pagar</p>
-            <p className="text-2xl font-bold">{formatPrice(totalAmount)}</p>
+          <div className="bg-gradient-to-r from-accent/10 to-primary/10 p-4 rounded-lg border border-accent/20">
+            <p className="text-sm text-muted-foreground font-medium">Total a pagar</p>
+            <p className="text-3xl font-bold text-gradient-gold">{formatPrice(totalAmount)}</p>
           </div>
         </div>
 
@@ -104,12 +106,14 @@ export default function PaymentMethodSelector({ isOpen, onClose, onSubmit, total
                   key={method.id}
                   type="button"
                   onClick={() => setSelectedMethod(method.id)}
-                  className="w-full p-4 border rounded-lg hover:bg-accent/50 transition-colors text-left"
+                  className="w-full p-4 border-2 border-border rounded-lg hover:bg-accent/10 hover:border-accent transition-all duration-300 text-left group"
                 >
-                  <div className="flex items-center space-x-3">
-                    {method.icon}
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center group-hover:bg-accent/20 transition-colors">
+                      {method.icon}
+                    </div>
                     <div>
-                      <p className="font-medium">{method.name}</p>
+                      <p className="font-semibold text-base">{method.name}</p>
                       <p className="text-sm text-muted-foreground">{method.description}</p>
                     </div>
                   </div>
@@ -118,43 +122,48 @@ export default function PaymentMethodSelector({ isOpen, onClose, onSubmit, total
             </div>
           ) : (
             <div className="space-y-4">
-              <div className="flex items-center space-x-3">
-                {paymentMethods.find(m => m.id === selectedMethod)?.icon}
-                <div>
-                  <p className="font-medium">{paymentMethods.find(m => m.id === selectedMethod)?.name}</p>
+              <div className="flex items-center space-x-4 p-4 bg-gradient-to-r from-accent/10 to-primary/10 rounded-lg border border-accent/20">
+                <div className="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center">
+                  {paymentMethods.find(m => m.id === selectedMethod)?.icon}
+                </div>
+                <div className="flex-1">
+                  <p className="font-semibold text-base">{paymentMethods.find(m => m.id === selectedMethod)?.name}</p>
                   <button
                     type="button"
                     onClick={() => {
                       setSelectedMethod(null);
                       setFormData({});
                     }}
-                    className="text-sm text-blue-600 hover:underline"
+                    className="text-sm text-primary hover:text-accent transition-colors font-medium"
                   >
                     Alterar método
                   </button>
                 </div>
               </div>
 
-              <Separator />
+              <Separator className="bg-accent/20" />
 
-              <div>
-                <p className="text-sm text-muted-foreground">Você selecionou <strong>{paymentMethods.find(m => m.id === selectedMethod)?.name}</strong>. Ao confirmar, será redirecionado para a página de finalização onde deverá preencher os dados do pedido e pagamento.</p>
+              <div className="bg-muted/50 p-4 rounded-lg border border-border">
+                <p className="text-sm text-muted-foreground">
+                  Você selecionou <strong className="text-foreground">{paymentMethods.find(m => m.id === selectedMethod)?.name}</strong>. 
+                  Ao confirmar, será redirecionado para a página de finalização onde deverá preencher os dados do pedido e pagamento.
+                </p>
               </div>
 
-              <div className="flex space-x-3">
+              <div className="flex space-x-3 pt-2">
                 <Button 
                   type="button" 
                   variant="outline" 
                   onClick={onClose}
                   disabled={loading}
-                  className="flex-1"
+                  className="flex-1 border-2 hover:bg-accent/10"
                 >
                   Cancelar
                 </Button>
                 <Button 
                   type="submit" 
                   disabled={loading}
-                  className="flex-1"
+                  className="flex-1 bg-gradient-premium hover:opacity-90 text-white font-semibold shadow-lg"
                 >
                   {loading ? 'Processando...' : 'Confirmar Pagamento'}
                 </Button>

@@ -1,0 +1,67 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# Django
+*.sqlite3
+*.db
+db.sqlite3
+static/
+staticfiles/
+media/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Tests
+tests/
+test_*.py
+*_test.py
+
+# Documentation
+*.md
+
+# Backups
+*.bak
+backup_*.py
+*_OLD_backup.py
+
+# Scripts
+debug_*.py
+diagnostico_*.py
+check_*.py
+fix_*.py
+create_*.py
+backfill_*.py
+forcar_*.py
+investigar_*.py
+simular_*.py
+preview_*.html
+restart_server.ps1

@@ -183,8 +183,8 @@ export default function OrderConfirmation() {
           icon: <CheckCircle2 className="h-8 w-8 text-green-600" />, 
           title: '✅ Pagamento Aprovado!', 
           desc: 'Seu pedido foi confirmado e está sendo processado. Você receberá um email com os detalhes e atualizações sobre o envio.',
-          bgColor: 'bg-green-50',
-          borderColor: 'border-green-200',
+          bgColor: 'bg-gradient-to-br from-green-50 to-emerald-50',
+          borderColor: 'border-2 border-green-300',
           textColor: 'text-green-900'
         };
       case 'failed':
@@ -192,8 +192,8 @@ export default function OrderConfirmation() {
           icon: <XCircle className="h-8 w-8 text-red-600" />, 
           title: '❌ Pagamento Recusado', 
           desc: 'Não foi possível processar o pagamento. Seu carrinho foi mantido para você tentar novamente. Verifique os dados do pagamento ou escolha outro método.',
-          bgColor: 'bg-red-50',
-          borderColor: 'border-red-200',
+          bgColor: 'bg-gradient-to-br from-red-50 to-rose-50',
+          borderColor: 'border-2 border-red-300',
           textColor: 'text-red-900'
         };
       case 'cancelled':
@@ -201,8 +201,8 @@ export default function OrderConfirmation() {
           icon: <XCircle className="h-8 w-8 text-amber-600" />, 
           title: '⚠️ Pagamento Cancelado', 
           desc: 'O pagamento foi cancelado. Seu carrinho foi preservado — você pode voltar e tentar novamente quando desejar.',
-          bgColor: 'bg-amber-50',
-          borderColor: 'border-amber-200',
+          bgColor: 'bg-gradient-to-br from-amber-50 to-orange-50',
+          borderColor: 'border-2 border-amber-300',
           textColor: 'text-amber-900'
         };
       case 'processing':
@@ -214,18 +214,18 @@ export default function OrderConfirmation() {
             icon: <Clock className="h-8 w-8 text-primary animate-pulse" />, 
             title: `⏳ Aguardando confirmação ${methodName}`, 
             desc: `Complete o pagamento no checkout externo. Depois de finalizar, volte a esta página — o status será atualizado automaticamente a cada 3 segundos.`,
-            bgColor: 'bg-primary/10',
-            borderColor: 'border-primary/30',
-            textColor: 'text-blue-900'
+            bgColor: 'bg-gradient-to-br from-primary/10 to-accent/10',
+            borderColor: 'border-2 border-primary/30',
+            textColor: 'text-primary'
           };
         }
         return { 
           icon: <Clock className="h-8 w-8 text-primary animate-pulse" />, 
           title: '⏳ Aguardando confirmação', 
           desc: 'Estamos confirmando seu pagamento com a operadora. Isso pode levar alguns instantes. Por favor, aguarde.',
-          bgColor: 'bg-primary/10',
-          borderColor: 'border-primary/30',
-          textColor: 'text-blue-900'
+          bgColor: 'bg-gradient-to-br from-primary/10 to-accent/10',
+          borderColor: 'border-2 border-primary/30',
+          textColor: 'text-primary'
         };
     }
   }, [status, payments]);
@@ -271,7 +271,7 @@ export default function OrderConfirmation() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
+    <div className="min-h-screen bg-background">
       <Header />
       
       <main className="container mx-auto px-4 py-6 sm:py-12">
@@ -281,11 +281,11 @@ export default function OrderConfirmation() {
           <div className="text-center mb-6 sm:mb-8 animate-in fade-in duration-500">
             <div className={`
               w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-4 sm:mb-6 rounded-full 
-              flex items-center justify-center shadow-lg
+              flex items-center justify-center shadow-xl
               ${status === 'paid' ? 'bg-gradient-to-br from-green-400 to-green-600' : ''}
               ${status === 'failed' ? 'bg-gradient-to-br from-red-400 to-red-600' : ''}
               ${status === 'cancelled' ? 'bg-gradient-to-br from-amber-400 to-amber-600' : ''}
-              ${(status === 'pending' || status === 'processing') ? 'bg-gradient-to-br from-primary to-primary-hover' : ''}
+              ${(status === 'pending' || status === 'processing') ? 'bg-gradient-premium' : ''}
               transition-all duration-300
             `}>
               {status === 'paid' && <CheckCircle2 className="h-10 w-10 sm:h-12 sm:w-12 text-white" />}
@@ -296,21 +296,21 @@ export default function OrderConfirmation() {
               )}
             </div>
             
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+            <h1 className="text-2xl sm:text-3xl font-bold mb-2">
               {statusInfo.title}
             </h1>
             
-            <p className="text-xs sm:text-sm text-gray-500 font-medium">
+            <p className="text-xs sm:text-sm text-muted-foreground font-medium">
               Pedido #{orderId}
             </p>
           </div>
 
           {/* Main Card - Design limpo e responsivo */}
-          <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-6 animate-in slide-in-from-bottom-4 duration-500">
+          <div className="bg-card rounded-2xl shadow-xl overflow-hidden mb-6 animate-in slide-in-from-bottom-4 duration-500 border border-border">
             
             {/* Description */}
             <div className="p-6 sm:p-8">
-              <p className="text-sm sm:text-base text-gray-700 text-center leading-relaxed">
+              <p className="text-sm sm:text-base text-muted-foreground text-center leading-relaxed">
                 {statusInfo.desc}
               </p>
             </div>
@@ -333,8 +333,8 @@ export default function OrderConfirmation() {
             {/* Payment Details - Informações técnicas */}
             <div className="px-6 pb-6 sm:px-8 sm:pb-8 space-y-3">
               <div className="grid grid-cols-2 gap-3 text-sm">
-                <div className="bg-gray-50 rounded-lg p-3">
-                  <p className="text-xs text-gray-500 mb-1">Status</p>
+                <div className="bg-accent/5 rounded-lg p-3 border border-accent/20">
+                  <p className="text-xs text-muted-foreground mb-1">Status</p>
                   <p className={`font-semibold ${
                     status === 'paid' ? 'text-green-600' :
                     status === 'failed' ? 'text-red-600' :
@@ -349,26 +349,26 @@ export default function OrderConfirmation() {
                 </div>
                 
                 {lastPayment && (
-                  <div className="bg-gray-50 rounded-lg p-3">
-                    <p className="text-xs text-gray-500 mb-1">Método</p>
-                    <p className="font-semibold text-gray-900 uppercase">{lastPayment.method}</p>
+                  <div className="bg-accent/5 rounded-lg p-3 border border-accent/20">
+                    <p className="text-xs text-muted-foreground mb-1">Método</p>
+                    <p className="font-semibold uppercase">{lastPayment.method}</p>
                   </div>
                 )}
               </div>
 
               {lastPayment?.paysuite_reference && (
-                <div className="bg-gray-50 rounded-lg p-3">
-                  <p className="text-xs text-gray-500 mb-1">Referência</p>
-                  <p className="font-mono text-xs text-gray-700 break-all">
+                <div className="bg-accent/5 rounded-lg p-3 border border-accent/20">
+                  <p className="text-xs text-muted-foreground mb-1">Referência</p>
+                  <p className="font-mono text-xs break-all">
                     {lastPayment.paysuite_reference}
                   </p>
                 </div>
               )}
 
               {!isFinal && (
-                <div className="flex items-center justify-center gap-2 text-xs text-primary bg-primary/10 rounded-lg p-3">
-                  <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse" />
-                  <span>Atualizando a cada 3 segundos</span>
+                <div className="flex items-center justify-center gap-2 text-xs text-primary bg-primary/10 rounded-lg p-3 border border-primary/20">
+                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                  <span className="font-medium">Atualizando a cada 3 segundos</span>
                 </div>
               )}
             </div>

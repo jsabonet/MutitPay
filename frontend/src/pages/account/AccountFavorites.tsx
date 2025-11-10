@@ -47,18 +47,18 @@ const AccountFavorites = () => {
       <div className="space-y-6">
         <div>
           <h1 className="text-2xl font-bold mb-2">Meus Favoritos</h1>
-          <p className="text-gray-600">Seus produtos favoritos</p>
+          <p className="text-muted-foreground">Seus produtos favoritos</p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[...Array(6)].map((_, i) => (
             <Card key={i} className="animate-pulse">
               <CardContent className="p-4">
-                <div className="aspect-square bg-gray-200 rounded-lg mb-4"></div>
+                <div className="aspect-square bg-muted rounded-lg mb-4"></div>
                 <div className="space-y-2">
-                  <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                  <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-                  <div className="h-8 bg-gray-200 rounded"></div>
+                  <div className="h-4 bg-muted rounded w-3/4"></div>
+                  <div className="h-4 bg-muted rounded w-1/2"></div>
+                  <div className="h-8 bg-muted rounded"></div>
                 </div>
               </CardContent>
             </Card>
@@ -73,17 +73,17 @@ const AccountFavorites = () => {
       <div className="space-y-6">
         <div>
           <h1 className="text-2xl font-bold mb-2">Meus Favoritos</h1>
-          <p className="text-gray-600">Seus produtos favoritos</p>
+          <p className="text-muted-foreground">Seus produtos favoritos</p>
         </div>
         
         <Card className="text-center py-12">
           <CardContent>
-            <Heart className="h-16 w-16 mx-auto text-gray-300 mb-4" />
+            <Heart className="h-16 w-16 mx-auto text-muted-foreground/30 mb-4" />
             <h3 className="text-lg font-semibold mb-2">Nenhum favorito ainda</h3>
-            <p className="text-gray-600 mb-6">
+            <p className="text-muted-foreground mb-6">
               Explore nossos produtos e adicione seus favoritos aqui
             </p>
-            <Button asChild>
+            <Button asChild variant="gold">
               <Link to="/products">
                 <Package className="mr-2 h-4 w-4" />
                 Ver Produtos
@@ -99,7 +99,7 @@ const AccountFavorites = () => {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold mb-2">Meus Favoritos</h1>
-        <p className="text-gray-600">
+        <p className="text-muted-foreground">
           {favorites.length} {favorites.length === 1 ? 'produto favoritado' : 'produtos favoritados'}
         </p>
       </div>
@@ -113,7 +113,7 @@ const AccountFavorites = () => {
             <Card key={favorite.id} className="group hover:shadow-lg transition-shadow">
               <CardContent className="p-4">
                 {/* Product Image */}
-                <div className="relative aspect-square rounded-lg overflow-hidden mb-4 bg-gray-100 w-full">
+                <div className="relative aspect-square rounded-lg overflow-hidden mb-4 bg-muted w-full">
                   {product.main_image_url ? (
                     <img
                       src={product.main_image_url}
@@ -122,7 +122,7 @@ const AccountFavorites = () => {
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <Package className="h-12 w-12 text-gray-300" />
+                      <Package className="h-12 w-12 text-muted-foreground/30" />
                     </div>
                   )}
                   
@@ -155,7 +155,7 @@ const AccountFavorites = () => {
                 <div className="space-y-3">
                   <div>
                     {product.category_name && (
-                      <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">
+                      <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">
                         {product.category_name}
                       </p>
                     )}
@@ -166,7 +166,7 @@ const AccountFavorites = () => {
                       {product.name}
                     </Link>
                     {product.brand && (
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-muted-foreground mt-1">
                         {product.brand}
                       </p>
                     )}
@@ -174,11 +174,11 @@ const AccountFavorites = () => {
 
                   {/* Price */}
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-lg">
+                    <span className="font-bold text-lg text-gradient-gold">
                       {formatPrice(parseFloat(product.price))}
                     </span>
                     {hasDiscount && (
-                      <span className="text-sm text-gray-500 line-through">
+                      <span className="text-sm text-muted-foreground line-through">
                         {formatPrice(parseFloat(product.original_price!))}
                       </span>
                     )}
@@ -191,6 +191,7 @@ const AccountFavorites = () => {
                       disabled={!product.is_in_stock}
                       className="w-full sm:w-auto"
                       size="sm"
+                      variant="gold"
                     >
                       <ShoppingCart className="mr-2 h-4 w-4" />
                       {product.is_in_stock ? 'Adicionar' : 'Indisponível'}
@@ -199,7 +200,7 @@ const AccountFavorites = () => {
                       variant="outline"
                       size="sm"
                       onClick={() => handleRemoveFromFavorites(product.id)}
-                      className="w-full sm:w-auto"
+                      className="w-full sm:w-auto hover:text-red-500 hover:border-red-500"
                     >
                       <Heart className="h-4 w-4 fill-current text-red-500" />
                     </Button>
@@ -216,26 +217,26 @@ const AccountFavorites = () => {
         <CardContent className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
             <div>
-              <div className="text-2xl font-bold text-primary">
+              <div className="text-2xl font-bold text-gradient-gold">
                 {favorites.length}
               </div>
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-muted-foreground">
                 Total de Favoritos
               </div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-green-600">
+              <div className="text-2xl font-bold text-primary">
                 {favorites.filter(f => f.product.is_in_stock).length}
               </div>
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-muted-foreground">
                 Em Estoque
               </div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-orange-600">
+              <div className="text-2xl font-bold text-destructive">
                 {favorites.filter(f => f.product.original_price && parseFloat(f.product.original_price) > parseFloat(f.product.price)).length}
               </div>
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-muted-foreground">
                 Em Promoção
               </div>
             </div>

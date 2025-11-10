@@ -462,8 +462,8 @@ export default function Checkout() {
               <div
                 className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ${
                   step >= s.number
-                    ? 'bg-primary text-white scale-110'
-                    : 'bg-gray-200 text-gray-400'
+                    ? 'bg-gradient-premium text-white scale-110'
+                    : 'bg-muted text-muted-foreground'
                 }`}
               >
                 {step > s.number ? (
@@ -472,14 +472,14 @@ export default function Checkout() {
                   <s.icon className="h-6 w-6 sm:h-7 sm:w-7" />
                 )}
               </div>
-              <p className={`text-xs sm:text-sm mt-2 font-medium ${step >= s.number ? 'text-primary' : 'text-gray-400'}`}>
+              <p className={`text-xs sm:text-sm mt-2 font-medium ${step >= s.number ? 'text-primary font-semibold' : 'text-muted-foreground'}`}>
                 {s.label}
               </p>
             </div>
             {idx < steps.length - 1 && (
               <div
-                className={`h-1 flex-1 mx-2 transition-all duration-300 ${
-                  step > s.number ? 'bg-primary' : 'bg-gray-200'
+                className={`h-1 flex-1 mx-2 transition-all duration-300 rounded-full ${
+                  step > s.number ? 'bg-gradient-to-r from-primary to-accent' : 'bg-muted'
                 }`}
               />
             )}
@@ -494,15 +494,17 @@ export default function Checkout() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <div className="min-h-screen bg-background">
       <Header />
       
       <main className="container mx-auto px-4 py-6 sm:py-12">
         <div className="max-w-6xl mx-auto">
           {/* Page Title */}
           <div className="mb-8">
-            <h1 className="text-3xl font-bold mb-2">Finalizar Compra</h1>
-            <p className="text-muted-foreground">Complete os dados para concluir seu pedido</p>
+            <h1 className="text-4xl font-bold mb-2">
+              Finalizar <span className="text-gradient-gold">Compra</span>
+            </h1>
+            <p className="text-muted-foreground text-lg">Complete os dados para concluir seu pedido</p>
           </div>
           
           <StepIndicator />
@@ -750,7 +752,7 @@ export default function Checkout() {
                     size="lg"
                     onClick={handlePreviousStep}
                     disabled={isLoading}
-                    className="w-full sm:w-auto"
+                    className="w-full sm:w-auto border-2 border-border hover:bg-accent/10 hover:border-accent"
                   >
                     <ArrowLeft className="h-4 w-4 mr-2" />
                     Anterior
@@ -761,7 +763,7 @@ export default function Checkout() {
                   <Button 
                     size="lg"
                     onClick={handleNextStep} 
-                    className="w-full sm:ml-auto"
+                    className="w-full sm:ml-auto bg-gradient-premium hover:opacity-90 text-white font-semibold shadow-lg"
                   >
                     Próximo
                     <ChevronRight className="h-4 w-4 ml-2" />
@@ -771,10 +773,13 @@ export default function Checkout() {
                     size="lg"
                     onClick={handleCompleteOrder}
                     disabled={isLoading}
-                    className="w-full sm:ml-auto"
+                    className="w-full sm:ml-auto bg-gradient-premium hover:opacity-90 text-white font-semibold shadow-lg disabled:opacity-50"
                   >
                     {isLoading ? (
-                      <>Processando...</>
+                      <>
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                        Processando...
+                      </>
                     ) : (
                       <>
                         <Check className="h-4 w-4 mr-2" />
@@ -788,8 +793,8 @@ export default function Checkout() {
 
             {/* Order Summary Sidebar */}
             <div className="lg:sticky lg:top-4 h-fit">
-              <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-                <div className="bg-gradient-to-r bg-primary p-6">
+              <div className="bg-card rounded-2xl shadow-xl overflow-hidden border-2 border-accent/20">
+                <div className="bg-gradient-premium p-6">
                   <div className="flex items-center gap-3 text-white">
                     <ShoppingBag className="h-6 w-6" />
                     <h2 className="text-xl font-bold">Resumo do Pedido</h2>
@@ -800,19 +805,19 @@ export default function Checkout() {
                   {/* Cart Items */}
                   <div className="space-y-4">
                     {items.map((item) => (
-                      <div key={`${item.id}-${item.color_id || 'no-color'}`} className="flex items-center gap-3 pb-4 border-b border-gray-100 last:border-0">
+                      <div key={`${item.id}-${item.color_id || 'no-color'}`} className="flex items-center gap-3 pb-4 border-b border-border/50 last:border-0">
                         <img
                           src={item.image || '/placeholder.svg'}
                           alt={item.name}
                           className="w-16 h-16 rounded-xl object-cover shadow-md"
                         />
                         <div className="flex-1 min-w-0">
-                          <h4 className="font-semibold text-sm text-gray-900 line-clamp-1">{item.name}</h4>
-                          <p className="text-xs text-gray-600 mt-1">
+                          <h4 className="font-semibold text-sm line-clamp-1">{item.name}</h4>
+                          <p className="text-xs text-muted-foreground mt-1">
                             {item.color_name && `${item.color_name} • `}Qtd: {item.quantity}
                           </p>
                         </div>
-                        <div className="text-sm font-bold text-gray-900">
+                        <div className="text-sm font-bold">
                           {formatPrice(item.price * item.quantity)}
                         </div>
                       </div>
@@ -820,16 +825,16 @@ export default function Checkout() {
                   </div>
 
                   {/* Totals */}
-                  <div className="space-y-3 pt-4 border-t-2 border-gray-200">
+                  <div className="space-y-3 pt-4 border-t-2 border-accent/20">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600">Subtotal:</span>
-                      <span className="text-base font-semibold text-gray-900">{formatPrice(subtotal)}</span>
+                      <span className="text-sm text-muted-foreground">Subtotal:</span>
+                      <span className="text-base font-semibold">{formatPrice(subtotal)}</span>
                     </div>
                     
                     {/* Show discount if coupon applied */}
                     {appliedCoupon && discountAmount > 0 && (
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-green-600">
+                      <div className="flex justify-between items-center bg-green-50/50 -mx-2 px-2 py-1 rounded">
+                        <span className="text-sm text-green-600 font-medium">
                           Desconto ({appliedCoupon.code}):
                         </span>
                         <span className="text-base font-semibold text-green-600">
@@ -839,15 +844,15 @@ export default function Checkout() {
                     )}
                     
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600">Entrega:</span>
-                      <span className={`text-base font-semibold ${shippingCost === 0 ? 'text-green-600' : 'text-gray-900'}`}>
+                      <span className="text-sm text-muted-foreground">Entrega:</span>
+                      <span className={`text-base font-semibold ${shippingCost === 0 ? 'text-green-600' : 'text-foreground'}`}>
                         {shippingCost === 0 ? 'Grátis' : formatPrice(shippingCost)}
                       </span>
                     </div>
-                    <div className="pt-3 border-t-2 border-gray-200">
+                    <div className="pt-3 border-t-2 border-accent/20">
                       <div className="flex justify-between items-center">
-                        <span className="text-lg font-bold text-gray-900">Total:</span>
-                        <span className="text-2xl font-bold text-primary">{formatPrice(total)}</span>
+                        <span className="text-lg font-bold">Total:</span>
+                        <span className="text-2xl font-bold text-gradient-gold">{formatPrice(total)}</span>
                       </div>
                     </div>
                   </div>

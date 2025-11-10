@@ -7,7 +7,7 @@ const Index = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="text-center space-y-6">
-        <h1 className="text-4xl font-bold mb-4">Chiva Computer & Service</h1>
+        <h1 className="text-4xl font-bold mb-4">MUTIT PAY</h1>
         <p className="text-xl text-muted-foreground">Loja de Computadores e Equipamentos Industriais</p>
         <div className="flex gap-4 justify-center">
           <Link to="/home">

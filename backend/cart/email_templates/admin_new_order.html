@@ -3,19 +3,20 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nova Venda - Chiva Computer Admin</title>
+    <title>Nova Venda - MUTIT PAY Admin</title>
 </head>
-<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f4f4f4;">
+<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background-color: #f5f5f5;">
     
-    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f4f4f4; padding: 20px 0;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5f5f5; padding: 20px 0;">
         <tr>
             <td align="center">
-                <table width="650" cellpadding="0" cellspacing="0" style="max-width: 650px; background-color: #ffffff; border: 1px solid #ddd;">
+                <table width="650" cellpadding="0" cellspacing="0" style="max-width: 650px; background-color: #ffffff; border: 2px solid #D4AF37; border-radius: 8px; overflow: hidden;">
                     
                     <!-- Header -->
                     <tr>
-                        <td style="background: #28a745; color: white; padding: 25px; text-align: center;">
-                            <h2 style="margin: 0; font-size: 24px;">🎉 Nova Venda Recebida!</h2>
+                        <td style="background: linear-gradient(135deg, #0054A6 0%, #003d7a 100%); color: white; padding: 30px; text-align: center;">
+                            <h2 style="margin: 0 0 10px 0; font-size: 28px; font-weight: 700; letter-spacing: 2px; color: #D4AF37;">MUTIT PAY</h2>
+                            <h3 style="margin: 0; font-size: 22px; font-weight: 600;">🎉 Nova Venda Recebida!</h3>
                         </td>
                     </tr>
 
@@ -24,52 +25,52 @@
                         <td style="padding: 30px;">
                             
                             <!-- Order Info -->
-                            <h3 style="margin: 0 0 15px 0; color: #333; border-bottom: 2px solid #28a745; padding-bottom: 10px;">Informações do Pedido</h3>
+                            <h3 style="margin: 0 0 15px 0; color: #0054A6; border-bottom: 3px solid #D4AF37; padding-bottom: 10px; font-size: 20px; font-weight: 700;">Informações do Pedido</h3>
                             
-                            <table width="100%" cellpadding="8" cellspacing="0" style="margin: 0 0 25px 0;">
-                                <tr>
-                                    <td style="width: 150px; font-weight: bold; color: #666;">Pedido:</td>
-                                    <td>#{{ORDER_NUMBER}}</td>
-                                </tr>
-                                <tr style="background: #f8f9fa;">
-                                    <td style="font-weight: bold; color: #666;">Data:</td>
-                                    <td>{{ORDER_DATE}}</td>
+                            <table width="100%" cellpadding="10" cellspacing="0" style="margin: 0 0 25px 0; border: 1px solid rgba(212,175,55,0.2);">
+                                <tr style="background: linear-gradient(135deg, rgba(212,175,55,0.08) 0%, rgba(0,84,166,0.05) 100%);">
+                                    <td style="width: 150px; font-weight: 600; color: #0054A6; padding: 12px;">Pedido:</td>
+                                    <td style="padding: 12px; color: #D4AF37; font-weight: 700;">#{{ORDER_NUMBER}}</td>
                                 </tr>
                                 <tr>
-                                    <td style="font-weight: bold; color: #666;">Cliente:</td>
-                                    <td>{{CUSTOMER_NAME}}</td>
+                                    <td style="font-weight: 600; color: #0054A6; padding: 12px;">Data:</td>
+                                    <td style="padding: 12px;">{{ORDER_DATE}}</td>
                                 </tr>
-                                <tr style="background: #f8f9fa;">
-                                    <td style="font-weight: bold; color: #666;">Email:</td>
-                                    <td>{{CUSTOMER_EMAIL}}</td>
+                                <tr style="background: linear-gradient(135deg, rgba(212,175,55,0.08) 0%, rgba(0,84,166,0.05) 100%);">
+                                    <td style="font-weight: 600; color: #0054A6; padding: 12px;">Cliente:</td>
+                                    <td style="padding: 12px; font-weight: 600;">{{CUSTOMER_NAME}}</td>
                                 </tr>
                                 <tr>
-                                    <td style="font-weight: bold; color: #666;">Telefone:</td>
-                                    <td>{{CUSTOMER_PHONE}}</td>
+                                    <td style="font-weight: 600; color: #0054A6; padding: 12px;">Email:</td>
+                                    <td style="padding: 12px;">{{CUSTOMER_EMAIL}}</td>
+                                </tr>
+                                <tr style="background: linear-gradient(135deg, rgba(212,175,55,0.08) 0%, rgba(0,84,166,0.05) 100%);">
+                                    <td style="font-weight: 600; color: #0054A6; padding: 12px;">Telefone:</td>
+                                    <td style="padding: 12px;">{{CUSTOMER_PHONE}}</td>
                                 </tr>
                             </table>
 
                             <!-- Shipping Address -->
-                            <h3 style="margin: 25px 0 15px 0; color: #333; border-bottom: 2px solid #28a745; padding-bottom: 10px;">Endereço de Entrega</h3>
+                            <h3 style="margin: 25px 0 15px 0; color: #0054A6; border-bottom: 3px solid #D4AF37; padding-bottom: 10px; font-size: 20px; font-weight: 700;">Endereço de Entrega</h3>
                             
-                            <table width="100%" cellpadding="8" cellspacing="0" style="background: #f8f9fa; margin: 0 0 25px 0;">
+                            <table width="100%" cellpadding="15" cellspacing="0" style="background: linear-gradient(135deg, rgba(212,175,55,0.08) 0%, rgba(0,84,166,0.08) 100%); margin: 0 0 25px 0; border-radius: 6px; border: 1px solid rgba(0,84,166,0.2);">
                                 <tr>
                                     <td>
-                                        <p style="margin: 5px 0;">{{SHIPPING_ADDRESS}}</p>
-                                        <p style="margin: 5px 0;">{{SHIPPING_CITY}}, {{SHIPPING_PROVINCE}}</p>
+                                        <p style="margin: 5px 0; font-size: 15px; line-height: 1.8;">{{SHIPPING_ADDRESS}}</p>
+                                        <p style="margin: 5px 0; font-size: 15px; font-weight: 600;">{{SHIPPING_CITY}}, {{SHIPPING_PROVINCE}}</p>
                                     </td>
                                 </tr>
                             </table>
 
                             <!-- Order Items -->
-                            <h3 style="margin: 25px 0 15px 0; color: #333; border-bottom: 2px solid #28a745; padding-bottom: 10px;">Itens do Pedido</h3>
+                            <h3 style="margin: 25px 0 15px 0; color: #0054A6; border-bottom: 3px solid #D4AF37; padding-bottom: 10px; font-size: 20px; font-weight: 700;">Itens do Pedido</h3>
                             
-                            <table width="100%" cellpadding="10" cellspacing="0" style="border-collapse: collapse; margin: 0 0 25px 0;">
+                            <table width="100%" cellpadding="12" cellspacing="0" style="border-collapse: collapse; margin: 0 0 25px 0; border: 1px solid rgba(212,175,55,0.2);">
                                 <thead>
-                                    <tr style="background: #f8f9fa;">
-                                        <th style="text-align: left; padding: 10px; border-bottom: 2px solid #28a745;">Produto</th>
-                                        <th style="text-align: center; padding: 10px; border-bottom: 2px solid #28a745;">Qtd</th>
-                                        <th style="text-align: right; padding: 10px; border-bottom: 2px solid #28a745;">Total</th>
+                                    <tr style="background: linear-gradient(135deg, #0054A6 0%, #003d7a 100%); color: white;">
+                                        <th style="text-align: left; padding: 15px; border-bottom: 3px solid #D4AF37;">Produto</th>
+                                        <th style="text-align: center; padding: 15px; border-bottom: 3px solid #D4AF37;">Qtd</th>
+                                        <th style="text-align: right; padding: 15px; border-bottom: 3px solid #D4AF37;">Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -78,10 +79,10 @@
                             </table>
 
                             <!-- Total -->
-                            <table width="100%" cellpadding="15" cellspacing="0" style="background: #d4edda; border-left: 4px solid #28a745; margin: 25px 0;">
+                            <table width="100%" cellpadding="20" cellspacing="0" style="background: linear-gradient(135deg, rgba(212,175,55,0.15) 0%, rgba(0,84,166,0.08) 100%); border-left: 4px solid #D4AF37; border-radius: 6px; margin: 25px 0;">
                                 <tr>
                                     <td style="text-align: right;">
-                                        <p style="margin: 0; font-size: 20px; font-weight: bold; color: #28a745;">
+                                        <p style="margin: 0; font-size: 24px; font-weight: bold; background: linear-gradient(135deg, #0054A6 0%, #D4AF37 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
                                             Total: {{TOTAL_AMOUNT}} MZN
                                         </p>
                                     </td>
@@ -91,11 +92,12 @@
                             <!-- Action Required (if any) -->
                             {{ACTION_SECTION}}
 
-                            <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
+                            <hr style="border: none; border-top: 2px solid rgba(212,175,55,0.3); margin: 30px 0;">
 
-                            <p style="font-size: 12px; color: #666; text-align: center; margin: 0;">
-                                Este é um email automático do sistema Chiva Computer.<br>
-                                📍 Nampula Shopping 1 andar loja 20 | 📧 contato@chivacomputer.co.mz
+                            <p style="font-size: 13px; color: #666; text-align: center; margin: 0; line-height: 1.8;">
+                                Este é um email automático do sistema MUTIT PAY.<br>
+                                <strong style="color: #0054A6;">BOUTIQUE PREMIUM</strong><br>
+                                📍 Maputo, Moçambique | 📧 contato@mutitpay.co.mz
                             </p>
                         </td>
                     </tr>

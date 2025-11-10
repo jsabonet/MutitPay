@@ -249,18 +249,18 @@ const AdminDashboard = () => {
             </CardContent>
           </Card>
 
-          <Card className="border-blue-200 bg-blue-50">
+          <Card className="border-primary/20 bg-gradient-to-br from-primary/10 to-primary/5 backdrop-blur">
             <CardHeader>
-              <CardTitle className="text-blue-800 flex flex-col sm:flex-row sm:items-center gap-2 text-sm sm:text-base">
-                <span className="flex items-center gap-2"><Star className="h-5 w-5" /><span>Produtos em Destaque</span></span>
+              <CardTitle className="text-foreground flex flex-col sm:flex-row sm:items-center gap-2 text-sm sm:text-base">
+                <span className="flex items-center gap-2"><Star className="h-5 w-5 text-accent" /><span>Produtos em Destaque</span></span>
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center">
-                <span className="text-2xl font-bold text-blue-800">
+                <span className="text-2xl font-bold text-gradient-gold">
                   {stats?.featured_products || 0}
                 </span>
-                <span className="text-blue-600 ml-2">produtos destacados</span>
+                <span className="text-primary ml-2">produtos destacados</span>
               </div>
             </CardContent>
           </Card>
@@ -269,15 +269,15 @@ const AdminDashboard = () => {
         {/* Main Content Tabs */}
         <Tabs defaultValue="overview" className="space-y-4">
           {/* Mobile sticky tabs (only visible on xs) */}
-          <div className="sm:hidden sticky top-16 z-40 bg-white/95 backdrop-blur-md">
+          <div className="sm:hidden sticky top-16 z-40 bg-background/95 backdrop-blur-md">
             <TabsList className="p-2">
               {/* allow wrapping of tab triggers on small screens (mobile-first) */}
               <div className="flex flex-wrap gap-2">
-                <TabsTrigger className="whitespace-normal px-3 py-2 text-sm touch-manipulation rounded-md data-[state=active]:bg-blue-600 data-[state=active]:text-white" value="overview">Visão Geral</TabsTrigger>
-                <TabsTrigger className="whitespace-normal px-3 py-2 text-sm touch-manipulation rounded-md data-[state=active]:bg-blue-600 data-[state=active]:text-white" value="products">Gestão de Produtos</TabsTrigger>
-                <TabsTrigger className="whitespace-normal px-3 py-2 text-sm touch-manipulation rounded-md data-[state=active]:bg-blue-600 data-[state=active]:text-white" value="recent">Produtos Recentes</TabsTrigger>
-                <TabsTrigger className="whitespace-normal px-3 py-2 text-sm touch-manipulation rounded-md data-[state=active]:bg-blue-600 data-[state=active]:text-white" value="low-stock">Estoque Baixo</TabsTrigger>
-                <TabsTrigger className="whitespace-normal px-3 py-2 text-sm touch-manipulation rounded-md data-[state=active]:bg-blue-600 data-[state=active]:text-white" value="analytics">Analytics</TabsTrigger>
+                <TabsTrigger className="whitespace-normal px-3 py-2 text-sm touch-manipulation rounded-md data-[state=active]:bg-primary data-[state=active]:text-white" value="overview">Visão Geral</TabsTrigger>
+                <TabsTrigger className="whitespace-normal px-3 py-2 text-sm touch-manipulation rounded-md data-[state=active]:bg-primary data-[state=active]:text-white" value="products">Gestão de Produtos</TabsTrigger>
+                <TabsTrigger className="whitespace-normal px-3 py-2 text-sm touch-manipulation rounded-md data-[state=active]:bg-primary data-[state=active]:text-white" value="recent">Produtos Recentes</TabsTrigger>
+                <TabsTrigger className="whitespace-normal px-3 py-2 text-sm touch-manipulation rounded-md data-[state=active]:bg-primary data-[state=active]:text-white" value="low-stock">Estoque Baixo</TabsTrigger>
+                <TabsTrigger className="whitespace-normal px-3 py-2 text-sm touch-manipulation rounded-md data-[state=active]:bg-primary data-[state=active]:text-white" value="analytics">Analytics</TabsTrigger>
               </div>
             </TabsList>
           </div>

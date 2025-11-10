@@ -17,25 +17,25 @@ const AccountLayout = () => {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="border-b bg-white">
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background">
+      <div className="border-b border-border bg-background/95 backdrop-blur">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             {/* Mobile menu button */}
             <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setMobileNavOpen(true)} aria-label="Abrir menu">
               <Menu className="h-5 w-5" />
             </Button>
-            <Link to="/" className="font-semibold text-base">Chiva Computer</Link>
+            <Link to="/" className="font-semibold text-base text-gradient-gold">MUTIT PAY</Link>
           </div>
           <div className="hidden md:flex items-center gap-4 text-sm">
             <span className="text-muted-foreground">
               {currentUser?.displayName || currentUser?.email}
             </span>
-            <Button variant="outline" size="sm" onClick={logout}>Sair</Button>
+            <Button variant="outline" size="sm" onClick={logout} className="border-primary/30 hover:border-accent">Sair</Button>
           </div>
           {/* Mobile user / logout in header area */}
           <div className="flex items-center gap-2 md:hidden">
-            <span className="text-sm text-muted-foreground">{currentUser?.displayName || currentUser?.email}</span>
+            <span className="text-sm text-muted-foreground truncate max-w-[120px]">{currentUser?.displayName || currentUser?.email}</span>
             <Button variant="outline" size="sm" onClick={logout}>Sair</Button>
           </div>
         </div>
@@ -50,7 +50,7 @@ const AccountLayout = () => {
                 key={item.to}
                 to={item.to}
                 end={item.end}
-                className={({ isActive }) => `flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${isActive ? 'bg-primary text-primary-foreground shadow' : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'}`}
+                className={({ isActive }) => `flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${isActive ? 'bg-gradient-to-r from-primary to-primary/80 text-white shadow-md' : 'text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground'}`}
               >
                 <Icon className="h-4 w-4" />
                 {item.label}
@@ -66,9 +66,9 @@ const AccountLayout = () => {
         {mobileNavOpen && (
           <div className="fixed inset-0 z-50 md:hidden">
             <div className="absolute inset-0 bg-black/40" onClick={() => setMobileNavOpen(false)} aria-hidden />
-            <aside className="absolute left-0 top-0 bottom-0 w-72 bg-white shadow-lg p-4 overflow-y-auto">
+            <aside className="absolute left-0 top-0 bottom-0 w-72 bg-background/95 backdrop-blur shadow-lg p-4 overflow-y-auto border-r border-border">
               <div className="flex items-center justify-between mb-4">
-                <Link to="/" className="font-semibold text-lg">Chiva Computer</Link>
+                <Link to="/" className="font-semibold text-lg text-gradient-gold">MUTIT PAY</Link>
                 <Button variant="ghost" size="icon" onClick={() => setMobileNavOpen(false)} aria-label="Fechar menu">
                   <X className="h-5 w-5" />
                 </Button>
@@ -82,7 +82,7 @@ const AccountLayout = () => {
                       to={item.to}
                       end={item.end}
                       onClick={() => setMobileNavOpen(false)}
-                      className={({ isActive }) => `flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${isActive ? 'bg-primary text-primary-foreground shadow' : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'}`}
+                      className={({ isActive }) => `flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${isActive ? 'bg-gradient-to-r from-primary to-primary/80 text-white shadow-md' : 'text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground'}`}
                     >
                       <Icon className="h-4 w-4" />
                       {item.label}

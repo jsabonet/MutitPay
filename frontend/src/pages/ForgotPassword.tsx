@@ -50,7 +50,7 @@ const ForgotPassword = () => {
         <div className="text-center">
           <img
             src="/lovable-uploads/image.png"
-            alt="Chiva Computer & Service"
+            alt="MUTIT PAY"
             className="mx-auto h-16 w-auto"
           />
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900">

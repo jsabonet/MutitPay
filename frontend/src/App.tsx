@@ -11,6 +11,7 @@ import { FavoritesProvider } from "@/contexts/FavoritesContext";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import AdminRoute from "@/components/auth/AdminRoute";
 import Home from "./pages/Home";
+import About from "./pages/About";
 import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
 import Admin from "./pages/Admin";
@@ -55,6 +56,7 @@ const App = () => (
           <ScrollToTop />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/sobre" element={<About />} />
             <Route path="/produto/:id" element={<ProductDetails />} />
             {/* Alias para rota em inglês */}
             <Route path="/products/:id" element={<ProductDetails />} />

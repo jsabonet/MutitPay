@@ -19,7 +19,6 @@ PAYSUITE_API_SECRET = config('PAYSUITE_API_SECRET', default='')
 # Base URL for webhook callbacks (MUST be publicly accessible)
 # Examples:
 #   Development: http://127.0.0.1:8000 (with ngrok)
-#   Production: https://api.chivacomputer.co.mz
 WEBHOOK_BASE_URL = config(
     'WEBHOOK_BASE_URL',
     default='http://127.0.0.1:8000'  # Default for development
@@ -49,8 +48,6 @@ if not DEBUG and WEBHOOK_BASE_URL.startswith(('http://127.0.0.1', 'http://localh
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,0.0.0.0', cast=lambda v: [host.strip() for host in v.split(',')])
 
-# Add production hosts here (example: the droplet IP and the production domain)
-# You can override via environment: ALLOWED_HOSTS="localhost,127.0.0.1,0.0.0.0,157.230.16.193,chivacomputer.co.mz"
 
 
 
@@ -186,20 +183,10 @@ REST_FRAMEWORK = {
     ],
 }
 
-# Spectacular settings for API documentation
-SPECTACULAR_SETTINGS = {
-    'TITLE': 'Chiva Store API',
-    'DESCRIPTION': 'API para a loja de computadores Chiva',
-    'VERSION': '1.0.0',
-    'SERVE_INCLUDE_SCHEMA': False,
-    'SCHEMA_PATH_PREFIX': '/api/',
-    'COMPONENT_SPLIT_REQUEST': True,
-}
-
 # CORS settings
 CORS_ALLOWED_ORIGINS = config(
     'CORS_ALLOWED_ORIGINS',
-    default='http://localhost:3000,http://127.0.0.1:3000,http://localhost:5173,http://127.0.0.1:5173,http://localhost:8080,http://127.0.0.1:8080,http://localhost:8081,http://127.0.0.1:8081,http://localhost:8082,http://127.0.0.1:8082,http://localhost:8083,http://127.0.0.1:8083,https://chivacomputer.co.mz,http://157.230.16.193',
+    default='https://mutitpay.com, https://134.122.71.250',
     cast=lambda v: [origin.strip() for origin in v.split(',')]
 )
 
@@ -232,15 +219,15 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = config('MEDIA_ROOT', default=BASE_DIR / 'media')
 
 # File Upload Settings
-FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10MB
-DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 50 * 1024 * 1024  # 50MB
+DATA_UPLOAD_MAX_MEMORY_SIZE = 50 * 1024 * 1024  # 100MB
 
 # Allowed file extensions for uploads
 ALLOWED_IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.webp']
 MAX_IMAGE_SIZE = 5 * 1024 * 1024  # 5MB
 
 # Trusted origins for CSRF (add https://yourdomain and http://ip if needed)
-CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='https://chivacomputer.co.mz,http://157.230.16.193', cast=lambda v: [origin.strip() for origin in v.split(',')])
+CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='https://mutitpay.com', cast=lambda v: [origin.strip() for origin in v.split(',')])
 
 # Optional: session/cookie domain for production
 SESSION_COOKIE_DOMAIN = config('SESSION_COOKIE_DOMAIN', default=None)
@@ -264,11 +251,14 @@ SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=not DEBUG, cast=bool
 
 # Brevo API Configuration (Free: 300 emails/day)
 BREVO_API_KEY = config('BREVO_API_KEY', default='')
-BREVO_SENDER_EMAIL = config('BREVO_SENDER_EMAIL', default='chivacomputer@gmail.com')
-BREVO_SENDER_NAME = config('BREVO_SENDER_NAME', default='Chiva Computer')
+BREVO_SMTP_SERVER = config('BREVO_SMTP_SERVER', default='smtp-relay.brevo.com')
+BREVO_SMTP_PORT = config('BREVO_SMTP_PORT', default=587, cast=int)
+BREVO_SMTP_LOGIN = config('BREVO_SMTP_LOGIN', default='')
+BREVO_SENDER_EMAIL = config('BREVO_SENDER_EMAIL', default='contato@mutitpay.co.mz')
+BREVO_SENDER_NAME = config('BREVO_SENDER_NAME', default='MUTIT PAY')
 
 # Admin notification email - emails de nova venda vão para este endereço
-ADMIN_EMAIL = config('ADMIN_EMAIL', default='chivacomputer@gmail.com')
+ADMIN_EMAIL = config('ADMIN_EMAIL', default='jsabonete09@gmail.com')
 
 # Email feature toggles
 EMAIL_NOTIFICATIONS_ENABLED = config('EMAIL_NOTIFICATIONS_ENABLED', default=True, cast=bool)

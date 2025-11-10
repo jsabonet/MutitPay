@@ -74,10 +74,10 @@ interface StatusHistory {
 }
 
 const statusConfig = {
-  pending: { label: 'Pendente', color: 'bg-yellow-100 text-yellow-800', icon: Clock },
-  confirmed: { label: 'Confirmado', color: 'bg-blue-100 text-blue-800', icon: CheckCircle },
-  processing: { label: 'Processando', color: 'bg-purple-100 text-purple-800', icon: Package },
-  shipped: { label: 'Enviado', color: 'bg-indigo-100 text-indigo-800', icon: Truck },
+  pending: { label: 'Pendente', color: 'bg-accent/20 text-accent', icon: Clock },
+  confirmed: { label: 'Confirmado', color: 'bg-primary/20 text-primary', icon: CheckCircle },
+  processing: { label: 'Processando', color: 'bg-primary/20 text-primary', icon: Package },
+  shipped: { label: 'Enviado', color: 'bg-primary/20 text-primary', icon: Truck },
   delivered: { label: 'Entregue', color: 'bg-green-100 text-green-800', icon: CheckCircle },
   cancelled: { label: 'Cancelado', color: 'bg-red-100 text-red-800', icon: XCircle },
   paid: { label: 'Pago', color: 'bg-green-100 text-green-800', icon: CheckCircle },
@@ -240,25 +240,25 @@ const AccountOrders = () => {
             <div className="grid gap-4 sm:gap-6">
               {/* Order Info */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-              <Card className="border-2 border-blue-100 shadow-sm hover:shadow-md transition-shadow">
-                <CardHeader className="bg-gradient-to-br from-blue-50 to-indigo-50 pb-3">
-                  <CardTitle className="text-base sm:text-lg flex items-center gap-2 text-blue-900">
-                    <Calendar className="h-4 w-4 sm:h-5 sm:w-5" />
+              <Card className="border-2 border-primary/20 shadow-sm hover:shadow-md transition-shadow bg-card/50 backdrop-blur">
+                <CardHeader className="bg-gradient-to-br from-primary/10 to-primary/5 pb-3">
+                  <CardTitle className="text-base sm:text-lg flex items-center gap-2 text-foreground">
+                    <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                     Informações do Pedido
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3 pt-4">
                   <div className="flex justify-between items-start text-sm">
-                    <span className="text-gray-600 font-medium">Data:</span>
-                    <span className="text-right font-semibold text-gray-900">{formatDate(selectedOrder.created_at)}</span>
+                    <span className="text-muted-foreground font-medium">Data:</span>
+                    <span className="text-right font-semibold text-foreground">{formatDate(selectedOrder.created_at)}</span>
                   </div>
                   <Separator className="my-2" />
                   <div className="flex justify-between items-start text-sm">
-                    <span className="text-gray-600 font-medium">Total:</span>
-                    <span className="text-right font-bold text-lg text-blue-700">{formatPrice(parseFloat(selectedOrder.total_amount))}</span>
+                    <span className="text-muted-foreground font-medium">Total:</span>
+                    <span className="text-right font-bold text-lg text-gradient-gold">{formatPrice(parseFloat(selectedOrder.total_amount))}</span>
                   </div>
                   <div className="flex justify-between items-start text-sm">
-                    <span className="text-gray-600 font-medium">Entrega:</span>
+                    <span className="text-muted-foreground font-medium">Entrega:</span>
                     <span className="text-right font-semibold text-green-700">
                       {parseFloat(selectedOrder.shipping_cost) === 0 ? 'Grátis' : formatPrice(parseFloat(selectedOrder.shipping_cost))}
                     </span>
@@ -267,7 +267,7 @@ const AccountOrders = () => {
                     <>
                       <Separator className="my-2" />
                       <div className="flex justify-between items-start text-sm">
-                        <span className="text-gray-600 font-medium">Previsão de Entrega:</span>
+                        <span className="text-muted-foreground font-medium">Previsão de Entrega:</span>
                         <span className="text-right font-semibold text-indigo-700">
                           {new Date(selectedOrder.estimated_delivery).toLocaleDateString('pt-PT')}
                         </span>
@@ -278,8 +278,8 @@ const AccountOrders = () => {
                     <>
                       <Separator className="my-2" />
                       <div className="flex flex-col gap-1">
-                        <span className="text-gray-600 font-medium text-sm">Rastreamento:</span>
-                        <code className="bg-blue-100 text-blue-800 px-3 py-2 rounded text-xs sm:text-sm font-mono border border-blue-200 break-all">
+                        <span className="text-muted-foreground font-medium text-sm">Rastreamento:</span>
+                        <code className="bg-primary/10 text-primary px-3 py-2 rounded text-xs sm:text-sm font-mono border border-primary/20 break-all">
                           {selectedOrder.tracking_number}
                         </code>
                       </div>
@@ -289,10 +289,10 @@ const AccountOrders = () => {
               </Card>
 
               {/* Shipping Info */}
-              <Card className="border-2 border-green-100 shadow-sm hover:shadow-md transition-shadow">
-                <CardHeader className="bg-gradient-to-br from-green-50 to-emerald-50 pb-3">
-                  <CardTitle className="text-base sm:text-lg flex items-center gap-2 text-green-900">
-                    <MapPin className="h-4 w-4 sm:h-5 sm:w-5" />
+              <Card className="border-2 border-accent/20 shadow-sm hover:shadow-md transition-shadow bg-card/50 backdrop-blur">
+                <CardHeader className="bg-gradient-to-br from-accent/10 to-accent/5 pb-3">
+                  <CardTitle className="text-base sm:text-lg flex items-center gap-2 text-foreground">
+                    <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-accent" />
                     Entrega
                   </CardTitle>
                 </CardHeader>
@@ -361,18 +361,18 @@ const AccountOrders = () => {
                               </div>
                             </div>
                             <div className="flex-1 min-w-0">
-                              <h4 className="font-bold text-sm sm:text-base text-gray-900 mb-2 line-clamp-2 leading-tight">
+                              <h4 className="font-bold text-sm sm:text-base text-foreground mb-2 line-clamp-2 leading-tight">
                                 {item.product_name}
                               </h4>
                               <div className="flex flex-wrap items-center gap-2">
-                                <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-300 font-mono text-xs px-2 py-0.5">
+                                <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30 font-mono text-xs px-2 py-0.5">
                                   <span className="hidden sm:inline">SKU: </span>{item.sku}
                                 </Badge>
                                 {item.color_name && (
-                                  <Badge variant="outline" className="bg-white border-gray-300 flex items-center gap-1.5 px-2 py-0.5">
+                                  <Badge variant="outline" className="bg-background border-border flex items-center gap-1.5 px-2 py-0.5">
                                     {item.color_hex && (
                                       <div
-                                        className="w-3 h-3 rounded-full border-2 border-gray-400 shadow-sm"
+                                        className="w-3 h-3 rounded-full border-2 border-border shadow-sm"
                                         style={{ backgroundColor: item.color_hex }}
                                       />
                                     )}
@@ -393,20 +393,20 @@ const AccountOrders = () => {
 
                           {/* Specs Grid */}
                           <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 text-xs sm:text-sm">
-                            <div className="bg-white rounded-lg p-2 sm:p-2.5 border-2 border-gray-200 hover:border-blue-300 transition-colors">
-                              <div className="text-[10px] sm:text-xs text-gray-500 mb-0.5 font-medium">Quantidade</div>
-                              <div className="font-bold text-gray-900">{item.quantity} un.</div>
+                            <div className="bg-card rounded-lg p-2 sm:p-2.5 border-2 border-border hover:border-primary/30 transition-colors">
+                              <div className="text-[10px] sm:text-xs text-muted-foreground mb-0.5 font-medium">Quantidade</div>
+                              <div className="font-bold text-foreground">{item.quantity} un.</div>
                             </div>
                             
-                            <div className="bg-white rounded-lg p-2 sm:p-2.5 border-2 border-gray-200 hover:border-green-300 transition-colors">
-                              <div className="text-[10px] sm:text-xs text-gray-500 mb-0.5 font-medium">Preço Unit.</div>
-                              <div className="font-bold text-green-700">{formatPrice(parseFloat(item.unit_price))}</div>
+                            <div className="bg-card rounded-lg p-2 sm:p-2.5 border-2 border-border hover:border-accent/30 transition-colors">
+                              <div className="text-[10px] sm:text-xs text-muted-foreground mb-0.5 font-medium">Preço Unit.</div>
+                              <div className="font-bold text-gradient-gold">{formatPrice(parseFloat(item.unit_price))}</div>
                             </div>
 
                             {item.weight && (
-                              <div className="bg-white rounded-lg p-2 sm:p-2.5 border-2 border-gray-200 hover:border-orange-300 transition-colors">
-                                <div className="text-[10px] sm:text-xs text-gray-500 mb-0.5 font-medium">Peso</div>
-                                <div className="font-bold text-gray-900">{item.weight}</div>
+                              <div className="bg-card rounded-lg p-2 sm:p-2.5 border-2 border-border hover:border-accent/30 transition-colors">
+                                <div className="text-[10px] sm:text-xs text-muted-foreground mb-0.5 font-medium">Peso</div>
+                                <div className="font-bold text-foreground">{item.weight}</div>
                               </div>
                             )}
 

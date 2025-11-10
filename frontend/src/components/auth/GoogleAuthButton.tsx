@@ -36,13 +36,13 @@ export const GoogleAuthButton: React.FC<GoogleAuthButtonProps> = ({
     <Button
       type="button"
       variant="outline"
-      className={`w-full h-12 glass-card bg-white/10 border-white/20 text-white hover:bg-white/15 hover:border-white/30 transition-all duration-300 transform hover:scale-[1.02] ${className}`}
+      className={`w-full h-12 border-gray-200 ${className}`}
       disabled={disabled || loading}
       onClick={handleClick}
     >
       {loading ? (
         <>
-          <Loader2 className="h-5 w-5 mr-3 animate-spin" />
+          <Loader2 className="h-5 w-5 mr-3 animate-spin text-gray-600" />
           Conectando...
         </>
       ) : (
@@ -50,7 +50,7 @@ export const GoogleAuthButton: React.FC<GoogleAuthButtonProps> = ({
           <img
             src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
             alt="Google"
-            className="h-5 w-5 mr-3 filter brightness-0 invert"
+            className="h-5 w-5 mr-3"
           />
           {label}
         </>

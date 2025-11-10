@@ -2,7 +2,6 @@ import Header from '@/components/layout/Header';
 import HeroSection from '@/components/sections/HeroSection';
 import FeaturedProducts from '@/components/sections/FeaturedProducts';
 import BestSellers from '@/components/sections/BestSellers';
-import AboutSection from '@/components/sections/AboutSection';
 import Footer from '@/components/layout/Footer';
 import { Shield, Network } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -87,7 +86,6 @@ const Home = () => {
         <HeroSection />
         <FeaturedProducts />
         <BestSellers />
-        <AboutSection />
       </main>
       <Footer />
     </div>

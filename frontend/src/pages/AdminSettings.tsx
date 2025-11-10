@@ -649,10 +649,10 @@ const AdminSettings = () => {
                             {coupon.is_active ? (
                               <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">Ativo</span>
                             ) : (
-                              <span className="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Inativo</span>
+                              <span className="px-2 py-1 bg-muted text-muted-foreground text-xs rounded-full">Inativo</span>
                             )}
                             {coupon.is_currently_valid && (
-                              <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">Válido</span>
+                              <span className="px-2 py-1 bg-primary/10 text-primary text-xs rounded-full">Válido</span>
                             )}
                           </div>
                           

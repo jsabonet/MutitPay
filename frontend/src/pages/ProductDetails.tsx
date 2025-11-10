@@ -205,7 +205,7 @@ const ProductDetails = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background">
         <Header />
-        <main className="pt-28 pb-24">
+        <main className="pt-20 pb-16">
           <div className="container mx-auto px-6">
             <div className="animate-pulse">
               <div className="grid md:grid-cols-2 gap-12">
@@ -236,7 +236,7 @@ const ProductDetails = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background">
         <Header />
-        <main className="pt-28 pb-24">
+        <main className="pt-20 pb-16">
           <div className="container mx-auto px-6">
             <div className="text-center max-w-2xl mx-auto">
               <div className="glass-card p-12 space-y-6">
@@ -317,7 +317,7 @@ const ProductDetails = () => {
         <meta property="og:title" content={product.meta_title || product.name} />
         {product.meta_description && <meta property="og:description" content={product.meta_description} />}
         <meta property="og:type" content="product" />
-        <meta property="og:site_name" content="Chiva Computer & Service" />
+        <meta property="og:site_name" content="MUTIT PAY" />
         {(() => {
           const img = product.main_image_url || product.main_image || (product.images?.[0]?.image_url || product.images?.[0]?.image);
           const url = (typeof window !== 'undefined' && product.slug) ? `${window.location.origin}/products/${product.slug}` : undefined;
@@ -392,7 +392,7 @@ const ProductDetails = () => {
         })()}
       </Helmet>
       <Header />
-      <main className="pt-28 pb-24">
+      <main className="pt-20 pb-16">
         <div className="container mx-auto px-6">
         {isPreview && (
           <div className="mb-4 rounded-md border border-yellow-300 bg-yellow-50 px-4 py-2 text-sm text-yellow-800">
@@ -422,7 +422,7 @@ const ProductDetails = () => {
           <span className="text-foreground break-words font-semibold">{product.name}</span>
         </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-12 lg:mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-8">
           {/* Product Images Gallery */}
           <div className="space-y-4 lg:space-y-6">
             {/* Main Image with Navigation */}
@@ -446,7 +446,7 @@ const ProductDetails = () => {
                   <Button
                     variant="secondary"
                     size="icon"
-                    className="absolute left-4 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 glass-card hover:bg-accent/10 shadow-xl z-10 hover:scale-110"
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 glass-card hover:bg-accent/10 z-10 hover:scale-110"
                     onClick={() => navigateImage('prev')}
                   >
                     <ChevronLeft className="h-4 w-4 text-gray-700" />
@@ -454,7 +454,7 @@ const ProductDetails = () => {
                   <Button
                     variant="secondary"
                     size="icon"
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 glass-card hover:bg-accent/10 shadow-xl z-10 hover:scale-110"
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 glass-card hover:bg-accent/10 z-10 hover:scale-110"
                     onClick={() => navigateImage('next')}
                   >
                     <ChevronRight className="h-4 w-4 text-foreground" />
@@ -478,7 +478,7 @@ const ProductDetails = () => {
                       onClick={() => selectImage(images[index], index)}
                       className={`w-3 h-3 rounded-full transition-all duration-300 ${
                         currentImageIndex === index 
-                          ? 'bg-accent scale-125 shadow-lg' 
+                          ? 'bg-accent scale-125' 
                           : 'bg-white/60 hover:bg-accent/70 hover:scale-110'
                       }`}
                     />
@@ -496,7 +496,7 @@ const ProductDetails = () => {
                     onClick={() => selectImage(image, index)}
                     className={`flex-shrink-0 w-16 h-16 sm:w-18 sm:h-18 lg:w-20 lg:h-20 rounded-xl overflow-hidden transition-all duration-300 border-2 ${
                       selectedImage === image 
-                        ? 'border-accent shadow-lg scale-110 ring-2 ring-accent/30' 
+                        ? 'border-accent scale-110 ring-2 ring-accent/30' 
                         : 'border-border/50 hover:border-accent/50 hover:scale-105 glass-card opacity-70 hover:opacity-100'
                     }`}
                   >
@@ -543,26 +543,26 @@ const ProductDetails = () => {
             {/* Badges */}
             <div className="flex flex-wrap gap-2">
               {product.is_featured && (
-                <Badge className="text-xs sm:text-sm bg-gradient-to-r from-primary to-primary/80 text-white border-0 shadow-sm font-semibold">
+                <Badge className="text-xs sm:text-sm bg-gradient-to-r from-primary to-primary/80 text-white border-0 font-semibold">
                   Destaque
                 </Badge>
               )}
               {product.is_bestseller && (
-                <Badge className="text-xs sm:text-sm bg-gradient-to-r from-accent to-accent/80 text-white border-0 shadow-sm font-semibold">
+                <Badge className="text-xs sm:text-sm bg-gradient-to-r from-accent to-accent/80 text-white border-0 font-semibold">
                   Best Seller
                 </Badge>
               )}
               {product.is_on_sale && (
-                <Badge variant="destructive" className="text-xs sm:text-sm font-semibold shadow-sm">
+                <Badge variant="destructive" className="text-xs sm:text-sm font-semibold">
                   Promoção
                 </Badge>
               )}
               {product.stock_quantity > 0 ? (
-                <Badge className="text-xs sm:text-sm bg-gradient-to-r from-primary to-primary/80 text-white border-0 shadow-sm font-semibold">
+                <Badge className="text-xs sm:text-sm bg-gradient-to-r from-primary to-primary/80 text-white border-0 font-semibold">
                   Em Estoque
                 </Badge>
               ) : (
-                <Badge variant="destructive" className="text-xs sm:text-sm font-semibold shadow-sm">
+                <Badge variant="destructive" className="text-xs sm:text-sm font-semibold">
                   Fora de Estoque
                 </Badge>
               )}
@@ -815,7 +815,7 @@ const ProductDetails = () => {
           {/* Mobile: Stacked Sections */}
           <div className="block md:hidden space-y-6">
             {/* Specifications Section */}
-            <Card className="border-0 shadow-none md:border md:shadow-sm">
+            <Card className="border-0 md:border">
               <CardContent className="pt-6 px-0 md:px-6">
                 <h2 className="text-xl font-bold mb-4 px-0">Especificações</h2>
                 {specifications.length > 0 ? (
@@ -838,7 +838,7 @@ const ProductDetails = () => {
             </Card>
 
             {/* Description Section */}
-            <Card className="border-0 shadow-none md:border md:shadow-sm">
+            <Card className="border-0 md:border">
               <CardContent className="pt-6 px-0 md:px-6">
                 <h2 className="text-xl font-bold mb-4">Descrição Completa</h2>
                 <div className="prose prose-sm max-w-none">
@@ -870,7 +870,7 @@ const ProductDetails = () => {
               <TabsList className="w-full grid grid-cols-3 gap-3 p-1.5 bg-muted/50 rounded-xl">
                 <TabsTrigger 
                   value="specifications" 
-                  className="text-sm py-3 px-4 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm transition-all"
+                  className="text-sm py-3 px-4 rounded-lg data-[state=active]:bg-background transition-all"
                 >
                   <div className="flex items-center gap-2">
                     <Package className="w-4 h-4" />
@@ -879,7 +879,7 @@ const ProductDetails = () => {
                 </TabsTrigger>
                 <TabsTrigger 
                   value="description" 
-                  className="text-sm py-3 px-4 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm transition-all"
+                  className="text-sm py-3 px-4 rounded-lg data-[state=active]:bg-background transition-all"
                 >
                   <div className="flex items-center gap-2">
                     <Award className="w-4 h-4" />
@@ -888,7 +888,7 @@ const ProductDetails = () => {
                 </TabsTrigger>
                 <TabsTrigger 
                   value="reviews" 
-                  className="text-sm py-3 px-4 rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm transition-all"
+                  className="text-sm py-3 px-4 rounded-lg data-[state=active]:bg-background transition-all"
                 >
                   <div className="flex items-center gap-2">
                     <MessageSquare className="w-4 h-4" />

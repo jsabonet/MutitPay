@@ -1,10 +1,12 @@
-import { Menu, X, ShoppingCart, User, Settings, Search, Home, Package, Info, Mail } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { Menu, X, ShoppingCart, User, Settings, Search, ChevronDown, ChevronUp, Heart, Package } from "lucide-react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger } from '@/components/ui/navigation-menu';
 import { useCart } from "@/contexts/CartContext";
 import { useAuth } from '@/contexts/AuthContext';
 import { useAdminStatus } from '@/hooks/useAdminStatus';
+import { useFavoritesContext } from '@/contexts/FavoritesContext';
 import { Link, useNavigate } from "react-router-dom";
 import { useCategories, useSubcategories } from '@/hooks/useApi';
 import { productApi, type Product, type ProductListItem, type Category, type Subcategory, formatPrice, getImageUrl } from '@/lib/api';
@@ -49,24 +51,24 @@ const Header = () => {
 
           {/* Desktop Menu & Actions */}
           <div className="hidden md:flex items-center space-x-6">
-            <Link
-              to="/"
-              className="text-foreground hover:text-accent transition-colors font-medium"
+            <button 
+              className="text-foreground hover:text-accent transition-colors font-medium cursor-pointer"
+              onClick={() => scrollToSection('inicio')}
             >
               Início
-            </Link>
+            </button>
             <Link
               to="/products"
               className="text-foreground hover:text-accent transition-colors font-medium"
             >
               Produtos
             </Link>
-            <Link
-              to="/sobre"
-              className="text-foreground hover:text-accent transition-colors font-medium"
+            <button 
+              className="text-foreground hover:text-accent transition-colors font-medium cursor-pointer"
+              onClick={() => scrollToSection('sobre')}
             >
               Sobre Nós
-            </Link>
+            </button>
             <button 
               className="text-foreground hover:text-accent transition-colors font-medium cursor-pointer"
               onClick={() => scrollToSection('contactos')}
@@ -76,9 +78,9 @@ const Header = () => {
 
             {/* User Actions - Desktop Only */}
             {currentUser ? (
-              <Button className="hover:bg-accent/90 hover:scale-105 transition-all duration-300" asChild>
+              <Button variant="ghost" size="icon" asChild title="Minha Conta">
                 <Link to="/account">
-                  Minha Conta
+                  <User className="h-5 w-5" />
                 </Link>
               </Button>
             ) : (
@@ -146,36 +148,30 @@ const Header = () => {
         {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="md:hidden mt-4 pb-4 space-y-3 animate-fade-in border-t border-white/10 pt-4">
-            <Link
-              to="/"
-              className="flex items-center gap-3 text-foreground hover:text-accent transition-colors font-medium py-2"
-              onClick={() => setMobileMenuOpen(false)}
+            <button 
+              onClick={() => scrollToSection('inicio')} 
+              className="block text-foreground hover:text-accent transition-colors font-medium w-full text-left py-2"
             >
-              <Home className="h-5 w-5" />
-              <span>Início</span>
-            </Link>
+              Início
+            </button>
             <Link 
               to="/products" 
-              className="flex items-center gap-3 text-foreground hover:text-accent transition-colors font-medium py-2"
+              className="block text-foreground hover:text-accent transition-colors font-medium py-2"
               onClick={() => setMobileMenuOpen(false)}
             >
-              <Package className="h-5 w-5" />
-              <span>Produtos</span>
-            </Link>
-            <Link
-              to="/sobre"
-              className="flex items-center gap-3 text-foreground hover:text-accent transition-colors font-medium py-2"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <Info className="h-5 w-5" />
-              <span>Sobre Nós</span>
+              Produtos
             </Link>
             <button 
-              onClick={() => scrollToSection('contactos')} 
-              className="flex items-center gap-3 text-foreground hover:text-accent transition-colors font-medium w-full text-left py-2"
+              onClick={() => scrollToSection('sobre')} 
+              className="block text-foreground hover:text-accent transition-colors font-medium w-full text-left py-2"
             >
-              <Mail className="h-5 w-5" />
-              <span>Contactos</span>
+              Sobre Nós
+            </button>
+            <button 
+              onClick={() => scrollToSection('contactos')} 
+              className="block text-foreground hover:text-accent transition-colors font-medium w-full text-left py-2"
+            >
+              Contactos
             </button>
 
             {/* User Actions - Mobile Menu Only */}

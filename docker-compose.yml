@@ -1,36 +1,55 @@
 version: '3.8'
+
 services:
   db:
     image: postgres:15-alpine
-    restart: always
+    restart: unless-stopped
     environment:
       POSTGRES_DB: ${DB_NAME:-mutit_pay}
       POSTGRES_USER: ${DB_USER:-postgres}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
     volumes:
       - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - mutitpay_network
 
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
+      args:
+        REQUIREMENTS: prod
     command: /entrypoint.sh
+    restart: unless-stopped
     env_file:
       - .env
     environment:
-      - DJANGO_DEBUG=${DEBUG}
+      - DJANGO_DEBUG=${DEBUG:-False}
       - DB_HOST=db
       - DB_NAME=${DB_NAME:-mutit_pay}
       - DB_USER=${DB_USER:-postgres}
       - DB_PASSWORD=${DB_PASSWORD:-postgres}
-
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     volumes:
-      - ./media:/app/media
-      - ./backend:/app
-    ports:
-      - '8000:8000'
+      - media_data:/app/media
+      - static_data:/app/static
+    expose:
+      - "8000"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/api/health/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - mutitpay_network
 
   frontend:
     build:
@@ -38,14 +57,34 @@ services:
       dockerfile: Dockerfile
       args:
         BUILD_FRONTEND: "true"
+    restart: unless-stopped
     ports:
       - '80:80'
+      - '443:443'
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
     volumes:
-      - ./media:/media:ro
-      # Note: nginx default.conf is already copied into the image during build. Do not bind-mount
-      # the host file here unless you deliberately want to override the image file.
+      - media_data:/media:ro
+      - ./deploy/ssl:/etc/letsencrypt:ro
+      # Note: nginx default.conf is already copied into the image during build
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - mutitpay_network
 
 volumes:
   db_data:
+    driver: local
+  media_data:
+    driver: local
+  static_data:
+    driver: local
+
+networks:
+  mutitpay_network:
+    driver: bridge
+

@@ -22,9 +22,33 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, Sp
 from django.contrib.sitemaps.views import sitemap
 from products.sitemaps import ProductSitemap, CategorySitemap, SubcategorySitemap, StaticViewSitemap
 from cart import order_views as cart_order_views
+from django.http import JsonResponse
+from django.db import connection
+
+def health_check(request):
+    """Health check endpoint for monitoring"""
+    try:
+        # Check database connection
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+        return JsonResponse({
+            'status': 'healthy',
+            'database': 'connected',
+            'service': 'mutitpay-backend'
+        })
+    except Exception as e:
+        return JsonResponse({
+            'status': 'unhealthy',
+            'database': 'disconnected',
+            'error': str(e)
+        }, status=503)
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path("admin/", admin.site.url),
+    
+    # Health check
+    path('api/health/', health_check, name='health_check'),
+    
     # Direct export endpoints (ensure no include-order confusion during dev/testing)
     path('api/cart/admin/export/orders/', cart_order_views.export_orders, name='export_orders_root'),
     path('api/cart/admin/export/orders/debug/', cart_order_views.export_orders_debug, name='export_orders_debug'),

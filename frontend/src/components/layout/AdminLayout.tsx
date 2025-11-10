@@ -100,14 +100,14 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background">
       {/* Sidebar */}
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-        <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4 border-r">
+        <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-background/95 backdrop-blur px-6 pb-4 border-r border-border">
           <div className="flex h-16 shrink-0 items-center">
             <Link to="/" className="flex items-center space-x-2">
-              <Home className="h-8 w-8 text-blue-600" />
-              <span className="text-xl font-bold">Chiva Computer & Service. Lda</span>
+              <Home className="h-8 w-8 text-primary" />
+              <span className="text-xl font-bold text-gradient-gold">MUTIT PAY</span>
             </Link>
           </div>
           <nav className="flex flex-1 flex-col">
@@ -119,16 +119,16 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                       <Link
                         to={item.href}
                         className={`
-                          group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold
+                          group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold transition-all
                           ${item.current
-                            ? 'bg-blue-50 text-blue-600'
-                            : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                            ? 'bg-gradient-to-r from-primary to-primary/80 text-white shadow-md'
+                            : 'text-foreground hover:bg-accent/50'
                           }
                         `}
                       >
                         <item.icon
                           className={`h-6 w-6 shrink-0 ${
-                            item.current ? 'text-blue-600' : 'text-gray-400 group-hover:text-blue-600'
+                            item.current ? 'text-white' : 'text-muted-foreground group-hover:text-accent'
                           }`}
                           aria-hidden="true"
                         />
@@ -142,10 +142,10 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
               <li className="mt-auto">
                 <Link
                   to="/admin/configuracoes"
-                  className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-blue-600"
+                  className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-foreground hover:bg-accent/50 transition-all"
                 >
                   <Settings
-                    className="h-6 w-6 shrink-0 text-gray-400 group-hover:text-blue-600"
+                    className="h-6 w-6 shrink-0 text-muted-foreground group-hover:text-accent"
                     aria-hidden="true"
                   />
                   Configurações
@@ -158,8 +158,8 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
 
       {/* Mobile menu */}
       <div className="lg:hidden">
-        <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6">
-          <Button variant="ghost" size="sm" className="-m-2.5 p-2.5 text-gray-700" onClick={() => setMobileOpen(true)} aria-label="Abrir menu">
+        <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-border bg-background/95 backdrop-blur px-4 shadow-sm sm:gap-x-6 sm:px-6">
+          <Button variant="ghost" size="sm" className="-m-2.5 p-2.5 text-foreground" onClick={() => setMobileOpen(true)} aria-label="Abrir menu">
             <span className="sr-only">Abrir sidebar</span>
             <Menu className="h-6 w-6" aria-hidden="true" />
           </Button>
@@ -167,8 +167,8 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
             <div className="flex items-center gap-x-4 lg:gap-x-6">
               <Link to="/" className="flex items-center space-x-2">
-                <Home className="h-6 w-6 text-blue-600" />
-                <span className="font-bold">Chiva Computer & Service. Lda</span>
+                <Home className="h-6 w-6 text-primary" />
+                <span className="font-bold text-gradient-gold">MUTIT PAY</span>
               </Link>
             </div>
           </div>
@@ -178,11 +178,11 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
         {mobileOpen && (
           <div className="fixed inset-0 z-50 lg:hidden">
             <div className="absolute inset-0 bg-black/40" onClick={() => setMobileOpen(false)} aria-hidden />
-            <aside className="absolute left-0 top-0 bottom-0 w-72 bg-white shadow-lg p-4 overflow-y-auto">
+            <aside className="absolute left-0 top-0 bottom-0 w-72 bg-background/95 backdrop-blur shadow-lg p-4 overflow-y-auto border-r border-border">
               <div className="flex items-center justify-between mb-4">
                 <Link to="/" className="flex items-center space-x-2">
-                  <Home className="h-6 w-6 text-blue-600" />
-                  <span className="font-bold">Chiva Computer & Service. Lda</span>
+                  <Home className="h-6 w-6 text-primary" />
+                  <span className="font-bold text-gradient-gold">MUTIT PAY</span>
                 </Link>
                 <Button variant="ghost" size="icon" onClick={() => setMobileOpen(false)} aria-label="Fechar menu">
                   <X className="h-5 w-5" />
@@ -192,10 +192,10 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                 <ul className="space-y-2">
                   {navigation.map(item => (
                     <li key={item.name}>
-                      <Link to={item.href} onClick={() => setMobileOpen(false)} className={`flex items-center gap-3 px-2 py-2 rounded-md ${item.current ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-50 hover:text-blue-600'}`}>
+                      <Link to={item.href} onClick={() => setMobileOpen(false)} className={`flex items-center gap-3 px-2 py-2 rounded-md ${item.current ? 'bg-primary/10 text-primary' : 'text-foreground hover:bg-accent hover:text-accent-foreground'}`}>
                         <item.icon className="h-5 w-5" />
                         <span>{item.name}</span>
-                        {item.badge && <span className="ml-auto inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800">{item.badge}</span>}
+                        {item.badge && <span className="ml-auto inline-flex items-center rounded-md bg-accent/20 px-2 py-1 text-xs font-medium text-accent">{item.badge}</span>}
                       </Link>
                     </li>
                   ))}

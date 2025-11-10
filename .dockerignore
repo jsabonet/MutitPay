@@ -1,0 +1,99 @@
+# Ignore version control
+.git
+.gitignore
+.gitattributes
+
+# Environment files (use .env.production on server)
+.env
+.env.*
+!.env.example
+!.env.production
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.mypy_cache/
+.dmypy.json
+dmyp.json
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build artifacts
+frontend/dist/
+frontend/build/
+backend/static/
+backend/staticfiles/
+*.pyc
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+logs/
+*.pid
+
+# Databases (local development)
+*.sqlite3
+*.db
+
+# Media files (don't copy to image, use volumes)
+media/
+uploads/
+
+# Documentation (optional - include if needed)
+*.md
+!README.md
+!DEPLOY.md
+
+# Scripts (optional - exclude helper scripts)
+scripts/
+*.sh
+!deploy.sh
+!entrypoint.sh
+
+# Tests
+tests/
+test_*.py
+*_test.py
+
+# Backups
+*.bak
+*.backup
+backup_*.py
+*_OLD_backup.py
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Temporary files
+tmp/
+temp/
+*.tmp

@@ -47,12 +47,12 @@ const Footer = () => {
             <h3 className="text-xl font-display font-bold mb-4">Links Rápidos</h3>
             <ul className="space-y-3">
               <li>
-                <button
-                  onClick={() => scrollToSection('inicio')}
-                  className="text-white/80 hover:text-accent transition-colors cursor-pointer"
+                <Link
+                  to="/"
+                  className="text-white/80 hover:text-accent transition-colors"
                 >
                   Início
-                </button>
+                </Link>
               </li>
               <li>
                 <Link
@@ -63,12 +63,12 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <button
-                  onClick={() => scrollToSection('sobre')}
-                  className="text-white/80 hover:text-accent transition-colors cursor-pointer"
+                <Link
+                  to="/sobre"
+                  className="text-white/80 hover:text-accent transition-colors"
                 >
                   Sobre Nós
-                </button>
+                </Link>
               </li>
               <li>
                 <button
