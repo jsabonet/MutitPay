@@ -74,6 +74,62 @@ docker-compose up -d
 echo "0 3 * * * certbot renew --quiet && docker-compose -f /var/www/mutitpay/docker-compose.yml restart frontend" | crontab -
 ```
 
+### Testar com IP (sem domínio/SSL)
+
+Se você ainda não tem um domínio apontado e quer testar usando apenas o IP do servidor, existem duas opções:
+
+1) Temporário e simples (recomendado para testes rápidos): manter tudo em HTTP
+
+- No servidor, edite o arquivo `.env`:
+
+```bash
+ssh root@SEU_IP
+cd /var/www/mutitpay
+nano .env
+# Adicione/ajuste:
+SECURE_SSL_REDIRECT=False
+SESSION_COOKIE_SECURE=False
+CSRF_COOKIE_SECURE=False
+# Para evitar problemas de CSRF/CORS ao usar IP e HTTP:
+CORS_ALLOWED_ORIGINS=http://SEU_IP
+CSRF_TRUSTED_ORIGINS=http://SEU_IP
+```
+
+- Recrie apenas o backend e teste:
+
+```bash
+docker-compose up -d --build backend
+curl -I http://SEU_IP/api/health/   # Deve retornar 200 sem redirecionar para https
+```
+
+2) Com HTTPS autoassinado (útil, mas o navegador avisará que o certificado não é confiável):
+
+- Gere os certificados autoassinados (já existe um script pronto):
+
+```bash
+ssh root@SEU_IP
+cd /var/www/mutitpay
+chmod +x scripts/generate_self_signed_ssl.sh
+./scripts/generate_self_signed_ssl.sh
+docker-compose build frontend && docker-compose up -d frontend
+```
+
+- No navegador, acesse `https://SEU_IP` e clique em “Avançado” → “Prosseguir” para aceitar o certificado autoassinado. Depois recarregue o site em `http://SEU_IP` e as chamadas para `/api` em `https://SEU_IP` deixarão de falhar por certificado.
+
+Observação importante: Certificados válidos para IP são raros; o ideal é usar um domínio com Let's Encrypt. Assim que o domínio estiver apontado, ative novamente:
+
+```bash
+# No .env (produção)
+SECURE_SSL_REDIRECT=True
+SESSION_COOKIE_SECURE=True
+CSRF_COOKIE_SECURE=True
+ALLOWED_HOSTS=seu-dominio.com,www.seu-dominio.com,SEU_IP
+CORS_ALLOWED_ORIGINS=https://seu-dominio.com,https://www.seu-dominio.com
+CSRF_TRUSTED_ORIGINS=https://seu-dominio.com,https://www.seu-dominio.com
+```
+
+E siga os passos de SSL com Let's Encrypt para ter HTTPS totalmente confiável.
+
 ## 📊 Comandos Úteis
 
 ### Ver Logs
