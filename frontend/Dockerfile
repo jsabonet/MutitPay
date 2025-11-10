@@ -18,8 +18,9 @@ RUN apt-get update && apt-get install -y \
 
 # Copiar arquivos essenciais para o build
 COPY package.json ./ 
-COPY package-lock.json ./ 
-COPY .env.local .env
+COPY package-lock.json ./
+# Copy .env file if exists (optional)
+COPY .env* ./
 COPY tsconfig*.json ./
 COPY vite.config.ts ./
 COPY src/ ./src/
@@ -65,13 +66,7 @@ RUN if [ -d /app/dist ]; then \
 # ========================
 FROM nginx:stable-alpine
 
-# If a prebuilt `dist/` is provided in the build context, copy it first
-# (this supports the prebuild workflow: build locally/CI and then build the image
-# with `--build-arg BUILD_FRONTEND=false`). If the in-image build produced a
-# `/app/dist`, copy it afterwards to overwrite the prebuilt files.
-COPY dist /usr/share/nginx/html
-
-# Copiar build do frontend do estágio de build (se presente)
+# Copiar build do frontend do estágio de build
 COPY --from=build /app/dist /usr/share/nginx/html
 
 # Copy precompressed assets if build stage produced them
