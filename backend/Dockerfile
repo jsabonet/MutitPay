@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     libjpeg-dev \
     zlib1g-dev \
+    curl \
  && rm -rf /var/lib/apt/lists/*
 
 # Copy only requirements first to leverage Docker cache
