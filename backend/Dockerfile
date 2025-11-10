@@ -34,9 +34,9 @@ COPY . ./
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# create non-root user
+# create non-root user and directories with proper permissions
 RUN addgroup --gid 1000 app && adduser --disabled-password --gecos '' --uid 1000 --gid 1000 app || true
-RUN chown -R app:app /app /entrypoint.sh
+RUN mkdir -p /app/static /app/media && chown -R app:app /app /entrypoint.sh
 
 USER app
 

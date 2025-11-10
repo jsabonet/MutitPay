@@ -44,7 +44,7 @@ def health_check(request):
         }, status=503)
 
 urlpatterns = [
-    path("admin/", admin.site.url),
+    path("admin/", admin.site.urls),
     
     # Health check
     path('api/health/', health_check, name='health_check'),
