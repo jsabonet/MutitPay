@@ -54,6 +54,13 @@ class ExternalAuthUser(models.Model):
     providers = models.JSONField(default=list, blank=True)  # list of provider ids
     roles = models.ManyToManyField(Role, blank=True, related_name='external_users')
     is_admin = models.BooleanField(default=False)
+    admin_source = models.CharField(
+        max_length=20, 
+        choices=[('email', 'Email Config'), ('manual', 'Manual Promotion')],
+        null=True, 
+        blank=True,
+        help_text="Source of admin privilege: 'email' (from FIREBASE_ADMIN_EMAILS) or 'manual' (promoted via UserManagement)"
+    )
     last_seen = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -80,9 +87,11 @@ class ExternalAuthUser(models.Model):
 
     def promote_to_admin(self, save=True):
         """
-        Promove usuário para admin, atualizando is_admin e adicionando role admin
+        Promove usuário para admin, atualizando is_admin e adicionando role admin.
+        Marca como promoção manual para que não seja removido automaticamente.
         """
         self.is_admin = True
+        self.admin_source = 'manual'  # Marca como promoção manual
         if save:
             self.save()
         
@@ -100,9 +109,11 @@ class ExternalAuthUser(models.Model):
 
     def revoke_admin(self, save=True):
         """
-        Remove privilégios de admin do usuário
+        Remove privilégios de admin do usuário.
+        Limpa o admin_source também.
         """
         self.is_admin = False
+        self.admin_source = None  # Limpa a origem do admin
         if save:
             self.save()
 
@@ -112,6 +123,14 @@ class ExternalAuthUser(models.Model):
             self.roles.remove(admin_role)
         except Role.DoesNotExist:
             pass
+
+        # Se tiver User associado, atualiza flags de admin
+        if self.user:
+            self.user.is_staff = False
+            self.user.is_superuser = False
+            self.user.save()
+        
+        return True
 
         # Se tiver User associado, remove flags de admin
         if self.user:

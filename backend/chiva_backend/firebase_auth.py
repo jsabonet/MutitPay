@@ -329,13 +329,25 @@ class FirebaseAuthentication(authentication.BaseAuthentication):
                         pass
                         
                     # Admin status management:
-                    # 1. For new users: Use email-based admin status
-                    # 2. For existing users: Preserve current admin status, only update if they're in admin emails
+                    # 1. For new users: Use email-based admin status (mark source as 'email')
+                    # 2. For existing users with manual promotion: preserve their admin status
+                    # 3. For existing users promoted by email: update based on current email list
                     if created:
+                        # New user: set admin based on email list
                         ext.is_admin = bool(is_admin_email)
-                    elif is_admin_email:  # If they're in admin emails list, make them admin
+                        ext.admin_source = 'email' if is_admin_email else None
+                    elif ext.admin_source == 'manual':
+                        # User was manually promoted - preserve admin status regardless of email list
+                        pass
+                    elif is_admin_email:
+                        # Email is in admin list - grant/maintain admin
                         ext.is_admin = True
-                    # else: preserve existing admin status
+                        ext.admin_source = 'email'
+                    elif ext.admin_source == 'email' and not is_admin_email:
+                        # Was admin by email, but email removed from list - revoke admin
+                        ext.is_admin = False
+                        ext.admin_source = None
+                    # else: no admin_source and not in email list - keep current status
                         
                     from django.utils import timezone
                     ext.last_seen = timezone.now()
