@@ -3,9 +3,9 @@ set -e
 
 echo "Starting entrypoint..."
 
-# Clean up system directories from media volume if they exist
+# Clean up system directories from media volume if they exist (ignore errors)
 echo "Cleaning media directory..."
-rm -rf /var/lib/media/cdrom /var/lib/media/floppy /var/lib/media/usb
+rm -rf /var/lib/media/cdrom /var/lib/media/floppy /var/lib/media/usb 2>/dev/null || true
 
 # Apply DB migrations
 echo "Applying database migrations..."
