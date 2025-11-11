@@ -3,6 +3,10 @@ set -e
 
 echo "Starting entrypoint..."
 
+# Clean up system directories from media volume if they exist
+echo "Cleaning media directory..."
+rm -rf /var/lib/media/cdrom /var/lib/media/floppy /var/lib/media/usb
+
 # Apply DB migrations
 echo "Applying database migrations..."
 python manage.py migrate --noinput || true
