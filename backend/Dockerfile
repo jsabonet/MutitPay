@@ -37,8 +37,10 @@ RUN chmod +x /entrypoint.sh
 
 # create non-root user and directories with proper permissions
 RUN addgroup --gid 1000 app && adduser --disabled-password --gecos '' --uid 1000 --gid 1000 app || true
-# Create media directory in /var/lib/media (not /app/media or /media) to avoid conflicts
-RUN mkdir -p /app/static /var/lib/media && chown -R app:app /app /var/lib/media /entrypoint.sh
+# Create media directory in /var/lib/media and remove any system directories that might interfere
+RUN mkdir -p /app/static /var/lib/media && \
+    rm -rf /var/lib/media/cdrom /var/lib/media/floppy /var/lib/media/usb && \
+    chown -R app:app /app /var/lib/media /entrypoint.sh
 
 USER app
 
