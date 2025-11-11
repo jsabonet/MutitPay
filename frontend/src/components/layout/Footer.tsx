@@ -16,7 +16,7 @@ const Footer = () => {
           {/* Logo & Description */}
           <div className="md:col-span-2">
             <img 
-              src="/mutitpay-logo.svg" 
+              src="/mutit_pay_logo.png" 
               alt="MUTIT PAY" 
               className="h-16 mb-6 brightness-0 invert" 
               onError={(e) => {
