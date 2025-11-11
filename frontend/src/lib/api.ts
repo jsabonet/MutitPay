@@ -255,27 +255,48 @@ class ApiClient {
 
   private async request<T>(
     endpoint: string,
-    options: RequestInit = {}
+    options: RequestInit = {},
+    requiresAuth: boolean = false
   ): Promise<T> {
     const url = `${this.baseURL}${endpoint}`;
     
-    // Espera a autenticação estar pronta e pega o token
+    // Lista de endpoints públicos que não precisam de autenticação
+    const publicEndpoints = [
+      '/categories/',
+      '/subcategories/',
+      '/products/',
+      '/products/featured/',
+      '/products/bestsellers/',
+      '/products/sale/',
+      '/promotions/',
+      '/coupons/validate/',
+    ];
+    
+    // Verifica se o endpoint é público (começa com algum dos padrões públicos)
+    const isPublicEndpoint = publicEndpoints.some(pattern => endpoint.startsWith(pattern));
+    
+    // Espera a autenticação estar pronta e pega o token (apenas para endpoints não-públicos ou quando explicitamente requerido)
     let authHeaders = {};
-    try {
-      const token = await this.waitForAuth();
-      if (token) {
-        authHeaders = {
-          'Authorization': `Bearer ${token}`,
-        };
-        console.log('[Auth] Request authorized:', {
-          endpoint,
-          tokenPrefix: token.substring(0, 10) + '...'
-        });
-      } else {
-        console.warn('[Auth] No auth token available for request:', endpoint);
+    if (!isPublicEndpoint || requiresAuth) {
+      try {
+        const token = await this.waitForAuth();
+        if (token) {
+          authHeaders = {
+            'Authorization': `Bearer ${token}`,
+          };
+          console.log('[Auth] Request authorized:', {
+            endpoint,
+            tokenPrefix: token.substring(0, 10) + '...'
+          });
+        } else if (requiresAuth) {
+          // Apenas mostra warning se autenticação é explicitamente requerida
+          console.warn('[Auth] No auth token available for request:', endpoint);
+        }
+      } catch (error) {
+        if (requiresAuth) {
+          console.warn('Could not get Firebase token:', error);
+        }
       }
-    } catch (error) {
-      console.warn('Could not get Firebase token:', error);
     }
     
     // Try to include CSRF token (for Django session auth) and send cookies
@@ -377,43 +398,43 @@ class ApiClient {
     }
   }
 
-  async get<T>(endpoint: string, params?: Record<string, string>): Promise<T> {
+  async get<T>(endpoint: string, params?: Record<string, string>, requiresAuth?: boolean): Promise<T> {
     const queryString = params 
       ? '?' + new URLSearchParams(params).toString()
       : '';
     
     return this.request<T>(`${endpoint}${queryString}`, {
       method: 'GET',
-    });
+    }, requiresAuth);
   }
 
-  async post<T>(endpoint: string, data: any): Promise<T> {
+  async post<T>(endpoint: string, data: any, requiresAuth?: boolean): Promise<T> {
     console.log('API POST to:', endpoint, 'with data:', data);
     return this.request<T>(endpoint, {
       method: 'POST',
       body: JSON.stringify(data),
-    });
+    }, requiresAuth);
   }
 
-  async put<T>(endpoint: string, data: any): Promise<T> {
+  async put<T>(endpoint: string, data: any, requiresAuth?: boolean): Promise<T> {
     console.log('API PUT to:', endpoint, 'with data:', data);
     return this.request<T>(endpoint, {
       method: 'PUT',
       body: JSON.stringify(data),
-    });
+    }, requiresAuth);
   }
 
-  async patch<T>(endpoint: string, data: any): Promise<T> {
+  async patch<T>(endpoint: string, data: any, requiresAuth?: boolean): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'PATCH',
       body: JSON.stringify(data),
-    });
+    }, requiresAuth);
   }
 
-  async delete<T>(endpoint: string): Promise<T> {
+  async delete<T>(endpoint: string, requiresAuth?: boolean): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'DELETE',
-    });
+    }, requiresAuth);
   }
 
   // Special methods for file uploads
