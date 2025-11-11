@@ -38,7 +38,7 @@ services:
       db:
         condition: service_healthy
     volumes:
-      - media_data:/app/media
+      - media_data:/var/lib/media
       - static_data:/app/static
     expose:
       - "8000"
