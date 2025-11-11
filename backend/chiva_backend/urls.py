@@ -24,7 +24,9 @@ from products.sitemaps import ProductSitemap, CategorySitemap, SubcategorySitema
 from cart import order_views as cart_order_views
 from django.http import JsonResponse
 from django.db import connection
+from django.views.decorators.csrf import csrf_exempt
 
+@csrf_exempt
 def health_check(request):
     """Health check endpoint for monitoring"""
     try:
