@@ -54,3 +54,8 @@ backend/.env
 # Databases
 db.sqlite3
 *.sqlite3
+
+# Media uploads (user-generated content)
+backend/media/
+media/products/
+media/reviews/
