@@ -37,7 +37,8 @@ RUN chmod +x /entrypoint.sh
 
 # create non-root user and directories with proper permissions
 RUN addgroup --gid 1000 app && adduser --disabled-password --gecos '' --uid 1000 --gid 1000 app || true
-RUN mkdir -p /app/static /app/media && chown -R app:app /app /entrypoint.sh
+# Create media directory in /app (not system /media) for user uploads
+RUN rm -rf /app/media && mkdir -p /app/static /app/media && chown -R app:app /app /entrypoint.sh
 
 USER app
 
