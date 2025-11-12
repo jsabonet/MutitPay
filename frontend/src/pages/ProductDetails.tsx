@@ -210,7 +210,7 @@ const ProductDetails = () => {
             <div className="animate-pulse">
               <div className="grid md:grid-cols-2 gap-12">
                 <div className="space-y-6">
-                  <div className="aspect-square bg-muted/50 rounded-2xl glass-card"></div>
+                  <div className="aspect-square bg-muted/50 rounded-2xl md:glass-card"></div>
                   <div className="grid grid-cols-4 gap-4">
                     {[...Array(4)].map((_, i) => (
                       <div key={i} className="aspect-square bg-muted/50 rounded-xl"></div>
@@ -239,7 +239,7 @@ const ProductDetails = () => {
         <main className="pt-20 pb-16">
           <div className="container mx-auto px-6">
             <div className="text-center max-w-2xl mx-auto">
-              <div className="glass-card p-12 space-y-6">
+              <div className="md:glass-card p-12 space-y-6">
                 <h1 className="text-4xl font-display font-bold mb-4">
                   Produto não <span className="text-gradient-gold">encontrado</span>
                 </h1>
@@ -427,7 +427,7 @@ const ProductDetails = () => {
           <div className="space-y-4 lg:space-y-6">
             {/* Main Image with Navigation */}
             <div className="relative group">
-              <div className="aspect-square rounded-2xl overflow-hidden glass-card border-2 border-border/50 hover:border-accent/50 transition-colors duration-300">
+              <div className="aspect-square rounded-2xl overflow-hidden md:glass-card border-2 border-border/50 hover:border-accent/50 transition-colors duration-300">
                 <img
                   src={getImageUrl(selectedImage)}
                   alt={product.name}
@@ -446,7 +446,7 @@ const ProductDetails = () => {
                   <Button
                     variant="secondary"
                     size="icon"
-                    className="absolute left-4 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 glass-card hover:bg-accent/10 z-10 hover:scale-110"
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 md:glass-card hover:bg-accent/10 z-10 hover:scale-110"
                     onClick={() => navigateImage('prev')}
                   >
                     <ChevronLeft className="h-4 w-4 text-gray-700" />
@@ -454,7 +454,7 @@ const ProductDetails = () => {
                   <Button
                     variant="secondary"
                     size="icon"
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 glass-card hover:bg-accent/10 z-10 hover:scale-110"
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 md:glass-card hover:bg-accent/10 z-10 hover:scale-110"
                     onClick={() => navigateImage('next')}
                   >
                     <ChevronRight className="h-4 w-4 text-foreground" />
@@ -464,7 +464,7 @@ const ProductDetails = () => {
 
               {/* Image Counter */}
               {images.length > 1 && (
-                <div className="absolute bottom-4 right-4 glass-card text-foreground px-3 py-2 rounded-xl text-sm font-semibold backdrop-blur-md">
+                <div className="absolute bottom-4 right-4 bg-black/60 md:glass-card text-white px-3 py-2 rounded-xl text-sm font-semibold backdrop-blur-md">
                   {currentImageIndex + 1} / {images.length}
                 </div>
               )}
@@ -497,7 +497,7 @@ const ProductDetails = () => {
                     className={`flex-shrink-0 w-16 h-16 sm:w-18 sm:h-18 lg:w-20 lg:h-20 rounded-xl overflow-hidden transition-all duration-300 border-2 ${
                       selectedImage === image 
                         ? 'border-accent scale-110 ring-2 ring-accent/30' 
-                        : 'border-border/50 hover:border-accent/50 hover:scale-105 glass-card opacity-70 hover:opacity-100'
+                        : 'border-border/50 hover:border-accent/50 hover:scale-105 md:glass-card opacity-70 hover:opacity-100'
                     }`}
                   >
                     <img

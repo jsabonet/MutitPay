@@ -849,7 +849,6 @@ class ReviewListCreateView(generics.ListCreateAPIView):
         product = Product.objects.get(pk=product_id)
         # New reviews start as pending
         serializer.save(
-            user=self.request.user,
             product=product,
             status='pending'
         )

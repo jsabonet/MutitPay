@@ -114,7 +114,7 @@ class ReviewSerializer(serializers.ModelSerializer):
             'product_name', 'moderated_by', 'moderation_notes', 'status', 'images', 'helpful_count', 'user_has_voted_helpful', 'verified_buyer'
         ]
         # user should be read-only for create requests; view will attach the user
-        read_only_fields = ['id', 'user', 'user_name', 'user_email', 'user_first_name', 'user_last_name', 'created_at', 'updated_at',
+        read_only_fields = ['id', 'user', 'product', 'user_name', 'user_email', 'user_first_name', 'user_last_name', 'created_at', 'updated_at',
                             'product_name', 'moderated_by', 'moderation_notes', 'status']
 
     def create(self, validated_data):
@@ -125,7 +125,9 @@ class ReviewSerializer(serializers.ModelSerializer):
         else:
             raise serializers.ValidationError({'user': 'Authentication required to create a review.'})
 
-        # Merge kwargs from serializer.save have been injected into validated_data by DRF
+        # DRF merges kwargs from serializer.save into validated_data. Ensure we don't pass duplicates.
+        # Remove any injected keys that we'll explicitly provide to model.create
+        validated_data.pop('user', None)
         # Extract product and status safely to avoid duplicate kwargs
         product = validated_data.pop('product', None)
         if product is None:

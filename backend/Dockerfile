@@ -40,9 +40,10 @@ RUN addgroup --gid 1000 app && adduser --disabled-password --gecos '' --uid 1000
 # Create media directory in /var/lib/media and remove any system directories that might interfere
 RUN mkdir -p /app/static /var/lib/media && \
     rm -rf /var/lib/media/cdrom /var/lib/media/floppy /var/lib/media/usb && \
-    chown -R app:app /app /var/lib/media /entrypoint.sh
+    chown -R app:app /app /entrypoint.sh
 
-USER app
+# Stay as root initially so entrypoint can fix volume permissions
+# The entrypoint will switch to app user after fixing permissions
 
 EXPOSE 8000
 

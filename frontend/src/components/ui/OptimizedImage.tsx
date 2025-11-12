@@ -33,7 +33,11 @@ export const OptimizedImage: React.FC<Props> = ({
   fallback = '/placeholder.svg',
 }) => {
   const imgSrc = src || fallback;
-  const disableVariants = /\/products\/None\//.test(imgSrc) || /\/reviews\/None\//.test(imgSrc);
+  // Don't build variants for placeholders or SVGs
+  const disableVariants =
+    /\/products\/None\//.test(imgSrc) ||
+    /\/reviews\/None\//.test(imgSrc) ||
+    imgSrc.endsWith('.svg');
   const webpSrcSet = disableVariants
     ? undefined
     : widths.map((w) => `${buildVariantUrl(imgSrc, w, 'webp')} ${w}w`).join(', ');
