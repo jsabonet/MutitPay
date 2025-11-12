@@ -384,7 +384,7 @@ const CreateProduct = () => {
                     id="name"
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    placeholder="Ex: Laptop Dell Inspiron 15"
+                    placeholder="Ex: Vestido Floral Verão 2025"
                     className="mt-1"
                   />
                 </div>
@@ -395,7 +395,7 @@ const CreateProduct = () => {
                     id="description"
                     value={formData.description}
                     onChange={(e) => setFormData({...formData, description: e.target.value})}
-                    placeholder="Descrição completa do produto..."
+                    placeholder="Descrição completa: tecido, corte, ocasião de uso, cuidados..."
                     rows={4}
                     className="mt-1"
                   />
@@ -407,7 +407,7 @@ const CreateProduct = () => {
                     id="short_description"
                     value={formData.short_description}
                     onChange={(e) => setFormData({...formData, short_description: e.target.value})}
-                    placeholder="Descrição resumida para listagens..."
+                    placeholder="Resumo atrativo para listagens: estilo, tecido, cores disponíveis..."
                     rows={2}
                     className="mt-1"
                   />
@@ -545,7 +545,7 @@ const CreateProduct = () => {
                             </div>
                             {/* Alt text input */}
                             <Input
-                              placeholder="Texto alternativo (opcional)"
+                              placeholder="Ex: Vestido floral rosa verão 2025"
                               value={thumbnail.alt_text}
                               onChange={(e) => updateThumbnailAltText(index, e.target.value)}
                               className="mt-2 text-xs"
@@ -568,13 +568,13 @@ const CreateProduct = () => {
                 {specifications.map((spec, index) => (
                   <div key={index} className="flex items-center space-x-2">
                     <Input
-                      placeholder="Especificação (ex: Processador)"
+                      placeholder="Especificação (ex: Tecido)"
                       value={spec.key}
                       onChange={(e) => updateSpecification(index, 'key', e.target.value)}
                       className="flex-1"
                     />
                     <Input
-                      placeholder="Valor (ex: Intel Core i7)"
+                      placeholder="Valor (ex: Algodão 100%)"
                       value={spec.value}
                       onChange={(e) => updateSpecification(index, 'value', e.target.value)}
                       className="flex-1"
@@ -608,7 +608,7 @@ const CreateProduct = () => {
                     id="meta_title"
                     value={formData.meta_title}
                     onChange={(e) => setFormData({...formData, meta_title: e.target.value})}
-                    placeholder="Título para motores de busca..."
+                    placeholder="Ex: Vestido Floral Verão 2025 | Moda Feminina"
                     className="mt-1"
                   />
                   <p className="text-xs text-muted-foreground mt-1">
@@ -622,7 +622,7 @@ const CreateProduct = () => {
                     id="meta_description"
                     value={formData.meta_description}
                     onChange={(e) => setFormData({...formData, meta_description: e.target.value})}
-                    placeholder="Descrição para motores de busca..."
+                    placeholder="Lindo vestido floral perfeito para o verão. Tecido leve e fresco, corte moderno e elegante. Ideal para eventos e passeios."
                     rows={3}
                     className="mt-1"
                   />
@@ -637,7 +637,7 @@ const CreateProduct = () => {
                     id="meta_keywords"
                     value={formData.meta_keywords}
                     onChange={(e) => setFormData({...formData, meta_keywords: e.target.value})}
-                    placeholder="laptop, dell, computador, tecnologia..."
+                    placeholder="vestido, verão, floral, moda feminina, roupas, elegante..."
                     className="mt-1"
                   />
                   <p className="text-xs text-muted-foreground mt-1">
@@ -727,7 +727,7 @@ const CreateProduct = () => {
                     id="brand"
                     value={formData.brand}
                     onChange={(e) => setFormData({...formData, brand: e.target.value})}
-                    placeholder="Dell"
+                    placeholder="Ex: Zara, Mango, H&M..."
                     className="mt-1"
                   />
                 </div>
