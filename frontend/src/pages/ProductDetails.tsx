@@ -489,12 +489,12 @@ const ProductDetails = () => {
 
             {/* Thumbnail Gallery */}
             {images.length > 1 && (
-              <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+              <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
                 {images.map((image, index) => (
                   <button
                     key={index}
                     onClick={() => selectImage(image, index)}
-                    className={`flex-shrink-0 w-16 h-16 sm:w-18 sm:h-18 lg:w-20 lg:h-20 rounded-xl overflow-hidden transition-all duration-300 border-2 ${
+                    className={`flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-lg overflow-hidden transition-all duration-300 border-2 ${
                       selectedImage === image 
                         ? 'border-accent scale-110 ring-2 ring-accent/30' 
                         : 'border-border/50 hover:border-accent/50 hover:scale-105 md:glass-card opacity-70 hover:opacity-100'
