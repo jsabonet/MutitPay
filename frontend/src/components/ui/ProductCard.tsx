@@ -79,7 +79,7 @@ const ProductCard = ({ product, compactPrice = false }: ProductCardProps) => {
       to={`/produto/${getProductSlug()}`} 
       className="group block h-full"
     >
-      <Card className="h-full flex flex-col transition-all duration-300 hover:shadow-2xl border-0 bg-card overflow-hidden">
+      <Card className="h-full flex flex-col transition-all duration-300 hover:shadow-2xl !border-0 bg-card overflow-hidden">
         {/* Container de Imagem - Responsivo */}
         <div className="relative overflow-hidden aspect-square">
           <OptimizedImage
