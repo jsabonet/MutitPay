@@ -1,7 +1,7 @@
 import React from 'react';
 import ReviewList from '@/components/ui/ReviewList';
 import ReviewFormModal from '@/components/ui/ReviewFormModal';
-import { Star } from 'lucide-react';
+import { Star, PenLine } from 'lucide-react';
 import { apiClient } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 
@@ -53,9 +53,9 @@ const ProfessionalReviews: React.FC<ProfessionalReviewsProps> = ({ productId }) 
 
   return (
     <div className="space-y-6">
-      {/* Summary header */}
-      <div className="grid md:grid-cols-3 gap-6 items-center">
-        <div>
+      {/* Summary header with CTA */}
+      <div className="grid md:grid-cols-3 gap-6 items-start">
+        <div className="space-y-4">
           {meta ? (
             <>
               <div className="text-4xl font-bold flex items-center gap-2">
@@ -69,6 +69,23 @@ const ProfessionalReviews: React.FC<ProfessionalReviewsProps> = ({ productId }) 
               <div className="h-4 w-48 bg-muted animate-pulse rounded" />
             </div>
           )}
+          
+          {/* Botão CTA destacado - Desktop */}
+          <div className="hidden md:block pt-2">
+            <ReviewFormModal 
+              productId={productId} 
+              onSubmitted={() => setRefresh(x=>x+1)} 
+              trigger={
+                <Button 
+                  variant="default" 
+                  className="w-full bg-gradient-to-r from-primary to-primary/80 hover:opacity-90 font-semibold shadow-md"
+                >
+                  <PenLine className="h-4 w-4 mr-2" />
+                  Escrever Avaliação
+                </Button>
+              } 
+            />
+          </div>
         </div>
         <div className="md:col-span-2 grid grid-cols-1 gap-2">
           {meta ? (
@@ -92,7 +109,7 @@ const ProfessionalReviews: React.FC<ProfessionalReviewsProps> = ({ productId }) 
       </div>
 
       {/* Controls */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex flex-wrap gap-2" role="tablist" aria-label="Filtros de avaliações">
           {(['all','5','4','3','2','1'] as const).map(key => {
             const active = filter === key;
@@ -127,30 +144,47 @@ const ProfessionalReviews: React.FC<ProfessionalReviewsProps> = ({ productId }) 
             Com fotos
           </button>
         </div>
-        <div className="flex items-center gap-2">
-          <label htmlFor="sort" className="text-sm text-muted-foreground">Ordenar:</label>
-          <select id="sort" value={sort} onChange={e=>setSort(e.target.value as any)} className="text-sm border rounded px-2 py-1 bg-background">
+        
+        <div className="flex items-center gap-3">
+          <label htmlFor="sort" className="text-sm text-muted-foreground whitespace-nowrap">Ordenar:</label>
+          <select 
+            id="sort" 
+            value={sort} 
+            onChange={e=>setSort(e.target.value as any)} 
+            className="text-sm border rounded-lg px-3 py-2 bg-background hover:bg-accent/50 transition-colors"
+          >
             <option value="recent">Mais recentes</option>
             <option value="highest">Maiores notas</option>
             <option value="lowest">Menores notas</option>
             <option value="helpful">Mais úteis</option>
           </select>
-          <ReviewFormModal productId={productId} onSubmitted={() => setRefresh(x=>x+1)} />
         </div>
+      </div>
+
+      {/* Botão CTA Mobile - Posicionado estrategicamente */}
+      <div className="md:hidden">
+        <ReviewFormModal 
+          productId={productId} 
+          onSubmitted={() => setRefresh(x=>x+1)} 
+          trigger={
+            <Button 
+              variant="default" 
+              className="w-full bg-gradient-to-r from-primary to-primary/80 hover:opacity-90 font-semibold shadow-md"
+            >
+              <PenLine className="h-4 w-4 mr-2" />
+              Escrever Avaliação
+            </Button>
+          } 
+        />
       </div>
 
       {/* List */}
   <ReviewList productId={productId} sort={sort} filter={filter} withPhotos={withPhotos} pageSize={collapsed ? 3 : 5} />
 
       <div className="text-center">
-        <button className="text-sm underline text-muted-foreground" onClick={() => setCollapsed(c => !c)}>
+        <button className="text-sm underline text-muted-foreground hover:text-primary transition-colors" onClick={() => setCollapsed(c => !c)}>
           {collapsed ? 'Ver mais avaliações' : 'Mostrar menos'}
         </button>
-      </div>
-
-      {/* CTA center for mobile */}
-      <div className="md:hidden text-center">
-        <ReviewFormModal productId={productId} onSubmitted={() => setRefresh(x=>x+1)} trigger={<Button variant="outline">Escrever avaliação</Button>} />
       </div>
     </div>
   );
