@@ -1,7 +1,7 @@
 import { Link, NavLink, Outlet } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useState } from 'react';
-import { User, Package, Home, LogOut, MapPin, Heart, Menu, X } from 'lucide-react';
+import { User, Package, Home, LogOut, MapPin, Heart, Menu, X, Store } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
@@ -43,6 +43,17 @@ const AccountLayout = () => {
       <div className="container mx-auto px-4 py-8 grid gap-8 md:grid-cols-[220px_1fr]">
         {/* Desktop sidebar */}
         <nav className="hidden md:block space-y-2">
+          {/* Botão estratégico: Voltar à Loja */}
+          <Link to="/">
+            <Button 
+              variant="outline" 
+              className="w-full justify-start mb-4 border-2 border-primary/40 hover:border-primary hover:bg-primary/10 font-semibold text-primary"
+            >
+              <Store className="h-4 w-4 mr-2" /> 
+              Voltar à Loja
+            </Button>
+          </Link>
+
           {nav.map(item => {
             const Icon = item.icon;
             return (
@@ -73,6 +84,18 @@ const AccountLayout = () => {
                   <X className="h-5 w-5" />
                 </Button>
               </div>
+
+              {/* Botão estratégico mobile: Voltar à Loja */}
+              <Link to="/" onClick={() => setMobileNavOpen(false)}>
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start mb-4 border-2 border-primary/40 hover:border-primary hover:bg-primary/10 font-semibold text-primary"
+                >
+                  <Store className="h-4 w-4 mr-2" /> 
+                  Voltar à Loja
+                </Button>
+              </Link>
+
               <nav className="space-y-2">
                 {nav.map(item => {
                   const Icon = item.icon;
