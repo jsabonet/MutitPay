@@ -18,7 +18,7 @@ export default function OrderConfirmation() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
         <Header />
-        <main className="container mx-auto px-4 py-8 sm:py-12 pt-30 md:pt-34">
+        <main className="container mx-auto px-4 py-8 sm:py-12 pt-36 md:pt-40">
           <div className="max-w-md mx-auto">
             <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 text-center">
               <div className="w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center">
@@ -274,7 +274,7 @@ export default function OrderConfirmation() {
     <div className="min-h-screen bg-background">
       <Header />
       
-      <main className="container mx-auto px-4 py-6 sm:py-12 pt-24 md:pt-28">
+      <main className="container mx-auto px-4 py-6 sm:py-12 pt-36 md:pt-40">
         <div className="max-w-lg mx-auto">
           
           {/* Status Icon & Header - Minimalista e mobile-first */}

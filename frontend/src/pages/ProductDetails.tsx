@@ -236,7 +236,7 @@ const ProductDetails = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background">
         <Header />
-        <main className="pt-20 pb-16">
+        <main className="pt-36 md:pt-40 pb-16">
           <div className="container mx-auto px-6">
             <div className="text-center max-w-2xl mx-auto">
               <div className="md:glass-card p-12 space-y-6">
