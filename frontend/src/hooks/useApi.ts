@@ -147,7 +147,8 @@ export const useFeaturedProducts = () => {
       try {
         setLoading(true);
         setError(null);
-  const response = await productApi.getFeaturedProducts();
+  // Add cache-busting timestamp to force fresh data
+  const response = await productApi.getFeaturedProducts({ _t: Date.now().toString() });
   setProducts(normalizeList<ProductListItem>(response));
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to fetch featured products');
@@ -173,7 +174,8 @@ export const useBestsellerProducts = () => {
       try {
         setLoading(true);
         setError(null);
-  const response = await productApi.getBestsellerProducts();
+  // Add cache-busting timestamp to force fresh data
+  const response = await productApi.getBestsellerProducts({ _t: Date.now().toString() });
   setProducts(normalizeList<ProductListItem>(response));
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to fetch bestseller products');

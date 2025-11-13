@@ -564,12 +564,12 @@ export const productApi = {
     apiClient.post<Product>(`/products/id/${id}/duplicate/`, {}),
 
   // Get featured products
-  getFeaturedProducts: () => 
-    apiClient.get<ProductListItem[]>('/products/featured/'),
+  getFeaturedProducts: (params?: Record<string, any>) => 
+    apiClient.get<ProductListItem[]>('/products/featured/', params),
 
   // Get bestseller products
-  getBestsellerProducts: () => 
-    apiClient.get<ProductListItem[]>('/products/bestsellers/'),
+  getBestsellerProducts: (params?: Record<string, any>) => 
+    apiClient.get<ProductListItem[]>('/products/bestsellers/', params),
 
   // Get products on sale
   getSaleProducts: () => 
