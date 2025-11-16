@@ -295,7 +295,7 @@ from django.utils.decorators import method_decorator
 @cache_page(60 * 5)  # Cache for 5 minutes
 def featured_products(request):
     """
-    Get featured products with caching
+    Get featured products with caching (limited to 8 for homepage)
     """
     products = Product.objects.filter(
         is_featured=True,
@@ -317,10 +317,11 @@ def featured_products(request):
 @api_view(['GET'])
 def bestseller_products(request):
     """
-    Get bestseller products
+    Get bestseller products (limited to 8 for homepage)
     """
     products = Product.objects.filter(
-        is_bestseller=True
+        is_bestseller=True,
+        status='active'
     ).select_related('category').order_by('-sales_count')[:8]
     
     serializer = ProductListSerializer(products, many=True, context={'request': request})

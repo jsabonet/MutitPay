@@ -36,6 +36,11 @@ const FeaturedProducts = () => {
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Peças cuidadosamente selecionadas das marcas mais prestigiadas do mundo. Autenticidade garantida.
           </p>
+          {products.length > 0 && (
+            <p className="text-sm text-muted-foreground mt-2">
+              Exibindo {products.length} {products.length === 1 ? 'produto selecionado' : 'produtos selecionados'}
+            </p>
+          )}
         </div>
 
         {loading ? (

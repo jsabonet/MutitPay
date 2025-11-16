@@ -46,6 +46,11 @@ const BestSellers = () => {
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Os produtos favoritos da nossa clientela exclusiva. Peças que conquistaram corações e estabeleceram tendências.
           </p>
+          {products.length > 0 && (
+            <p className="text-sm text-muted-foreground mt-2">
+              Exibindo {products.slice(0, 8).length} best sellers mais populares
+            </p>
+          )}
         </div>
 
         {loading ? (
