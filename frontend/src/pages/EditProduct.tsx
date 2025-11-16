@@ -43,6 +43,9 @@ const EditProduct = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
+  // Field-specific error state
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
   // Form state
   const [formData, setFormData] = useState({
     name: '',
@@ -244,29 +247,63 @@ const EditProduct = () => {
 
   const handleSave = async () => {
     try {
-      // Validation
+      // Clear previous errors
+      setFieldErrors({});
+      setErrorMessage('');
+      
+      const errors: Record<string, string> = {};
+
+      // Validation with specific error messages
       if (!formData.name.trim()) {
-        setErrorMessage('Nome do produto é obrigatório');
-        return;
+        errors.name = 'Nome do produto é obrigatório';
+      } else if (formData.name.length > 200) {
+        errors.name = 'Nome deve ter no máximo 200 caracteres';
       }
+
       if (!formData.description.trim()) {
-        setErrorMessage('Descrição do produto é obrigatória');
-        return;
+        errors.description = 'Descrição do produto é obrigatória';
       }
+
+      if (formData.short_description && formData.short_description.length > 300) {
+        errors.short_description = 'Descrição curta deve ter no máximo 300 caracteres';
+      }
+
       if (!formData.sku.trim()) {
-        setErrorMessage('SKU é obrigatório');
-        return;
+        errors.sku = 'SKU é obrigatório';
+      } else if (formData.sku.length > 50) {
+        errors.sku = 'SKU deve ter no máximo 50 caracteres';
       }
+
       if (!formData.category) {
-        setErrorMessage('Categoria é obrigatória');
-        return;
+        errors.category = 'Categoria é obrigatória';
       }
+
       if (!formData.subcategory) {
-        setErrorMessage('Subcategoria é obrigatória');
-        return;
+        errors.subcategory = 'Subcategoria é obrigatória';
       }
+
+      if (formData.brand && formData.brand.length > 100) {
+        errors.brand = 'Marca deve ter no máximo 100 caracteres';
+      }
+
       if (!formData.price || parseFloat(formData.price) <= 0) {
-        setErrorMessage('Preço deve ser maior que zero');
+        errors.price = 'Preço deve ser maior que zero';
+      }
+
+      if (formData.meta_title && formData.meta_title.length > 60) {
+        errors.meta_title = 'Meta título deve ter no máximo 60 caracteres';
+      }
+
+      if (formData.meta_description && formData.meta_description.length > 160) {
+        errors.meta_description = 'Meta descrição deve ter no máximo 160 caracteres';
+      }
+
+      // If there are errors, show them and stop
+      if (Object.keys(errors).length > 0) {
+        setFieldErrors(errors);
+        setErrorMessage('Por favor, corrija os erros destacados antes de continuar');
+        // Scroll to top to show error message
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         return;
       }
 
@@ -431,10 +468,22 @@ const EditProduct = () => {
                   <Input
                     id="name"
                     value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    onChange={(e) => {
+                      setFormData({...formData, name: e.target.value});
+                      if (fieldErrors.name) {
+                        setFieldErrors(prev => ({ ...prev, name: '' }));
+                      }
+                    }}
                     placeholder="Ex: Vestido Floral Verão 2025"
-                    className="mt-1"
+                    className={`mt-1 ${fieldErrors.name ? 'border-red-500' : ''}`}
+                    maxLength={200}
                   />
+                  {fieldErrors.name && (
+                    <p className="text-xs text-red-600 mt-1">{fieldErrors.name}</p>
+                  )}
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {formData.name.length}/200 caracteres
+                  </p>
                 </div>
                 
                 <div>
@@ -442,11 +491,19 @@ const EditProduct = () => {
                   <Textarea
                     id="description"
                     value={formData.description}
-                    onChange={(e) => setFormData({...formData, description: e.target.value})}
+                    onChange={(e) => {
+                      setFormData({...formData, description: e.target.value});
+                      if (fieldErrors.description) {
+                        setFieldErrors(prev => ({ ...prev, description: '' }));
+                      }
+                    }}
                     placeholder="Descrição completa: tecido, corte, ocasião de uso, cuidados..."
                     rows={4}
-                    className="mt-1"
+                    className={`mt-1 ${fieldErrors.description ? 'border-red-500' : ''}`}
                   />
+                  {fieldErrors.description && (
+                    <p className="text-xs text-red-600 mt-1">{fieldErrors.description}</p>
+                  )}
                 </div>
 
                 <div>
@@ -454,13 +511,22 @@ const EditProduct = () => {
                   <Textarea
                     id="short_description"
                     value={formData.short_description}
-                    onChange={(e) => setFormData({...formData, short_description: e.target.value})}
+                    onChange={(e) => {
+                      setFormData({...formData, short_description: e.target.value});
+                      if (fieldErrors.short_description) {
+                        setFieldErrors(prev => ({ ...prev, short_description: '' }));
+                      }
+                    }}
                     placeholder="Resumo atrativo para listagens: estilo, tecido, cores disponíveis..."
                     rows={2}
-                    className="mt-1"
+                    className={`mt-1 ${fieldErrors.short_description ? 'border-red-500' : ''}`}
+                    maxLength={300}
                   />
+                  {fieldErrors.short_description && (
+                    <p className="text-xs text-red-600 mt-1">{fieldErrors.short_description}</p>
+                  )}
                   <p className="text-xs text-muted-foreground mt-1">
-                    Máximo 300 caracteres. Se não preenchido, será gerado automaticamente.
+                    {formData.short_description.length}/300 caracteres. Se não preenchido, será gerado automaticamente.
                   </p>
                 </div>
               </CardContent>
@@ -689,12 +755,21 @@ const EditProduct = () => {
                   <Input
                     id="meta_title"
                     value={formData.meta_title}
-                    onChange={(e) => setFormData({...formData, meta_title: e.target.value})}
+                    onChange={(e) => {
+                      setFormData({...formData, meta_title: e.target.value});
+                      if (fieldErrors.meta_title) {
+                        setFieldErrors(prev => ({ ...prev, meta_title: '' }));
+                      }
+                    }}
                     placeholder="Ex: Vestido Floral Verão 2025 | Moda Feminina"
-                    className="mt-1"
+                    className={`mt-1 ${fieldErrors.meta_title ? 'border-red-500' : ''}`}
+                    maxLength={60}
                   />
+                  {fieldErrors.meta_title && (
+                    <p className="text-xs text-red-600 mt-1">{fieldErrors.meta_title}</p>
+                  )}
                   <p className="text-xs text-muted-foreground mt-1">
-                    Recomendado: 50-60 caracteres
+                    {formData.meta_title.length}/60 caracteres
                   </p>
                 </div>
 
@@ -703,13 +778,22 @@ const EditProduct = () => {
                   <Textarea
                     id="meta_description"
                     value={formData.meta_description}
-                    onChange={(e) => setFormData({...formData, meta_description: e.target.value})}
+                    onChange={(e) => {
+                      setFormData({...formData, meta_description: e.target.value});
+                      if (fieldErrors.meta_description) {
+                        setFieldErrors(prev => ({ ...prev, meta_description: '' }));
+                      }
+                    }}
                     placeholder="Lindo vestido floral perfeito para o verão. Tecido leve e fresco, corte moderno e elegante. Ideal para eventos e passeios."
                     rows={3}
-                    className="mt-1"
+                    className={`mt-1 ${fieldErrors.meta_description ? 'border-red-500' : ''}`}
+                    maxLength={160}
                   />
+                  {fieldErrors.meta_description && (
+                    <p className="text-xs text-red-600 mt-1">{fieldErrors.meta_description}</p>
+                  )}
                   <p className="text-xs text-muted-foreground mt-1">
-                    Recomendado: 150-160 caracteres
+                    {formData.meta_description.length}/160 caracteres
                   </p>
                 </div>
 
@@ -742,9 +826,14 @@ const EditProduct = () => {
                   <Label htmlFor="category">Categoria *</Label>
                   <Select 
                     value={formData.category} 
-                    onValueChange={(value) => setFormData({...formData, category: value})}
+                    onValueChange={(value) => {
+                      setFormData({...formData, category: value, subcategory: ''});
+                      if (fieldErrors.category) {
+                        setFieldErrors(prev => ({ ...prev, category: '' }));
+                      }
+                    }}
                   >
-                    <SelectTrigger className="mt-1">
+                    <SelectTrigger className={`mt-1 ${fieldErrors.category ? 'border-red-500' : ''}`}>
                       <SelectValue placeholder="Selecione uma categoria" />
                     </SelectTrigger>
                     <SelectContent>
@@ -761,16 +850,24 @@ const EditProduct = () => {
                       )}
                     </SelectContent>
                   </Select>
+                  {fieldErrors.category && (
+                    <p className="text-xs text-red-600 mt-1">{fieldErrors.category}</p>
+                  )}
                 </div>
 
                 <div>
-                  <Label htmlFor="subcategory">Subcategoria</Label>
+                  <Label htmlFor="subcategory">Subcategoria *</Label>
                   <Select 
                     value={formData.subcategory}
-                    onValueChange={(value) => setFormData({ ...formData, subcategory: value })}
+                    onValueChange={(value) => {
+                      setFormData({ ...formData, subcategory: value });
+                      if (fieldErrors.subcategory) {
+                        setFieldErrors(prev => ({ ...prev, subcategory: '' }));
+                      }
+                    }}
                     disabled={!formData.category || (subcategories?.length ?? 0) === 0}
                   >
-                    <SelectTrigger className="mt-1">
+                    <SelectTrigger className={`mt-1 ${fieldErrors.subcategory ? 'border-red-500' : ''}`}>
                       <SelectValue placeholder={formData.category ? 'Selecione uma subcategoria' : 'Selecione uma categoria primeiro'} />
                     </SelectTrigger>
                     <SelectContent>
@@ -787,6 +884,9 @@ const EditProduct = () => {
                       )}
                     </SelectContent>
                   </Select>
+                  {fieldErrors.subcategory && (
+                    <p className="text-xs text-red-600 mt-1">{fieldErrors.subcategory}</p>
+                  )}
                 </div>
 
                 <div>
@@ -794,10 +894,22 @@ const EditProduct = () => {
                   <Input
                     id="sku"
                     value={formData.sku}
-                    onChange={(e) => setFormData({...formData, sku: e.target.value})}
+                    onChange={(e) => {
+                      setFormData({...formData, sku: e.target.value});
+                      if (fieldErrors.sku) {
+                        setFieldErrors(prev => ({ ...prev, sku: '' }));
+                      }
+                    }}
                     placeholder="VEST-FLORAL-001"
-                    className="mt-1"
+                    className={`mt-1 ${fieldErrors.sku ? 'border-red-500' : ''}`}
+                    maxLength={50}
                   />
+                  {fieldErrors.sku && (
+                    <p className="text-xs text-red-600 mt-1">{fieldErrors.sku}</p>
+                  )}
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {formData.sku.length}/50 caracteres
+                  </p>
                 </div>
 
                 <div>
@@ -805,10 +917,22 @@ const EditProduct = () => {
                   <Input
                     id="brand"
                     value={formData.brand}
-                    onChange={(e) => setFormData({...formData, brand: e.target.value})}
+                    onChange={(e) => {
+                      setFormData({...formData, brand: e.target.value});
+                      if (fieldErrors.brand) {
+                        setFieldErrors(prev => ({ ...prev, brand: '' }));
+                      }
+                    }}
                     placeholder="Ex: Zara, Mango, H&M..."
-                    className="mt-1"
+                    className={`mt-1 ${fieldErrors.brand ? 'border-red-500' : ''}`}
+                    maxLength={100}
                   />
+                  {fieldErrors.brand && (
+                    <p className="text-xs text-red-600 mt-1">{fieldErrors.brand}</p>
+                  )}
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {formData.brand.length}/100 caracteres
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -826,10 +950,18 @@ const EditProduct = () => {
                     type="number"
                     step="0.01"
                     value={formData.price}
-                    onChange={(e) => setFormData({...formData, price: e.target.value})}
+                    onChange={(e) => {
+                      setFormData({...formData, price: e.target.value});
+                      if (fieldErrors.price) {
+                        setFieldErrors(prev => ({ ...prev, price: '' }));
+                      }
+                    }}
                     placeholder="0.00"
-                    className="mt-1"
+                    className={`mt-1 ${fieldErrors.price ? 'border-red-500' : ''}`}
                   />
+                  {fieldErrors.price && (
+                    <p className="text-xs text-red-600 mt-1">{fieldErrors.price}</p>
+                  )}
                 </div>
 
                 <div>
