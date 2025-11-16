@@ -904,7 +904,10 @@ const CreateProduct = () => {
             {/* Status */}
             <Card>
               <CardHeader>
-                <CardTitle>Status e Configurações</CardTitle>
+                <CardTitle>Status e Visibilidade</CardTitle>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Configure a disponibilidade e as seções onde o produto aparecerá
+                </p>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="flex items-center justify-between p-3 rounded-lg border bg-card hover:bg-accent/50 transition-colors">
@@ -913,7 +916,7 @@ const CreateProduct = () => {
                       Produto Ativo
                     </Label>
                     <p className="text-xs text-muted-foreground">
-                      Define se o produto está disponível para venda
+                      Define se o produto está disponível para venda no site
                     </p>
                   </div>
                   <Switch
@@ -927,10 +930,10 @@ const CreateProduct = () => {
                 <div className="flex items-center justify-between p-3 rounded-lg border bg-card hover:bg-accent/50 transition-colors">
                   <div className="space-y-1">
                     <Label htmlFor="is_featured" className="text-sm font-medium cursor-pointer">
-                      Produto em Destaque
+                      Coleção Exclusiva
                     </Label>
                     <p className="text-xs text-muted-foreground">
-                      Exibir produto na seção de destaques
+                      Exibir na seção "Coleção Exclusiva" da página inicial
                     </p>
                   </div>
                   <Switch
@@ -944,10 +947,10 @@ const CreateProduct = () => {
                 <div className="flex items-center justify-between p-3 rounded-lg border bg-card hover:bg-accent/50 transition-colors">
                   <div className="space-y-1">
                     <Label htmlFor="is_bestseller" className="text-sm font-medium cursor-pointer">
-                      Mais Vendido
+                      Mais Vendidos
                     </Label>
                     <p className="text-xs text-muted-foreground">
-                      Marcar produto como bestseller
+                      Exibir na seção "Mais Vendidos" da página inicial
                     </p>
                   </div>
                   <Switch
@@ -964,7 +967,7 @@ const CreateProduct = () => {
                       Em Promoção
                     </Label>
                     <p className="text-xs text-muted-foreground">
-                      Produto com desconto promocional
+                      Marca produto com desconto (badge "Promoção" visível)
                     </p>
                   </div>
                   <Switch
