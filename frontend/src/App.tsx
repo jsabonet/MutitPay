@@ -40,6 +40,8 @@ import ReviewManagement from "./pages/ReviewManagement";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import Checkout from "./pages/Checkout";
 import CheckoutDetails from "./pages/CheckoutDetails";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +59,8 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/sobre" element={<About />} />
+            <Route path="/termos-de-uso" element={<TermsOfService />} />
+            <Route path="/politica-de-privacidade" element={<PrivacyPolicy />} />
             <Route path="/produto/:id" element={<ProductDetails />} />
             {/* Alias para rota em inglês */}
             <Route path="/products/:id" element={<ProductDetails />} />

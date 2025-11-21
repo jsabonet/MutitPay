@@ -78,6 +78,22 @@ const Footer = () => {
                   Contactos
                 </button>
               </li>
+              <li>
+                <Link
+                  to="/termos-de-uso"
+                  className="text-white/80 hover:text-accent transition-colors"
+                >
+                  Termos de Uso
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/politica-de-privacidade"
+                  className="text-white/80 hover:text-accent transition-colors"
+                >
+                  Política de Privacidade
+                </Link>
+              </li>
             </ul>
           </div>
 
