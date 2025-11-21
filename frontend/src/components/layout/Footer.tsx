@@ -103,7 +103,9 @@ const Footer = () => {
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <Mail className="h-5 w-5 mt-0.5 text-accent" />
-                <span className="text-white/80">info@mutitpay.com</span>
+                <a href="mailto:agente@mutitpay.com" className="text-white/80 hover:text-accent transition-colors">
+                  agente@mutitpay.com
+                </a>
               </li>
               <li className="flex items-start gap-3">
                 <Phone className="h-5 w-5 mt-0.5 text-accent" />
