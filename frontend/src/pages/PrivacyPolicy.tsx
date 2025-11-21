@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import Navbar from '@/components/layout/Navbar';
+import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Shield } from 'lucide-react';
 
@@ -11,7 +11,7 @@ const PrivacyPolicy = () => {
         <meta name="description" content="Política de Privacidade do MutitPay - Como coletamos, usamos e protegemos suas informações pessoais." />
       </Helmet>
       
-      <Navbar />
+      <Header />
       
       <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
         <div className="container mx-auto px-6 py-16 max-w-4xl">
