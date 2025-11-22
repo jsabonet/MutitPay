@@ -57,6 +57,9 @@ interface OrderItem {
   color?: number;
   color_name?: string;
   color_hex?: string;
+  size?: number;
+  size_name?: string;
+  size_abbreviation?: string;
   quantity: number;
   unit_price: string;
   subtotal: string;
@@ -374,6 +377,11 @@ const AccountOrders = () => {
                                       />
                                     )}
                                     <span className="text-xs font-medium">{item.color_name}</span>
+                                  </Badge>
+                                )}
+                                {item.size_name && (
+                                  <Badge variant="outline" className="bg-accent/10 text-accent border-accent/30 text-xs px-2 py-0.5">
+                                    <span className="font-medium">Tam: {item.size_name}</span>
                                   </Badge>
                                 )}
                               </div>

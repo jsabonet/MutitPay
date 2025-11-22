@@ -86,6 +86,9 @@ interface OrderItem {
   color: number | null;
   color_name: string;
   color_hex: string;
+  size: number | null;
+  size_name: string;
+  size_abbreviation: string;
   quantity: number;
   unit_price: string;
   subtotal: string;
@@ -490,7 +493,7 @@ const OrdersManagement = () => {
           Make dialog full-screen on small devices while keeping centered max-width on desktop.
           Use utility classes: w-screen h-screen p-4 for mobile; revert to max-w-4xl on md+
         */}
-  <DialogContent className="w-screen h-screen p-4 overflow-y-auto md:w-auto md:h-auto md:p-0 max-w-4xl md:max-h-[80vh] md:overflow-y-auto rounded-none md:rounded-lg">
+  <DialogContent className="w-screen h-screen p-4 overflow-y-auto md:w-auto md:h-auto md:p-0 max-w-7xl md:max-h-[90vh] md:overflow-y-auto rounded-none md:rounded-lg">
           {/* Close button on mobile */}
           <div className="md:hidden flex justify-end mb-2">
             <Button variant="ghost" size="icon" onClick={() => setIsOrderDialogOpen(false)} aria-label="Fechar detalhes">
@@ -723,33 +726,43 @@ const OrdersManagement = () => {
                               </div>
 
                               {/* Detalhes em Grid */}
-                              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-3 pt-3 border-t">
-                                <div>
+                              <div className="grid grid-cols-2 lg:grid-cols-5 gap-2 sm:gap-3 mt-3 pt-3 border-t">
+                                <div className="bg-card rounded-lg p-2 border">
                                   <p className="text-xs text-gray-500 mb-1">Quantidade</p>
                                   <p className="font-semibold text-sm">
                                     <Badge variant="secondary">{item.quantity}x</Badge>
                                   </p>
                                 </div>
-                                <div>
+                                <div className="bg-card rounded-lg p-2 border">
                                   <p className="text-xs text-gray-500 mb-1">Preço Unit.</p>
                                   <p className="font-semibold text-sm">{formatPrice(parseFloat(item.unit_price))}</p>
                                 </div>
                                 {item.color_name && (
-                                  <div>
+                                  <div className="bg-card rounded-lg p-2 border">
                                     <p className="text-xs text-gray-500 mb-1">Cor</p>
                                     <div className="flex items-center gap-1.5">
                                       {item.color_hex && (
                                         <div 
-                                          className="w-4 h-4 rounded-full border-2 border-gray-300"
+                                          className="w-4 h-4 rounded-full border-2 border-gray-300 flex-shrink-0"
                                           style={{ backgroundColor: item.color_hex }}
                                         />
                                       )}
-                                      <p className="font-semibold text-sm">{item.color_name}</p>
+                                      <p className="font-semibold text-sm truncate">{item.color_name}</p>
                                     </div>
                                   </div>
                                 )}
+                                {item.size_name && (
+                                  <div className="bg-card rounded-lg p-2 border">
+                                    <p className="text-xs text-gray-500 mb-1">Tamanho</p>
+                                    <p className="font-semibold text-sm">
+                                      <Badge variant="outline" className="bg-accent/10 text-accent border-accent/30">
+                                        {item.size_name}
+                                      </Badge>
+                                    </p>
+                                  </div>
+                                )}
                                 {item.weight && (
-                                  <div>
+                                  <div className="bg-card rounded-lg p-2 border">
                                     <p className="text-xs text-gray-500 mb-1">Peso</p>
                                     <p className="font-semibold text-sm">{parseFloat(item.weight).toFixed(2)} kg</p>
                                   </div>
