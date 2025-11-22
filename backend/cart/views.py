@@ -758,9 +758,9 @@ def initiate_payment(request):
         if request.user.is_authenticated and user_cart and session_cart and session_cart.items.exists():
             logger.info(f"🧩 Merging session cart {session_cart.id} into user cart {user_cart.id} for user {request.user}")
             with transaction.atomic():
-                for item in session_cart.items.select_related('product', 'color').all():
+                for item in session_cart.items.select_related('product', 'color', 'size').all():
                     try:
-                        existing = CartItem.objects.get(cart=user_cart, product=item.product, color=item.color)
+                        existing = CartItem.objects.get(cart=user_cart, product=item.product, color=item.color, size=item.size)
                         existing.quantity += item.quantity
                         existing.save(update_fields=['quantity', 'updated_at'])
                     except CartItem.DoesNotExist:
@@ -768,6 +768,7 @@ def initiate_payment(request):
                             cart=user_cart,
                             product=item.product,
                             color=item.color,
+                            size=item.size,
                             quantity=item.quantity,
                             price=item.price,
                         )
