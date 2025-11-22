@@ -49,24 +49,26 @@ class ShippingMethodSerializer(serializers.ModelSerializer):
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import Cart, CartItem, Coupon, CouponUsage, CartHistory, AbandonedCart, Order, OrderItem, OrderStatusHistory, StockMovement, Payment
-from products.serializers import ProductListSerializer, ColorSerializer
+from products.serializers import ProductListSerializer, ColorSerializer, SizeSerializer
 
 
 class CartItemSerializer(serializers.ModelSerializer):
     """Serializer for cart items"""
     product = ProductListSerializer(read_only=True)
     color = ColorSerializer(read_only=True)
+    size = SizeSerializer(read_only=True)
     total_price = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True, source='get_total_price')
     
     # For creating/updating items
     product_id = serializers.IntegerField(write_only=True)
     color_id = serializers.IntegerField(write_only=True, required=False, allow_null=True)
+    size_id = serializers.IntegerField(write_only=True, required=False, allow_null=True)
     
     class Meta:
         model = CartItem
         fields = [
-            'id', 'product', 'color', 'quantity', 'price', 'total_price',
-            'added_at', 'updated_at', 'product_id', 'color_id'
+            'id', 'product', 'color', 'size', 'quantity', 'price', 'total_price',
+            'added_at', 'updated_at', 'product_id', 'color_id', 'size_id'
         ]
         read_only_fields = ['id', 'price', 'added_at', 'updated_at']
     
@@ -93,6 +95,17 @@ class CartItemSerializer(serializers.ModelSerializer):
             return value
         except Color.DoesNotExist:
             raise serializers.ValidationError("Color not found or inactive")
+    
+    def validate_size_id(self, value):
+        if value is None:
+            return value
+        
+        from products.models import Size
+        try:
+            Size.objects.get(id=value, is_active=True)
+            return value
+        except Size.DoesNotExist:
+            raise serializers.ValidationError("Size not found or inactive")
 
 
 class CartSerializer(serializers.ModelSerializer):
@@ -118,6 +131,7 @@ class AddToCartSerializer(serializers.Serializer):
     """Serializer for adding items to cart"""
     product_id = serializers.IntegerField()
     color_id = serializers.IntegerField(required=False, allow_null=True)
+    size_id = serializers.IntegerField(required=False, allow_null=True)
     quantity = serializers.IntegerField(default=1, min_value=1)
     
     def validate_product_id(self, value):
@@ -243,6 +257,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'product', 'product_name', 'sku', 'product_image',
             'color', 'color_name', 'color_hex',
+            'size', 'size_name', 'size_abbreviation',
             'quantity', 'unit_price', 'subtotal',
             'weight', 'dimensions', 'created_at'
         ]

@@ -1040,6 +1040,10 @@ def initiate_payment(request):
                 'color_id': cart_item.color.id if cart_item.color else None,
                 'color': cart_item.color.id if cart_item.color else None,
                 'color_name': cart_item.color.name if cart_item.color else '',
+                'size_id': cart_item.size.id if cart_item.size else None,
+                'size': cart_item.size.id if cart_item.size else None,
+                'size_name': cart_item.size.name if cart_item.size else '',
+                'size_abbreviation': cart_item.size.abbreviation if cart_item.size else '',
                 'quantity': cart_item.quantity,
                 'price': str(cart_item.price),
                 'unit_price': str(cart_item.price),
@@ -1461,6 +1465,16 @@ def paysuite_webhook(request):
                                     # Get color hex
                                     color_hex = getattr(color, 'hex_code', '') if color else ''
                                     
+                                    # Get size
+                                    size = None
+                                    if it.get('size') or it.get('size_id'):
+                                        try:
+                                            from products.models import Size
+                                            size_id = it.get('size') or it.get('size_id')
+                                            size = Size.objects.get(id=size_id)
+                                        except Exception:
+                                            pass
+                                    
                                     logger.info(f"  ✅ Creating OrderItem: {name} (SKU: {sku}, Image: {'Yes' if product_image else 'No'})")
 
                                     OrderItem.objects.create(
@@ -1472,6 +1486,9 @@ def paysuite_webhook(request):
                                         color=color,
                                         color_name=getattr(color, 'name', '') if color else (it.get('color_name') or ''),
                                         color_hex=color_hex,
+                                        size=size,
+                                        size_name=getattr(size, 'name', '') if size else (it.get('size_name') or ''),
+                                        size_abbreviation=getattr(size, 'abbreviation', '') if size else (it.get('size_abbreviation') or ''),
                                         quantity=qty,
                                         unit_price=unit_price,
                                         subtotal=line_total,
@@ -1506,6 +1523,9 @@ def paysuite_webhook(request):
                                             color=ci.color,
                                             color_name=ci.color.name if ci.color else '',
                                             color_hex=getattr(ci.color, 'hex_code', '') if ci.color else '',
+                                            size=ci.size,
+                                            size_name=ci.size.name if ci.size else '',
+                                            size_abbreviation=ci.size.abbreviation if ci.size else '',
                                             quantity=qty,
                                             unit_price=unit_price,
                                             subtotal=line_total,
@@ -1962,6 +1982,16 @@ def payment_status(request, order_id: int):
                                                         except Exception:
                                                             pass
                                                     
+                                                    # Get size
+                                                    size = None
+                                                    sid = it.get('size_id') or it.get('size')
+                                                    if sid:
+                                                        try:
+                                                            from products.models import Size
+                                                            size = Size.objects.get(id=sid)
+                                                        except Exception:
+                                                            pass
+                                                    
                                                     product_image = it.get('product_image', '')
                                                     color_hex = getattr(color, 'hex_code', '') if color else ''
                                                     
@@ -1974,6 +2004,9 @@ def payment_status(request, order_id: int):
                                                         color=color,
                                                         color_name=it.get('color_name', ''),
                                                         color_hex=color_hex,
+                                                        size=size,
+                                                        size_name=it.get('size_name', ''),
+                                                        size_abbreviation=it.get('size_abbreviation', ''),
                                                         quantity=qty,
                                                         unit_price=unit_price,
                                                         subtotal=unit_price * qty,
@@ -2005,6 +2038,9 @@ def payment_status(request, order_id: int):
                                                             color=ci.color,
                                                             color_name=ci.color.name if ci.color else '',
                                                             color_hex=getattr(ci.color, 'hex_code', '') if ci.color else '',
+                                                            size=ci.size,
+                                                            size_name=ci.size.name if ci.size else '',
+                                                            size_abbreviation=ci.size.abbreviation if ci.size else '',
                                                             quantity=ci.quantity,
                                                             unit_price=ci.price,
                                                             subtotal=ci.price * ci.quantity,

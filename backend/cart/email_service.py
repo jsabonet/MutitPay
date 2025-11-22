@@ -150,7 +150,7 @@ class EmailService:
             items_html += f"""
             <tr>
                 <td style="padding: 12px; border-bottom: 1px solid #eee;">
-                    {item.product_name} {f'({item.color_name})' if item.color_name else ''}
+                    {item.product_name} {f'({item.color_name})' if item.color_name else ''}{f' - {item.size_abbreviation}' if item.size_abbreviation else ''}
                 </td>
                 <td style="padding: 12px; border-bottom: 1px solid #eee; text-align: center;">
                     {item.quantity}
@@ -607,6 +607,7 @@ class EmailService:
                 <td style="padding: 10px; border-bottom: 1px solid #dee2e6;">
                     {item.product_name}
                     {f'<br><small style="color: #666;">Cor: {item.color_name}</small>' if item.color_name else ''}
+                    {f'<br><small style="color: #666;">Tamanho: {item.size_abbreviation}</small>' if item.size_abbreviation else ''}
                 </td>
                 <td style="text-align: center; padding: 10px; border-bottom: 1px solid #dee2e6;">
                     {item.quantity}

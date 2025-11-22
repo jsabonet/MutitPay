@@ -101,6 +101,7 @@ class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     color = models.ForeignKey(Color, on_delete=models.CASCADE, null=True, blank=True)
+    size = models.ForeignKey('products.Size', on_delete=models.CASCADE, null=True, blank=True)
     quantity = models.PositiveIntegerField(default=1)
     price = models.DecimalField(max_digits=10, decimal_places=2)  # Store price at time of addition
     
@@ -113,8 +114,8 @@ class CartItem(models.Model):
         verbose_name_plural = "Itens do Carrinho"
         constraints = [
             models.UniqueConstraint(
-                fields=['cart', 'product', 'color'],
-                name='unique_cart_product_color'
+                fields=['cart', 'product', 'color', 'size'],
+                name='unique_cart_product_color_size'
             )
         ]
         indexes = [
@@ -123,7 +124,8 @@ class CartItem(models.Model):
     
     def __str__(self):
         color_info = f" - {self.color.name}" if self.color else ""
-        return f"{self.product.name}{color_info} x{self.quantity}"
+        size_info = f" - {self.size.abbreviation}" if self.size else ""
+        return f"{self.product.name}{color_info}{size_info} x{self.quantity}"
     
     def get_total_price(self):
         """Calculate total price for this cart item"""
@@ -527,6 +529,11 @@ class OrderItem(models.Model):
     color_name = models.CharField(max_length=100, blank=True)
     color_hex = models.CharField(max_length=7, blank=True)
     
+    # Size information
+    size = models.ForeignKey('products.Size', on_delete=models.SET_NULL, null=True, blank=True)
+    size_name = models.CharField(max_length=50, blank=True)
+    size_abbreviation = models.CharField(max_length=10, blank=True)
+    
     # Pricing snapshot
     quantity = models.PositiveIntegerField(default=1)
     unit_price = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
@@ -544,7 +551,9 @@ class OrderItem(models.Model):
         ordering = ['created_at']
     
     def __str__(self):
-        return f"{self.product_name} x{self.quantity}"
+        color_info = f" - {self.color_name}" if self.color_name else ""
+        size_info = f" - {self.size_abbreviation}" if self.size_abbreviation else ""
+        return f"{self.product_name}{color_info}{size_info} x{self.quantity}"
     
     def save(self, *args, **kwargs):
         # Auto-calculate subtotal
