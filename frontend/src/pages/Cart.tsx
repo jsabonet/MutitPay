@@ -312,15 +312,11 @@ const Cart = () => {
                   <ul className="text-sm text-muted-foreground space-y-2">
                     <li className="flex items-start gap-2">
                       <span className="text-accent mt-0.5">•</span>
-                      <span>Entrega gratuita em Maputo</span>
+                      <span>Entrega gratuita em Cabo Delgado</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-accent mt-0.5">•</span>
                       <span>Prazo: 2-5 dias úteis</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-accent mt-0.5">•</span>
-                      <span>Instalação disponível para máquinas</span>
                     </li>
                   </ul>
                 </CardContent>

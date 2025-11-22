@@ -1,0 +1,50 @@
+Subject: URGENT: SMTP Activation Request - Authenticated Domain Ready
+
+Hello Brevo Support Team,
+
+I need immediate SMTP activation for my verified account.
+
+ACCOUNT DETAILS:
+- Account Email: jsabonete09@gmail.com
+- Company Name: MUTIT PAY
+- Website: mutitpay.com
+- Location: Maputo, Mozambique
+
+CURRENT STATUS - READY FOR ACTIVATION:
+✅ Verified sender: mutitpay@gmail.com
+✅ Authenticated domain: mutitpay.com (DKIM + DMARC configured)
+✅ All sender requirements met
+✅ Deliverability settings configured
+
+BUSINESS USE CASE:
+- Industry: E-commerce (Online Clothing Boutique)
+- Email Type: Transactional emails only
+- Purpose: 
+  * Order confirmations
+  * Payment notifications
+  * Shipping updates
+  * Customer notifications
+- Expected Volume: 10-50 emails per day initially
+- Target: Customers who place orders on our website
+
+CURRENT ISSUE:
+Getting error: "Your SMTP account is not yet activated" (Error 502)
+Login: 9b2ff2001@smtp-brevo.com
+
+REQUEST:
+Please activate SMTP service immediately. Our domain is already authenticated 
+with DKIM and DMARC, and we have a verified sender ready to use.
+
+We need this to start sending order confirmations to our customers.
+
+SMTP Credentials to Activate:
+- Login: 9b2ff2001@smtp-brevo.com
+- Domain: mutitpay.com (already authenticated)
+- Sender: mutitpay@gmail.com (already verified)
+
+Thank you for your prompt assistance!
+
+Best regards,
+MutitPay Team
+contact@mutitpay.co.mz
++258 84 913 5181

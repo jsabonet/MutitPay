@@ -180,6 +180,10 @@ class ProductListCreateView(generics.ListCreateAPIView):
     def get_queryset(self):
         queryset = super().get_queryset()
         
+        # Filter by status='active' for non-admin users
+        if not self.request.user.is_authenticated or not self.request.user.is_staff:
+            queryset = queryset.filter(status='active')
+        
         # Filter by price range
         min_price = self.request.query_params.get('min_price')
         max_price = self.request.query_params.get('max_price')
@@ -214,6 +218,13 @@ class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
         if self.request.method in ['PUT', 'PATCH']:
             return ProductCreateUpdateSerializer
         return ProductDetailSerializer
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        # Filter by status='active' for non-admin users
+        if not self.request.user.is_authenticated or not self.request.user.is_staff:
+            queryset = queryset.filter(status='active')
+        return queryset
     
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
