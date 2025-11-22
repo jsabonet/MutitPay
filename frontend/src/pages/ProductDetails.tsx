@@ -218,6 +218,7 @@ const ProductDetails = () => {
     };
 
     // Check if item already exists in cart
+    const selectedSize = product.sizes?.find(s => s.id === selectedSizeId);
     const existingItem = items.find(i => 
       i.id === product.id && (i.color_id || null) === (selectedColor?.id || null) && (i.size_id || null) === (selectedSize?.id || null)
     );

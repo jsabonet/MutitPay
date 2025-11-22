@@ -157,12 +157,12 @@ const ProductCard = ({ product, compactPrice = false }: ProductCardProps) => {
                 {/* Stock Badge - Apenas desktop */}
                 <div className="flex-shrink-0">
                   {product.stock_quantity > 0 && !isLowStock() && (
-                    <Badge className="text-xs bg-gradient-to-r from-primary to-primary/80 text-white border-0 px-3 py-1 shadow-sm font-semibold">
+                    <Badge className="text-xs bg-gradient-to-r from-primary to-primary/80 text-white border-0 px-2 py-0.5 shadow-sm font-semibold">
                       Em estoque
                     </Badge>
                   )}
                   {isLowStock() && product.stock_quantity > 0 && (
-                    <Badge className="text-xs bg-gradient-to-r from-accent to-accent/80 text-white border-0 px-3 py-1 shadow-sm font-semibold">
+                    <Badge className="text-xs bg-gradient-to-r from-accent to-accent/80 text-white border-0 px-2 py-0.5 shadow-sm font-semibold">
                       Apenas {product.stock_quantity}
                     </Badge>
                   )}
@@ -174,9 +174,9 @@ const ProductCard = ({ product, compactPrice = false }: ProductCardProps) => {
                   size="sm"
                   onClick={handleAddToCart}
                   disabled={product.stock_quantity === 0}
-                  className="gap-2"
+                  className="gap-1.5 text-xs px-3 h-8"
                 >
-                  <ShoppingCart className="h-4 w-4" />
+                  <ShoppingCart className="h-3.5 w-3.5" />
                   Adicionar
                 </Button>
               </div>
