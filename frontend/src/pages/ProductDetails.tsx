@@ -203,6 +203,7 @@ const ProductDetails = () => {
     const unitPrice = typeof product.price === 'number' ? product.price : parseFloat(product.price as any);
     const original = product.original_price ? (typeof product.original_price === 'number' ? product.original_price : parseFloat(product.original_price as any)) : null;
     const selectedColor = product.colors?.find(c => c.id === selectedColorId);
+    const selectedSize = product.sizes?.find(s => s.id === selectedSizeId);
     
     const cartItem = {
       id: product.id,
@@ -214,11 +215,12 @@ const ProductDetails = () => {
       category: product.category?.name || undefined,
       color_id: selectedColor ? selectedColor.id : undefined,
       color_name: selectedColor ? selectedColor.name : undefined,
+      size_id: selectedSize ? selectedSize.id : undefined,
+      size_name: selectedSize ? selectedSize.abbreviation : undefined,
       max_quantity: product.stock_quantity,
     };
 
     // Check if item already exists in cart
-    const selectedSize = product.sizes?.find(s => s.id === selectedSizeId);
     const existingItem = items.find(i => 
       i.id === product.id && (i.color_id || null) === (selectedColor?.id || null) && (i.size_id || null) === (selectedSize?.id || null)
     );
