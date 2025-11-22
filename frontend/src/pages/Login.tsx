@@ -81,21 +81,35 @@ const Login = () => {
       setForgotError('Informe o email para recuperar a senha.');
       return;
     }
+    
+    // Validate email format before Firebase call
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(forgotEmail)) {
+      setForgotError('Formato de email inválido.');
+      return;
+    }
+    
     try {
       setForgotLoading(true);
       await resetPassword(forgotEmail);
-      setForgotSuccess('Se o email estiver cadastrado, enviamos um link para redefinir sua senha. Verifique sua caixa de entrada.');
+      setForgotSuccess('✅ Email de recuperação enviado! Verifique sua caixa de entrada e spam. O link é válido por 1 hora.');
+      // Clear email field on success
+      setForgotEmail('');
     } catch (err: any) {
       switch (err?.code) {
         case 'auth/invalid-email':
-          setForgotError('Email inválido.');
+          setForgotError('Email inválido. Verifique o formato.');
           break;
         case 'auth/user-not-found':
-          // Evitar revelação de existência de conta, mas ainda dar feedback útil
-          setForgotSuccess('Se o email estiver cadastrado, enviamos um link para redefinir sua senha. Verifique sua caixa de entrada.');
+          // Security: generic message to prevent email enumeration
+          setForgotSuccess('✅ Se o email estiver cadastrado, enviamos um link de recuperação. Verifique sua caixa de entrada e spam.');
+          setForgotEmail('');
           break;
         case 'auth/too-many-requests':
-          setForgotError('Muitas tentativas. Tente novamente mais tarde.');
+          setForgotError('⚠️ Muitas tentativas. Aguarde 15 minutos e tente novamente.');
+          break;
+        case 'auth/network-request-failed':
+          setForgotError('❌ Erro de conexão. Verifique sua internet e tente novamente.');
           break;
         default:
           setForgotError('Não foi possível enviar o email de recuperação. Tente novamente.');
@@ -254,9 +268,9 @@ const Login = () => {
     <Dialog open={isForgotOpen} onOpenChange={setIsForgotOpen}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Recuperar senha</DialogTitle>
+          <DialogTitle>🔐 Recuperar senha</DialogTitle>
           <DialogDescription>
-            Informe seu email para receber um link de redefinição de senha.
+            Informe seu email para receber um link de redefinição. O link expira em 1 hora.
           </DialogDescription>
         </DialogHeader>
 
@@ -267,8 +281,8 @@ const Login = () => {
             </Alert>
           )}
           {forgotSuccess && (
-            <Alert>
-              <AlertDescription>{forgotSuccess}</AlertDescription>
+            <Alert className="border-green-200 bg-green-50">
+              <AlertDescription className="text-green-800">{forgotSuccess}</AlertDescription>
             </Alert>
           )}
 

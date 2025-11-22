@@ -21,22 +21,34 @@ const ForgotPassword = () => {
       setError('Informe o email');
       return;
     }
+    
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError('Formato de email inválido');
+      return;
+    }
+    
     try {
       setError('');
       setMessage('');
       setLoading(true);
       await resetPassword(email);
-      setMessage('Se este email estiver cadastrado, enviamos um link para redefinição de senha.');
+      setMessage('✅ Email enviado com sucesso! Verifique sua caixa de entrada e spam. O link expira em 1 hora.');
+      setEmail(''); // Clear email on success
     } catch (err: any) {
       if (err?.code === 'auth/user-not-found') {
-        // We intentionally show a generic message for security, but could customize.
-        setMessage('Se este email estiver cadastrado, enviamos um link para redefinição de senha.');
+        // Security: generic message to prevent email enumeration
+        setMessage('✅ Se este email estiver cadastrado, enviamos um link de recuperação. Verifique sua caixa de entrada e spam.');
+        setEmail('');
       } else if (err?.code === 'auth/invalid-email') {
-        setError('Email inválido');
+        setError('❌ Email inválido. Verifique o formato.');
       } else if (err?.code === 'auth/too-many-requests') {
-        setError('Muitas tentativas. Tente novamente mais tarde.');
+        setError('⚠️ Muitas tentativas. Aguarde 15 minutos e tente novamente.');
+      } else if (err?.code === 'auth/network-request-failed') {
+        setError('❌ Erro de conexão. Verifique sua internet.');
       } else {
-        setError('Não foi possível enviar o email de recuperação. Tente novamente.');
+        setError('❌ Não foi possível enviar o email. Tente novamente em alguns minutos.');
       }
     } finally {
       setLoading(false);
@@ -62,9 +74,9 @@ const ForgotPassword = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-center">Esqueceu a senha?</CardTitle>
+            <CardTitle className="text-center">🔐 Esqueceu a senha?</CardTitle>
             <CardDescription className="text-center">
-              Enviaremos um link de redefinição se o email existir
+              Digite seu email para receber o link de recuperação. O link expira em 1 hora.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -75,8 +87,8 @@ const ForgotPassword = () => {
                 </Alert>
               )}
               {message && (
-                <Alert>
-                  <AlertDescription>{message}</AlertDescription>
+                <Alert className="border-green-200 bg-green-50">
+                  <AlertDescription className="text-green-800">{message}</AlertDescription>
                 </Alert>
               )}
 
