@@ -103,13 +103,18 @@ class CartAPIView(APIView):
             cart = self.get_cart(request)
             product_id = serializer.validated_data['product_id']
             color_id = serializer.validated_data.get('color_id')
+            size_id = serializer.validated_data.get('size_id')
             quantity = serializer.validated_data['quantity']
             
             # Get product and validate stock
             product = get_object_or_404(Product, id=product_id, status='active')
             color = None
+            size = None
             if color_id:
                 color = get_object_or_404(Color, id=color_id, is_active=True)
+            if size_id:
+                from products.models import Size
+                size = get_object_or_404(Size, id=size_id, is_active=True)
             
             # Check stock availability
             if product.stock_quantity < quantity:
@@ -122,7 +127,7 @@ class CartAPIView(APIView):
                 # Try to get existing cart item
                 try:
                     cart_item = CartItem.objects.get(
-                        cart=cart, product=product, color=color
+                        cart=cart, product=product, color=color, size=size
                     )
                     # Update quantity if item exists
                     new_quantity = cart_item.quantity + quantity
@@ -146,6 +151,7 @@ class CartAPIView(APIView):
                         cart=cart,
                         product=product,
                         color=color,
+                        size=size,
                         quantity=quantity,
                         price=product.price
                     )
@@ -320,17 +326,28 @@ def sync_cart(request):
                         quantity = product.stock_quantity
 
                     color = None
+                    size = None
                     if color_id:
                         try:
                             color = Color.objects.get(id=color_id, is_active=True)
                         except Color.DoesNotExist:
                             warnings.append({'type': 'color_not_found', 'product_id': product.id, 'color_id': color_id})
                             color = None
+                    
+                    size_id = it.get('size_id')
+                    if size_id:
+                        try:
+                            from products.models import Size
+                            size = Size.objects.get(id=size_id, is_active=True)
+                        except Size.DoesNotExist:
+                            warnings.append({'type': 'size_not_found', 'product_id': product.id, 'size_id': size_id})
+                            size = None
 
                     cart_item = CartItem.objects.create(
                         cart=cart,
                         product=product,
                         color=color,
+                        size=size,
                         quantity=quantity,
                         price=product.price,
                     )

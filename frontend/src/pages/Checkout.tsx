@@ -383,7 +383,8 @@ export default function Checkout() {
         items: items.map(item => ({
           id: item.id,
           quantity: item.quantity,
-          color_id: item.color_id || null
+          color_id: item.color_id || null,
+          size_id: item.size_id || null
         }))
       };
       // For anonymous users, persist contact locally for next checkout
@@ -802,7 +803,7 @@ export default function Checkout() {
                   {/* Cart Items */}
                   <div className="space-y-4">
                     {items.map((item) => (
-                      <div key={`${item.id}-${item.color_id || 'no-color'}`} className="flex items-center gap-3 pb-4 border-b border-border/50 last:border-0">
+                      <div key={`${item.id}-${item.color_id || 'no-color'}-${item.size_id || 'no-size'}`} className="flex items-center gap-3 pb-4 border-b border-border/50 last:border-0">
                         <img
                           src={item.image || '/placeholder.svg'}
                           alt={item.name}
@@ -811,7 +812,11 @@ export default function Checkout() {
                         <div className="flex-1 min-w-0">
                           <h4 className="font-semibold text-sm line-clamp-1">{item.name}</h4>
                           <p className="text-xs text-muted-foreground mt-1">
-                            {item.color_name && `${item.color_name} • `}Qtd: {item.quantity}
+                            {item.color_name && `${item.color_name}`}
+                            {item.size_name && item.color_name && ' • '}
+                            {item.size_name && `Tam: ${item.size_name}`}
+                            {(item.color_name || item.size_name) && ' • '}
+                            Qtd: {item.quantity}
                           </p>
                         </div>
                         <div className="text-sm font-bold">

@@ -20,9 +20,9 @@ export function usePayments() {
   const [error, setError] = useState<string | null>(null);
 
   // Sync current UI cart items to the backend before initiating payment
-  const syncCart = async (items: Array<{ id: number; quantity: number; color_id?: number | null }>) => {
+  const syncCart = async (items: Array<{ id: number; quantity: number; color_id?: number | null; size_id?: number | null }>) => {
     try {
-      const body = { items: items.map(i => ({ product_id: i.id, quantity: i.quantity, color_id: i.color_id })) };
+      const body = { items: items.map(i => ({ product_id: i.id, quantity: i.quantity, color_id: i.color_id, size_id: i.size_id })) };
       const authHeaders = await getAuthHeaders();
       const res = await fetch(`${API_BASE_URL}/cart/sync/`, {
         method: 'POST',

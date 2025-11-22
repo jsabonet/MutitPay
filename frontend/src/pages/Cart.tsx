@@ -336,7 +336,7 @@ const Cart = () => {
             navigate('/checkout', {
               state: {
                 method: paymentData.method,
-                items: items.map(item => ({ id: item.id, quantity: item.quantity, color_id: item.color_id || null })),
+                items: items.map(item => ({ id: item.id, quantity: item.quantity, color_id: item.color_id || null, size_id: item.size_id || null })),
                 amount: total,
                 shipping_amount: shipping,
                 currency: 'MZN',

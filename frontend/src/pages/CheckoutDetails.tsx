@@ -17,7 +17,7 @@ import { useAuth } from '@/contexts/AuthContext';
 
 interface NavState {
   method?: string;
-  items?: Array<{ id: number; quantity: number; color_id?: number | null }>;
+  items?: Array<{ id: number; quantity: number; color_id?: number | null; size_id?: number | null }>;
   amount?: number;
   shipping_amount?: number;
   currency?: string;
@@ -216,7 +216,7 @@ export default function CheckoutDetails() {
         billing_address: { name, phone, email, address, city, province },
         customer_notes: notes,
         // Keep items only to trigger cart sync on the client hook
-        items: state.items || cartItems.map(it => ({ id: it.id, quantity: it.quantity, color_id: it.color_id || null }))
+        items: state.items || cartItems.map(it => ({ id: it.id, quantity: it.quantity, color_id: it.color_id || null, size_id: it.size_id || null }))
       };
 
       const { order_id, payment_id, payment } = await initiatePayment(method as 'mpesa' | 'emola' | 'card' | 'transfer', payload);
@@ -467,13 +467,17 @@ export default function CheckoutDetails() {
                       <p className="text-sm text-muted-foreground">Nenhum item no resumo</p>
                     ) : (
                       previewItems.map((it: any) => (
-                        <div key={`${it.id}-${it.color_id || 'no-color'}`} className="flex items-center gap-3 py-2 border-b last:border-b-0">
+                        <div key={`${it.id}-${it.color_id || 'no-color'}-${it.size_id || 'no-size'}`} className="flex items-center gap-3 py-2 border-b last:border-b-0">
                           <div className="w-12 h-12 bg-accent/30 rounded overflow-hidden flex-shrink-0">
                             <img src={it.image || '/placeholder.svg'} alt={it.name || `Produto ${it.id}`} className="w-full h-full object-cover" />
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="text-sm font-medium truncate">{it.name || `Produto #${it.id}`}</div>
-                            <div className="text-xs text-muted-foreground truncate">{it.color_name || (it.color_id ? `Cor ${it.color_id}` : '')}</div>
+                            <div className="text-xs text-muted-foreground truncate">
+                              {it.color_name || (it.color_id ? `Cor ${it.color_id}` : '')}
+                              {it.size_name && (it.color_name || it.color_id) && ' • '}
+                              {it.size_name || (it.size_id ? `Tamanho ${it.size_id}` : '')}
+                            </div>
                           </div>
                           <div className="text-right">
                             <div className="text-sm">x{it.quantity}</div>
