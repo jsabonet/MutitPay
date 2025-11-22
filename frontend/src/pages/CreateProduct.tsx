@@ -27,14 +27,15 @@ import { Switch } from '@/components/ui/switch';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { useCreateProduct, useCategories, useColors, useSubcategoriesByCategory } from '@/hooks/useApi';
-import { type ProductCreateUpdate, type Color, productImageApi } from '@/lib/api';
+import { useCreateProduct, useCategories, useColors, useSizes, useSubcategoriesByCategory } from '@/hooks/useApi';
+import { type ProductCreateUpdate, type Color, type Size, productImageApi } from '@/lib/api';
 
 const CreateProduct = () => {
   const navigate = useNavigate();
   const { createProduct, loading: createLoading } = useCreateProduct();
   const { categories, loading: categoriesLoading } = useCategories();
   const { colors, loading: colorsLoading } = useColors();
+  const { sizes, loading: sizesLoading } = useSizes();
 
   // Success/Error state
   const [successMessage, setSuccessMessage] = useState('');
@@ -45,6 +46,8 @@ const CreateProduct = () => {
 
   // Colors state
   const [selectedColors, setSelectedColors] = useState<number[]>([]);
+  // Sizes state
+  const [selectedSizes, setSelectedSizes] = useState<number[]>([]);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -187,6 +190,15 @@ const CreateProduct = () => {
     );
   };
 
+  // Size management functions
+  const toggleSize = (sizeId: number) => {
+    setSelectedSizes(prev => 
+      prev.includes(sizeId) 
+        ? prev.filter(id => id !== sizeId)
+        : [...prev, sizeId]
+    );
+  };
+
   const handleSave = async () => {
     try {
       // Clear previous errors
@@ -274,7 +286,8 @@ const CreateProduct = () => {
         meta_description: formData.meta_description || formData.description.trim(),
         meta_keywords: formData.meta_keywords,
         specifications: specsObject,
-        colors: selectedColors
+        colors: selectedColors,
+        sizes: selectedSizes
       };
 
       // First create the product
@@ -876,6 +889,37 @@ const CreateProduct = () => {
                   )}
                   <p className="text-xs text-muted-foreground mt-1">
                     Selecione as cores disponíveis para este produto
+                  </p>
+                </div>
+
+                {/* Sizes Section */}
+                <div>
+                  <Label>Tamanhos Disponíveis</Label>
+                  {sizesLoading ? (
+                    <div className="mt-2 text-sm text-muted-foreground">
+                      Carregando tamanhos...
+                    </div>
+                  ) : (
+                    <div className="mt-2 grid grid-cols-6 gap-2">
+                      {sizes?.map((size) => (
+                        <div
+                          key={size.id}
+                          className={`cursor-pointer border-2 rounded-lg p-3 transition-all hover:shadow-md text-center ${
+                            selectedSizes.includes(size.id) 
+                              ? 'border-blue-500 bg-blue-50' 
+                              : 'border-gray-200 hover:border-gray-300'
+                          }`}
+                          onClick={() => toggleSize(size.id)}
+                        >
+                          <span className="text-sm font-semibold">
+                            {size.abbreviation}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Selecione os tamanhos disponíveis para este produto
                   </p>
                 </div>
               </CardContent>

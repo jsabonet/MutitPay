@@ -19,6 +19,10 @@ urlpatterns = [
     path('colors/', views.ColorListCreateView.as_view(), name='color-list-create'),
     path('colors/<int:pk>/', views.ColorDetailView.as_view(), name='color-detail'),
     
+    # Sizes URLs
+    path('sizes/', views.SizeListCreateView.as_view(), name='size-list-create'),
+    path('sizes/<int:pk>/', views.SizeDetailView.as_view(), name='size-detail'),
+    
     # Product Images URLs (ViewSet routes)
     path('', include(router.urls)),
     

@@ -150,6 +150,11 @@ const Cart = () => {
                                 • Cor: {item.color_name}
                               </span>
                             )}
+                            {item.size_name && (
+                              <span className="text-xs text-muted-foreground font-normal ml-2">
+                                • Tamanho: {item.size_name}
+                              </span>
+                            )}
                           </h3>
                           <p className="text-lg font-bold mt-2">
                             {formatPrice(item.price)}
@@ -164,14 +169,14 @@ const Cart = () => {
                             variant="ghost"
                             size="icon"
                             className="h-8 w-8"
-                            onClick={() => updateQuantity(item.id, item.quantity - 1, item.color_id)}
+                            onClick={() => updateQuantity(item.id, item.quantity - 1, item.color_id, item.size_id)}
                           >
                             <Minus className="h-4 w-4" />
                           </Button>
                           <Input
                             type="number"
                             value={item.quantity}
-                            onChange={(e) => updateQuantity(item.id, parseInt(e.target.value) || 1, item.color_id)}
+                            onChange={(e) => updateQuantity(item.id, parseInt(e.target.value) || 1, item.color_id, item.size_id)}
                             className="w-16 text-center border-0 focus:ring-0"
                             min="1"
                           />
@@ -179,7 +184,7 @@ const Cart = () => {
                             variant="ghost"
                             size="icon"
                             className="h-8 w-8"
-                            onClick={() => updateQuantity(item.id, item.quantity + 1, item.color_id)}
+                            onClick={() => updateQuantity(item.id, item.quantity + 1, item.color_id, item.size_id)}
                             disabled={item.max_quantity ? item.quantity >= item.max_quantity : false}
                           >
                             <Plus className="h-4 w-4" />
@@ -198,7 +203,7 @@ const Cart = () => {
                           variant="ghost"
                           size="icon"
                           className="text-destructive hover:text-destructive"
-                          onClick={() => removeItem(item.id, item.color_id)}
+                          onClick={() => removeItem(item.id, item.color_id, item.size_id)}
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>

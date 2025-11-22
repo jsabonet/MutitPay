@@ -15,6 +15,8 @@ export interface CartItem {
   category?: string | null;
   color_id?: number | null;
   color_name?: string | null;
+  size_id?: number | null;
+  size_name?: string | null;
   max_quantity?: number; // stock available (optional)
 }
 
@@ -25,9 +27,9 @@ interface CartState {
 
 type Action =
   | { type: 'ADD_ITEM'; payload: CartItem }
-  | { type: 'REMOVE_ITEM'; payload: { id: number; color_id?: number | null } }
-  | { type: 'UPDATE_QTY'; payload: { id: number; quantity: number; color_id?: number | null } }
-  | { type: 'SET_QTY'; payload: { id: number; quantity: number; color_id?: number | null } }
+  | { type: 'REMOVE_ITEM'; payload: { id: number; color_id?: number | null; size_id?: number | null } }
+  | { type: 'UPDATE_QTY'; payload: { id: number; quantity: number; color_id?: number | null; size_id?: number | null } }
+  | { type: 'SET_QTY'; payload: { id: number; quantity: number; color_id?: number | null; size_id?: number | null } }
   | { type: 'CLEAR' }
   | { type: 'SET'; payload: CartState }
   | { type: 'MERGE'; payload: CartItem[] };
@@ -44,7 +46,7 @@ function cartReducer(state: CartState, action: Action): CartState {
   switch (action.type) {
     case 'ADD_ITEM': {
       const existingIndex = state.items.findIndex(
-        i => i.id === action.payload.id && (i.color_id || null) === (action.payload.color_id || null)
+        i => i.id === action.payload.id && (i.color_id || null) === (action.payload.color_id || null) && (i.size_id || null) === (action.payload.size_id || null)
       );
       let newItems = [...state.items];
       if (existingIndex >= 0) {
@@ -61,13 +63,13 @@ function cartReducer(state: CartState, action: Action): CartState {
     }
     case 'REMOVE_ITEM': {
       return {
-        items: state.items.filter(i => !(i.id === action.payload.id && (i.color_id || null) === (action.payload.color_id || null))),
+        items: state.items.filter(i => !(i.id === action.payload.id && (i.color_id || null) === (action.payload.color_id || null) && (i.size_id || null) === (action.payload.size_id || null))),
         updatedAt: Date.now(),
       };
     }
     case 'UPDATE_QTY': {
       const newItems = state.items.map(i => {
-        if (i.id === action.payload.id && (i.color_id || null) === (action.payload.color_id || null)) {
+        if (i.id === action.payload.id && (i.color_id || null) === (action.payload.color_id || null) && (i.size_id || null) === (action.payload.size_id || null)) {
           let q = action.payload.quantity;
           if (q < 1) q = 1;
           if (i.max_quantity) q = Math.min(q, i.max_quantity);
@@ -79,7 +81,7 @@ function cartReducer(state: CartState, action: Action): CartState {
     }
     case 'SET_QTY': {
       const newItems = state.items.map(i => {
-        if (i.id === action.payload.id && (i.color_id || null) === (action.payload.color_id || null)) {
+        if (i.id === action.payload.id && (i.color_id || null) === (action.payload.color_id || null) && (i.size_id || null) === (action.payload.size_id || null)) {
           let q = action.payload.quantity;
           if (q < 1) q = 1;
           if (i.max_quantity) q = Math.min(q, i.max_quantity);
@@ -94,7 +96,7 @@ function cartReducer(state: CartState, action: Action): CartState {
       const merged = [...state.items];
       for (const newItem of action.payload) {
         const existingIndex = merged.findIndex(
-          i => i.id === newItem.id && (i.color_id || null) === (newItem.color_id || null)
+          i => i.id === newItem.id && (i.color_id || null) === (newItem.color_id || null) && (i.size_id || null) === (newItem.size_id || null)
         );
         if (existingIndex >= 0) {
           const existing = merged[existingIndex];
@@ -124,9 +126,9 @@ interface CartContextValue {
   totalQuantity: number;      // sum of quantities
   subtotal: number;
   addItem: (item: Omit<CartItem, 'quantity'> & { quantity?: number }) => void;
-  removeItem: (id: number, color_id?: number | null) => void;
-  updateQuantity: (id: number, quantity: number, color_id?: number | null) => void;
-  setQuantity: (id: number, quantity: number, color_id?: number | null) => void; // exact set (for "Buy Now")
+  removeItem: (id: number, color_id?: number | null, size_id?: number | null) => void;
+  updateQuantity: (id: number, quantity: number, color_id?: number | null, size_id?: number | null) => void;
+  setQuantity: (id: number, quantity: number, color_id?: number | null, size_id?: number | null) => void; // exact set (for "Buy Now")
   clearCart: () => void;
   formatSubtotal: () => string;
 }
@@ -226,9 +228,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         
         dispatch({ type: 'ADD_ITEM', payload: newItem });
       },
-      removeItem: (id, color_id) => dispatch({ type: 'REMOVE_ITEM', payload: { id, color_id } }),
-      updateQuantity: (id, quantity, color_id) => {
-        const item = state.items.find(i => i.id === id && (i.color_id || null) === (color_id || null));
+      removeItem: (id, color_id, size_id) => dispatch({ type: 'REMOVE_ITEM', payload: { id, color_id, size_id } }),
+      updateQuantity: (id, quantity, color_id, size_id) => {
+        const item = state.items.find(i => i.id === id && (i.color_id || null) === (color_id || null) && (i.size_id || null) === (size_id || null));
         if (item?.max_quantity && quantity > item.max_quantity) {
           toast({
             title: 'Quantidade máxima atingida',
@@ -237,10 +239,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
           });
           return;
         }
-        dispatch({ type: 'UPDATE_QTY', payload: { id, quantity, color_id } });
+        dispatch({ type: 'UPDATE_QTY', payload: { id, quantity, color_id, size_id } });
       },
-      setQuantity: (id, quantity, color_id) => {
-        const item = state.items.find(i => i.id === id && (i.color_id || null) === (color_id || null));
+      setQuantity: (id, quantity, color_id, size_id) => {
+        const item = state.items.find(i => i.id === id && (i.color_id || null) === (color_id || null) && (i.size_id || null) === (size_id || null));
         if (item?.max_quantity && quantity > item.max_quantity) {
           toast({
             title: 'Estoque insuficiente',
@@ -249,7 +251,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
           });
           return;
         }
-        dispatch({ type: 'SET_QTY', payload: { id, quantity, color_id } });
+        dispatch({ type: 'SET_QTY', payload: { id, quantity, color_id, size_id } });
       },
       clearCart: () => dispatch({ type: 'CLEAR' }),
       formatSubtotal: () => formatPrice(subtotal),

@@ -36,6 +36,14 @@ export interface Color {
   is_active: boolean;
 }
 
+export interface Size {
+  id: number;
+  name: string;
+  abbreviation: string;
+  order: number;
+  is_active: boolean;
+}
+
 // Interface for products in list views (featured, bestsellers, etc.)
 export interface ProductListItem {
   id: number;
@@ -55,6 +63,7 @@ export interface ProductListItem {
   sku: string;
   main_image_url?: string;
   colors: Color[];
+  sizes: Size[];
   is_in_stock: boolean;
   is_low_stock: boolean;
   discount_percentage: number;
@@ -133,6 +142,7 @@ export interface Product {
   all_images?: string[];
   images: ProductImage[];
   colors: Color[];
+  sizes: Size[];
   specifications: Record<string, any>;
   dimensions?: string;
   weight?: string;
@@ -177,6 +187,7 @@ export interface ProductCreateUpdate {
   image_3?: string;
   image_4?: string;
   colors?: number[];
+  sizes?: number[];
   specifications?: Record<string, any>;
   weight?: string;
   length?: string;
@@ -661,6 +672,29 @@ export const colorApi = {
   // Delete color
   deleteColor: (id: number) => 
     apiClient.delete(`/colors/${id}/`),
+};
+
+// Size API
+export const sizeApi = {
+  // Get all sizes
+  getSizes: () => 
+    apiClient.get<ApiResponse<Size>>('/sizes/'),
+
+  // Get single size
+  getSize: (id: number) => 
+    apiClient.get<Size>(`/sizes/${id}/`),
+
+  // Create new size
+  createSize: (data: Partial<Size>) => 
+    apiClient.post<Size>('/sizes/', data),
+
+  // Update size
+  updateSize: (id: number, data: Partial<Size>) => 
+    apiClient.put<Size>(`/sizes/${id}/`, data),
+
+  // Delete size
+  deleteSize: (id: number) => 
+    apiClient.delete(`/sizes/${id}/`),
 };
 
 // ProductImage API

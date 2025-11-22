@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from django.utils import timezone
 from django.contrib import messages
-from .models import Category, Product, Color, ProductImage, Favorite, Review
+from .models import Category, Product, Color, Size, ProductImage, Favorite, Review
 
 
 @admin.register(Color)
@@ -20,6 +20,15 @@ class ColorAdmin(admin.ModelAdmin):
             )
         return ''
     color_preview.short_description = 'Preview'
+
+
+@admin.register(Size)
+class SizeAdmin(admin.ModelAdmin):
+    list_display = ['abbreviation', 'name', 'order', 'is_active', 'created_at']
+    list_filter = ['is_active', 'created_at']
+    search_fields = ['name', 'abbreviation']
+    readonly_fields = ['created_at', 'updated_at']
+    ordering = ['order', 'name']
 
 
 class ProductImageInline(admin.TabularInline):
@@ -73,8 +82,8 @@ class ProductAdmin(admin.ModelAdmin):
         ('Mídia', {
             'fields': ('main_image', 'image_2', 'image_3', 'image_4')
         }),
-        ('Cores e Especificações', {
-            'fields': ('colors', 'specifications', 'weight', 'length', 'width', 'height')
+        ('Cores, Tamanhos e Especificações', {
+            'fields': ('colors', 'sizes', 'specifications', 'weight', 'length', 'width', 'height')
         }),
         ('Marketing', {
             'fields': (
@@ -92,7 +101,7 @@ class ProductAdmin(admin.ModelAdmin):
         })
     )
     
-    filter_horizontal = ['colors']
+    filter_horizontal = ['colors', 'sizes']
     
     def get_queryset(self, request):
         return super().get_queryset(request).select_related('category')

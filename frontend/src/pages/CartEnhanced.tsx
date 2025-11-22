@@ -110,7 +110,7 @@ const Cart = () => {
             {/* Cart Items */}
             <div className="lg:col-span-2 space-y-4">
               {items.map((item) => (
-                <Card key={`${item.id}-${item.color_id || 'no-color'}`}>
+                <Card key={`${item.id}-${item.color_id || 'no-color'}-${item.size_id || 'no-size'}`}>
                   <CardContent className="p-6">
                     <div className="flex gap-4">
                       {/* Product Image */}
@@ -133,6 +133,11 @@ const Cart = () => {
                                   {' '}• Cor: {item.color_name}
                                 </span>
                               )}
+                              {item.size_name && (
+                                <span className="text-muted-foreground">
+                                  {' '}• Tamanho: {item.size_name}
+                                </span>
+                              )}
                             </h3>
                             <p className="text-sm text-muted-foreground mt-1">
                               {formatPrice(item.price)} cada
@@ -142,7 +147,7 @@ const Cart = () => {
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => removeItem(item.id, item.color_id)}
+                            onClick={() => removeItem(item.id, item.color_id, item.size_id)}
                             disabled={loading}
                             className="text-red-600 hover:text-red-700 h-8 w-8 p-0"
                           >
@@ -156,7 +161,7 @@ const Cart = () => {
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => updateQuantity(item.id, -1, item.color_id)}
+                              onClick={() => updateQuantity(item.id, -1, item.color_id, item.size_id)}
                               disabled={loading || item.quantity <= 1}
                               className="h-8 w-8 p-0"
                             >
@@ -170,7 +175,7 @@ const Cart = () => {
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => updateQuantity(item.id, 1, item.color_id)}
+                              onClick={() => updateQuantity(item.id, 1, item.color_id, item.size_id)}
                               disabled={
                                 loading ||
                                 (item.max_quantity !== undefined && item.quantity >= item.max_quantity)

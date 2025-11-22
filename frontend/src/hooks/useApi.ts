@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { productApi, categoryApi, colorApi, subcategoryApi, type Product, type ProductListItem, type Category, type Color, type ApiResponse, type ProductStats, type ProductCreateUpdate, type Subcategory } from '@/lib/api';
+import { productApi, categoryApi, colorApi, sizeApi, subcategoryApi, type Product, type ProductListItem, type Category, type Color, type Size, type ApiResponse, type ProductStats, type ProductCreateUpdate, type Subcategory } from '@/lib/api';
 
 // Utility to normalize API list responses into arrays
 const normalizeList = <T,>(res: any): T[] => {
@@ -496,4 +496,46 @@ export const useColors = () => {
   };
 
   return { colors, loading, error, refresh };
+};
+
+// Hook for sizes
+export const useSizes = () => {
+  const [sizes, setSizes] = useState<Size[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchSizes = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await sizeApi.getSizes();
+        setSizes(normalizeList<Size>(response));
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch sizes');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSizes();
+  }, []);
+
+  const refresh = () => {
+    setLoading(true);
+    const fetchSizes = async () => {
+      try {
+        setError(null);
+        const response = await sizeApi.getSizes();
+        setSizes(normalizeList<Size>(response));
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch sizes');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchSizes();
+  };
+
+  return { sizes, loading, error, refresh };
 };

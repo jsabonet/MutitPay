@@ -43,6 +43,7 @@ const ProductDetails = () => {
   const [selectedImage, setSelectedImage] = useState<string>('');
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedColorId, setSelectedColorId] = useState<number | null>(null);
+  const [selectedSizeId, setSelectedSizeId] = useState<number | null>(null);
   // State for sorting/filtering reviews (moved here to ensure hooks run in same order)
   const [sort, setSort] = useState('recent');
   const [filter, setFilter] = useState('all');
@@ -143,6 +144,7 @@ const ProductDetails = () => {
     const unitPrice = typeof product.price === 'number' ? product.price : parseFloat(product.price as any);
     const original = product.original_price ? (typeof product.original_price === 'number' ? product.original_price : parseFloat(product.original_price as any)) : null;
     const selectedColor = product.colors?.find(c => c.id === selectedColorId);
+    const selectedSize = product.sizes?.find(s => s.id === selectedSizeId);
     
     const imageUrl = product.main_image_url || product.main_image || (product.images?.[0]?.image || product.images?.[0]?.image_url) || undefined;
     
@@ -157,11 +159,13 @@ const ProductDetails = () => {
       category: product.category?.name || undefined,
       color_id: selectedColor ? selectedColor.id : undefined,
       color_name: selectedColor ? selectedColor.name : undefined,
+      size_id: selectedSize ? selectedSize.id : undefined,
+      size_name: selectedSize ? selectedSize.abbreviation : undefined,
       max_quantity: product.stock_quantity,
     });
     toast({
       title: 'Adicionado ao carrinho',
-      description: `${quantity}x ${product.name}${selectedColor ? ` (${selectedColor.name})` : ''}`,
+      description: `${quantity}x ${product.name}${selectedColor ? ` (${selectedColor.name})` : ''}${selectedSize ? ` - ${selectedSize.abbreviation}` : ''}`,
     });
   };
 
@@ -186,12 +190,12 @@ const ProductDetails = () => {
 
     // Check if item already exists in cart
     const existingItem = items.find(i => 
-      i.id === product.id && (i.color_id || null) === (selectedColor?.id || null)
+      i.id === product.id && (i.color_id || null) === (selectedColor?.id || null) && (i.size_id || null) === (selectedSize?.id || null)
     );
 
     if (existingItem) {
       // Update quantity to current selection
-      setQuantity(product.id, quantity, selectedColor?.id || null);
+      setQuantity(product.id, quantity, selectedColor?.id || null, selectedSize?.id || null);
     } else {
       // Add new item
       addItem({ ...cartItem, quantity });
@@ -628,6 +632,43 @@ const ProductDetails = () => {
                         {!hasHex && (
                           <span className="text-[10px] px-1 text-foreground">{color.name[0]}</span>
                         )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Size Selection */}
+            {product.sizes && product.sizes.length > 0 && (
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <span className="text-sm font-medium">Tamanho:</span>
+                  {(() => {
+                    const selected = product.sizes.find(s => s.id === selectedSizeId);
+                    return selected ? (
+                      <Badge variant="outline" className="text-xs sm:text-sm">{selected.abbreviation}</Badge>
+                    ) : null;
+                  })()}
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {product.sizes.map((size) => {
+                    const isSelected = selectedSizeId === size.id;
+                    return (
+                      <button
+                        key={size.id}
+                        type="button"
+                        onClick={() => setSelectedSizeId(size.id)}
+                        aria-label={size.name}
+                        aria-pressed={isSelected}
+                        title={size.name}
+                        className={`min-w-[3rem] px-3 py-2 rounded-md border transition focus:outline-none focus:ring-2 focus:ring-primary/40 ${
+                          isSelected 
+                            ? 'border-primary bg-primary text-primary-foreground' 
+                            : 'border-border hover:border-primary/60 hover:bg-primary/5'
+                        }`}
+                      >
+                        <span className="text-sm font-medium">{size.abbreviation}</span>
                       </button>
                     );
                   })}

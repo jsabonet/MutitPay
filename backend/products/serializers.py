@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product, Category, Color, ProductImage, Subcategory, Favorite, Review, ReviewImage, ReviewHelpfulVote
+from .models import Product, Category, Color, Size, ProductImage, Subcategory, Favorite, Review, ReviewImage, ReviewHelpfulVote
 from cart.models import OrderItem
 
 class ColorSerializer(serializers.ModelSerializer):
@@ -8,6 +8,15 @@ class ColorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Color
         fields = ['id', 'name', 'hex_code', 'rgb_code', 'is_active']
+        read_only_fields = ['id']
+
+
+class SizeSerializer(serializers.ModelSerializer):
+    """Serializer for Size model"""
+    
+    class Meta:
+        model = Size
+        fields = ['id', 'name', 'abbreviation', 'order', 'is_active']
         read_only_fields = ['id']
 
 
@@ -64,6 +73,7 @@ class ProductListSerializer(serializers.ModelSerializer):
     discount_percentage = serializers.FloatField(read_only=True)
     main_image_url = serializers.SerializerMethodField()
     colors = ColorSerializer(many=True, read_only=True)
+    sizes = SizeSerializer(many=True, read_only=True)
     subcategory_name = serializers.CharField(source='subcategory.name', read_only=True)
     
     class Meta:
@@ -74,7 +84,7 @@ class ProductListSerializer(serializers.ModelSerializer):
             'is_bestseller', 'category_name', 'subcategory_name', 'brand', 'sku',
             'main_image_url', 'is_in_stock', 'is_low_stock',
             'discount_percentage', 'view_count', 'sales_count',
-            'colors', 'created_at', 'updated_at'
+            'colors', 'sizes', 'created_at', 'updated_at'
         ]
         read_only_fields = [
             'id', 'slug', 'is_in_stock', 'is_low_stock', 'discount_percentage',
@@ -208,6 +218,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     main_image_url = serializers.SerializerMethodField()
     images = ProductImageSerializer(many=True, read_only=True)
     colors = ColorSerializer(many=True, read_only=True)
+    sizes = SizeSerializer(many=True, read_only=True)
     average_rating = serializers.FloatField(read_only=True)
     total_reviews = serializers.IntegerField(read_only=True)
     reviews = serializers.SerializerMethodField()
@@ -226,7 +237,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
             'main_image', 'main_image_url', 'image_2', 'image_3', 'image_4', 'all_images', 'images',
             'specifications', 'meta_title', 'meta_description', 'slug',
             'status', 'is_featured', 'is_bestseller', 'weight', 'length',
-            'width', 'height', 'colors', 'is_in_stock', 'is_low_stock',
+            'width', 'height', 'colors', 'sizes', 'is_in_stock', 'is_low_stock',
             'discount_percentage', 'view_count', 'sales_count',
             'average_rating', 'total_reviews', 'reviews',
             'created_at', 'updated_at'
@@ -268,6 +279,11 @@ class ProductCreateUpdateSerializer(serializers.ModelSerializer):
         many=True,
         required=False
     )
+    sizes = serializers.PrimaryKeyRelatedField(
+        queryset=Size.objects.filter(is_active=True),
+        many=True,
+        required=False
+    )
     
     class Meta:
         model = Product
@@ -277,7 +293,7 @@ class ProductCreateUpdateSerializer(serializers.ModelSerializer):
             'stock_quantity', 'min_stock_level', 'main_image',
             'image_2', 'image_3', 'image_4', 'specifications',
             'meta_title', 'meta_description', 'status', 'is_featured',
-            'is_bestseller', 'weight', 'length', 'width', 'height', 'colors'
+            'is_bestseller', 'weight', 'length', 'width', 'height', 'colors', 'sizes'
         ]
         read_only_fields = ['id']
 
@@ -318,16 +334,20 @@ class ProductCreateUpdateSerializer(serializers.ModelSerializer):
         return value
     
     def create(self, validated_data):
-        """Create product with colors"""
+        """Create product with colors and sizes"""
         colors_data = validated_data.pop('colors', [])
+        sizes_data = validated_data.pop('sizes', [])
         product = Product.objects.create(**validated_data)
         if colors_data:
             product.colors.set(colors_data)
+        if sizes_data:
+            product.sizes.set(sizes_data)
         return product
     
     def update(self, instance, validated_data):
-        """Update product with colors"""
+        """Update product with colors and sizes"""
         colors_data = validated_data.pop('colors', None)
+        sizes_data = validated_data.pop('sizes', None)
         
         # Update all other fields
         for attr, value in validated_data.items():
@@ -337,6 +357,10 @@ class ProductCreateUpdateSerializer(serializers.ModelSerializer):
         # Update colors if provided
         if colors_data is not None:
             instance.colors.set(colors_data)
+        
+        # Update sizes if provided
+        if sizes_data is not None:
+            instance.sizes.set(sizes_data)
         
         return instance
 

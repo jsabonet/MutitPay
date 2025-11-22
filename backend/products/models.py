@@ -68,6 +68,23 @@ class Color(models.Model):
     def __str__(self):
         return self.name
 
+class Size(models.Model):
+    """Size model for products"""
+    name = models.CharField(max_length=50, unique=True, verbose_name="Nome do Tamanho")
+    abbreviation = models.CharField(max_length=10, verbose_name="Abreviação", help_text="Ex: P, M, G, GG")
+    order = models.PositiveIntegerField(default=0, verbose_name="Ordem de Exibição")
+    is_active = models.BooleanField(default=True, verbose_name="Ativo")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Criado em")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Atualizado em")
+    
+    class Meta:
+        verbose_name = "Tamanho"
+        verbose_name_plural = "Tamanhos"
+        ordering = ['order', 'name']
+    
+    def __str__(self):
+        return self.abbreviation if self.abbreviation else self.name
+
 class Category(models.Model):
     """Category model for products"""
     name = models.CharField(max_length=100, unique=True, verbose_name="Nome")
@@ -141,6 +158,9 @@ class Product(models.Model):
     
     # Colors (Many-to-Many relationship)
     colors = models.ManyToManyField(Color, blank=True, verbose_name="Cores Disponíveis")
+    
+    # Sizes (Many-to-Many relationship)
+    sizes = models.ManyToManyField(Size, blank=True, verbose_name="Tamanhos Disponíveis")
     
     # Pricing
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Preço (MZN)")

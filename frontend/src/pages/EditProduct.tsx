@@ -27,8 +27,8 @@ import { Switch } from '@/components/ui/switch';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { useUpdateProduct, useCategories, useSubcategoriesByCategory } from '@/hooks/useApi';
-import { productApi, productImageApi, type Product, type ProductCreateUpdate, type ProductImage } from '@/lib/api';
+import { useUpdateProduct, useCategories, useColors, useSizes, useSubcategoriesByCategory } from '@/hooks/useApi';
+import { productApi, productImageApi, type Product, type ProductCreateUpdate, type ProductImage, type Color, type Size } from '@/lib/api';
 import Loading from '@/components/ui/Loading';
 
 const EditProduct = () => {
@@ -36,6 +36,8 @@ const EditProduct = () => {
   const { id } = useParams<{ id: string }>();
   const { updateProduct, loading: updateLoading } = useUpdateProduct();
   const { categories, loading: categoriesLoading } = useCategories();
+  const { colors, loading: colorsLoading } = useColors();
+  const { sizes, loading: sizesLoading } = useSizes();
 
   // State
   const [product, setProduct] = useState<Product | null>(null);
@@ -45,6 +47,10 @@ const EditProduct = () => {
 
   // Field-specific error state
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
+  // Colors and sizes state
+  const [selectedColors, setSelectedColors] = useState<number[]>([]);
+  const [selectedSizes, setSelectedSizes] = useState<number[]>([]);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -137,6 +143,14 @@ const EditProduct = () => {
         setSpecifications([{ key: '', value: '' }]);
       }
 
+      // Load existing colors and sizes
+      if (productData.colors) {
+        setSelectedColors(productData.colors.map(c => c.id));
+      }
+      if (productData.sizes) {
+        setSelectedSizes(productData.sizes.map(s => s.id));
+      }
+
       // Load existing images
       const imagesResponse = await productImageApi.getProductImages(parseInt(id!));
       const images = imagesResponse.results || [];
@@ -204,6 +218,23 @@ const EditProduct = () => {
     setThumbnailPreviews(prev => prev.filter((_, i) => i !== index));
   };
 
+  // Color management functions
+  const toggleColor = (colorId: number) => {
+    setSelectedColors(prev => 
+      prev.includes(colorId) 
+        ? prev.filter(id => id !== colorId)
+        : [...prev, colorId]
+    );
+  };
+
+  // Size management functions
+  const toggleSize = (sizeId: number) => {
+    setSelectedSizes(prev => 
+      prev.includes(sizeId) 
+        ? prev.filter(id => id !== sizeId)
+        : [...prev, sizeId]
+    );
+  };
   const removeExistingImage = async (imageId: number, isMain: boolean) => {
     try {
       await productImageApi.deleteImage(imageId);
@@ -338,7 +369,9 @@ const EditProduct = () => {
         meta_title: formData.meta_title || formData.name.trim(),
         meta_description: formData.meta_description || formData.description.trim(),
         meta_keywords: formData.meta_keywords || undefined,
-        specifications: specsObject
+        specifications: specsObject,
+        colors: selectedColors,
+        sizes: selectedSizes
       };
 
       await updateProduct(parseInt(id!), productData);
@@ -703,6 +736,82 @@ const EditProduct = () => {
                       </div>
                     </div>
                   )}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Colors and Sizes */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Cores e Tamanhos</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Colors Section */}
+                <div>
+                  <Label>Cores Disponíveis</Label>
+                  {colorsLoading ? (
+                    <div className="mt-2 text-sm text-muted-foreground">
+                      Carregando cores...
+                    </div>
+                  ) : (
+                    <div className="mt-2 grid grid-cols-3 gap-2">
+                      {colors?.map((color) => (
+                        <div
+                          key={color.id}
+                          className={`cursor-pointer border-2 rounded-lg p-2 transition-all hover:shadow-md ${
+                            selectedColors.includes(color.id) 
+                              ? 'border-blue-500 bg-blue-50' 
+                              : 'border-gray-200 hover:border-gray-300'
+                          }`}
+                          onClick={() => toggleColor(color.id)}
+                        >
+                          <div className="flex items-center space-x-2">
+                            <div 
+                              className="w-5 h-5 rounded-full border border-gray-300 flex-shrink-0"
+                              style={{ backgroundColor: color.hex_code }}
+                            />
+                            <span className="text-xs font-medium truncate">
+                              {color.name}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Selecione as cores disponíveis para este produto
+                  </p>
+                </div>
+
+                {/* Sizes Section */}
+                <div>
+                  <Label>Tamanhos Disponíveis</Label>
+                  {sizesLoading ? (
+                    <div className="mt-2 text-sm text-muted-foreground">
+                      Carregando tamanhos...
+                    </div>
+                  ) : (
+                    <div className="mt-2 grid grid-cols-6 gap-2">
+                      {sizes?.map((size) => (
+                        <div
+                          key={size.id}
+                          className={`cursor-pointer border-2 rounded-lg p-3 transition-all hover:shadow-md text-center ${
+                            selectedSizes.includes(size.id) 
+                              ? 'border-blue-500 bg-blue-50' 
+                              : 'border-gray-200 hover:border-gray-300'
+                          }`}
+                          onClick={() => toggleSize(size.id)}
+                        >
+                          <span className="text-sm font-semibold">
+                            {size.abbreviation}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Selecione os tamanhos disponíveis para este produto
+                  </p>
                 </div>
               </CardContent>
             </Card>

@@ -10,14 +10,15 @@ from django.core.files.base import File
 import os
 from django.utils import timezone
 from django.conf import settings
-from .models import Product, Category, Color, ProductImage, Subcategory, Favorite, Review, ReviewHelpfulVote
+from .models import Product, Category, Color, Size, ProductImage, Subcategory, Favorite, Review, ReviewHelpfulVote
 from .serializers import (
-    ProductListSerializer, 
-    ProductDetailSerializer, 
+    ProductListSerializer,
+    ProductDetailSerializer,
     ProductCreateUpdateSerializer,
     CategorySerializer,
     SubcategorySerializer,
     ColorSerializer,
+    SizeSerializer,
     ProductImageSerializer,
     FavoriteSerializer,
     FavoriteCreateSerializer,
@@ -48,6 +49,36 @@ class ColorDetailView(generics.RetrieveUpdateDestroyAPIView):
     """
     queryset = Color.objects.all()
     serializer_class = ColorSerializer
+
+    def get_permissions(self):
+        # Allow anyone to retrieve, only admins can update/delete
+        if self.request.method in permissions.SAFE_METHODS:
+            return [permissions.AllowAny()]
+        return [IsAdmin()]
+
+class SizeListCreateView(generics.ListCreateAPIView):
+    """
+    List all sizes or create a new size
+    """
+    queryset = Size.objects.filter(is_active=True)
+    serializer_class = SizeSerializer
+
+    def get_permissions(self):
+        # Allow anyone to list sizes, only admins can create
+        if self.request.method in permissions.SAFE_METHODS:
+            return [permissions.AllowAny()]
+        return [IsAdmin()]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['name', 'abbreviation']
+    ordering_fields = ['order', 'name', 'created_at']
+    ordering = ['order', 'name']
+
+class SizeDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve, update or delete a size
+    """
+    queryset = Size.objects.all()
+    serializer_class = SizeSerializer
 
     def get_permissions(self):
         # Allow anyone to retrieve, only admins can update/delete
