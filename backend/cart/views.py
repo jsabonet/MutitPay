@@ -1040,7 +1040,7 @@ def initiate_payment(request):
 
         # Prepare cart items data for order creation in webhook
         cart_items_data = []
-        for cart_item in cart.items.select_related('product', 'color').all():
+        for cart_item in cart.items.select_related('product', 'color', 'size').all():
             # Get product image URL
             product_image_url = ''
             if cart_item.product:
