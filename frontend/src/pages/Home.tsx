@@ -3,6 +3,7 @@ import HeroSection from '@/components/sections/HeroSection';
 import FeaturedProducts from '@/components/sections/FeaturedProducts';
 import BestSellers from '@/components/sections/BestSellers';
 import Footer from '@/components/layout/Footer';
+import SEO from '@/components/SEO';
 import { Shield, Network } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -81,6 +82,13 @@ const ServicePreview = ({
 const Home = () => {
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title="MUTIT PAY - Boutique de Luxo em Moçambique | Marcas Premium"
+        description="Descubra a maior boutique de luxo em Moçambique. Marcas premium internacionais, moda de alta qualidade, acessórios exclusivos e atendimento VIP. Entrega rápida em Cabo Delgado e todo Moçambique."
+        keywords="boutique luxo Moçambique, marcas premium, moda luxo, roupas de grife, acessórios premium, boutique online Moçambique, loja luxo Pemba, comprar marcas internacionais Moçambique, moda feminina luxo, moda masculina premium"
+        url="https://mutitpay.com"
+        type="website"
+      />
       <Header />
       <main>
         <HeroSection />

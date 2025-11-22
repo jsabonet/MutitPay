@@ -1,3 +1,40 @@
+# robots.txt for MUTIT PAY - https://mutitpay.com
+
+User-agent: *
+Allow: /
+Allow: /produtos
+Allow: /produtos/*
+Allow: /categorias
+Allow: /categorias/*
+Allow: /sobre
+Allow: /contacto
+
+# Disallow admin and user areas
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /conta
+Disallow: /conta/*
+Disallow: /carrinho
+Disallow: /checkout
+Disallow: /confirmacao-pedido
+
+# Disallow API endpoints
+Disallow: /api/
+
+# Allow CSS, JS, and images for crawlers
+Allow: /assets/*.css
+Allow: /assets/*.js
+Allow: /assets/*.jpg
+Allow: /assets/*.jpeg
+Allow: /assets/*.png
+Allow: /assets/*.webp
+Allow: /assets/*.svg
+Allow: /*.css
+Allow: /*.js
+
+# Sitemap
+Sitemap: https://mutitpay.com/sitemap.xml
+
 User-agent: Googlebot
 Allow: /
 
@@ -8,7 +45,4 @@ User-agent: Twitterbot
 Allow: /
 
 User-agent: facebookexternalhit
-Allow: /
-
-User-agent: *
 Allow: /

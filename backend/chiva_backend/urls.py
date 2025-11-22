@@ -19,9 +19,8 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
-from django.contrib.sitemaps.views import sitemap
-from products.sitemaps import ProductSitemap, CategorySitemap, SubcategorySitemap, StaticViewSitemap
 from cart import order_views as cart_order_views
+from cart.sitemap_views import dynamic_sitemap
 from django.http import JsonResponse
 from django.db import connection
 from django.views.decorators.csrf import csrf_exempt
@@ -66,13 +65,9 @@ urlpatterns = [
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
-    # Sitemap
-    path('sitemap.xml', sitemap, {'sitemaps': {
-        'products': ProductSitemap(),
-        'categories': CategorySitemap(),
-        'subcategories': SubcategorySitemap(),
-        'static': StaticViewSitemap(),
-    }}, name='sitemap'),
+    
+    # Dynamic Sitemap (SEO)
+    path('sitemap.xml', dynamic_sitemap, name='sitemap'),
 ]
 
 # Serve media files during development

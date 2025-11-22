@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import SEO from '@/components/SEO';
 import { useProducts } from '@/hooks/useApi';
 import ProductCard from '@/components/ui/ProductCard';
 import Loading from '@/components/ui/Loading';
@@ -32,8 +33,19 @@ const Products = () => {
     return 'Produtos';
   }, [category, subcategory, search, products]);
 
+  const seoDescription = useMemo(() => {
+    if (search) return `Produtos encontrados para "${search}" na MUTIT PAY - Boutique de luxo em Moçambique`;
+    if (category) return `Explore nossa coleção de ${title} - Marcas premium com entrega em todo Moçambique`;
+    return 'Descubra toda nossa coleção de produtos de luxo - Marcas premium internacionais com entrega em Moçambique';
+  }, [search, category, title]);
+
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title={`${title} | MUTIT PAY`}
+        description={seoDescription}
+        url={`https://mutitpay.com/produtos${category ? `?category=${category}` : ''}`}
+      />
       <Header />
       <main className="container mx-auto px-4 py-8 pt-24 md:pt-28">
         <h1 className="text-2xl font-bold mb-6">{title}</h1>

@@ -1,11 +1,18 @@
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import SEO from '@/components/SEO';
 import { Card } from "@/components/ui/card";
 import { Shield, Package, Award, Headphones, Users, Target, Heart, TrendingUp } from "lucide-react";
 
 const About = () => {
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title="Sobre Nós | MUTIT PAY - Boutique de Luxo em Moçambique"
+        description="Conheça a MUTIT PAY, a boutique de luxo premium em Moçambique. Oferecemos produtos autênticos das marcas mais prestigiadas do mundo com entrega em Pemba e todo Moçambique."
+        url="https://mutitpay.com/sobre"
+        keywords="boutique luxo Moçambique, sobre MUTIT PAY, história boutique, loja premium Pemba, marcas luxo Moçambique"
+      />
       <Header />
       
       <main>
