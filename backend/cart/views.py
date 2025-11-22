@@ -1518,7 +1518,7 @@ def paysuite_webhook(request):
                         else:
                             # Fallback: create items from the cart snapshot
                             if payment.cart:
-                                for ci in payment.cart.items.select_related('product', 'color').all():
+                                for ci in payment.cart.items.select_related('product', 'color', 'size').all():
                                     try:
                                         qty = ci.quantity
                                         unit_price = ci.price
@@ -2034,12 +2034,11 @@ def payment_status(request, order_id: int):
                                                     logger.info(f"✅ Created OrderItem: {it.get('name', 'Product')}")
                                                 except Exception as e:
                                                     logger.exception(f"❌ Failed to create OrderItem: {e}")
-                                        else:
                                             # Fallback: try to get from cart
                                             cart = latest_payment.cart
                                             if cart and cart.items.exists():
                                                 logger.info(f"🛒 Fallback: creating items from cart {cart.id}")
-                                                for ci in cart.items.select_related('product', 'color').all():
+                                                for ci in cart.items.select_related('product', 'color', 'size').all():
                                                     try:
                                                         product_image = ''
                                                         if ci.product and hasattr(ci.product, 'images') and ci.product.images.exists():

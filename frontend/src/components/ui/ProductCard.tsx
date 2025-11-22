@@ -104,7 +104,7 @@ const ProductCard = ({ product, compactPrice = false }: ProductCardProps) => {
           {/* Stock status badge - Apenas se esgotado */}
           {product.stock_quantity === 0 && (
             <div className="absolute bottom-2 left-2 md:top-2 md:right-2 md:bottom-auto md:left-auto z-10">
-              <Badge variant="destructive" className="text-[10px] sm:text-xs px-2 py-0.5 sm:px-2.5 sm:py-1 shadow-md">
+              <Badge variant="destructive" className="text-[10px] sm:text-xs px-2 py-0.5 sm:px-2.5 sm:py-1 shadow-lg bg-red-600 text-white font-bold border-2 border-white">
                 Esgotado
               </Badge>
             </div>
