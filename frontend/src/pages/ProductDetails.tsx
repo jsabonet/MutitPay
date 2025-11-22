@@ -44,6 +44,9 @@ const ProductDetails = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedColorId, setSelectedColorId] = useState<number | null>(null);
   const [selectedSizeId, setSelectedSizeId] = useState<number | null>(null);
+  // State for touch/swipe handling
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
   // State for sorting/filtering reviews (moved here to ensure hooks run in same order)
   const [sort, setSort] = useState('recent');
   const [filter, setFilter] = useState('all');
@@ -98,6 +101,32 @@ const ProductDetails = () => {
   const selectImage = (image: string, index: number) => {
     setSelectedImage(image);
     setCurrentImageIndex(index);
+  };
+
+  // Swipe handling for mobile
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+    
+    if (isLeftSwipe) {
+      navigateImage('next');
+    } else if (isRightSwipe) {
+      navigateImage('prev');
+    }
   };
 
   // Update selected image when product loads
@@ -404,26 +433,27 @@ const ProductDetails = () => {
           </div>
         )}
         {/* Breadcrumb */}
-        <nav className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground mb-8">
-          <Link to="/" className="hover:text-accent transition-colors font-medium">Início</Link>
+        <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6 overflow-x-auto pb-2 scrollbar-hide">
+          <Link to="/" className="hover:text-accent transition-colors font-medium whitespace-nowrap flex-shrink-0">Início</Link>
+          <span className="text-muted-foreground/50 flex-shrink-0">/</span>
           {categoryId ? (
-            <Link to={`/products?category=${categoryId}`} className="hover:text-accent transition-colors font-medium">{categoryName}</Link>
+            <Link to={`/products?category=${categoryId}`} className="hover:text-accent transition-colors font-medium whitespace-nowrap flex-shrink-0">{categoryName}</Link>
           ) : (
-            <span className="hover:text-accent transition-colors font-medium">{categoryName || 'Categoria'}</span>
+            <span className="hover:text-accent transition-colors font-medium whitespace-nowrap flex-shrink-0">{categoryName || 'Categoria'}</span>
           )}
           {subcategoryId && subcategoryName ? (
             <>
-              <span className="text-muted-foreground/50">/</span>
+              <span className="text-muted-foreground/50 flex-shrink-0">/</span>
               <Link
                 to={`/products?category=${categoryId}&subcategory=${subcategoryId}`}
-                className="hover:text-accent transition-colors font-medium"
+                className="hover:text-accent transition-colors font-medium whitespace-nowrap flex-shrink-0"
               >
                 {subcategoryName}
               </Link>
             </>
           ) : null}
-          <span className="text-muted-foreground/50">/</span>
-          <span className="text-foreground break-words font-semibold">{product.name}</span>
+          <span className="text-muted-foreground/50 flex-shrink-0">/</span>
+          <span className="text-foreground font-semibold whitespace-nowrap flex-shrink-0 max-w-[200px] sm:max-w-none truncate">{product.name}</span>
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-8">
@@ -431,15 +461,21 @@ const ProductDetails = () => {
           <div className="space-y-4 lg:space-y-6">
             {/* Main Image with Navigation */}
             <div className="relative group">
-              <div className="aspect-square rounded-2xl overflow-hidden md:glass-card border-2 border-border/50 hover:border-accent/50 transition-colors duration-300">
+              <div 
+                className="aspect-square rounded-2xl overflow-hidden md:glass-card border-2 border-border/50 hover:border-accent/50 transition-colors duration-300 touch-pan-y"
+                onTouchStart={onTouchStart}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchEnd}
+              >
                 <img
                   src={getImageUrl(selectedImage)}
                   alt={product.name}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 select-none"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
                     target.src = "/placeholder.svg";
                   }}
+                  draggable="false"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
@@ -450,16 +486,18 @@ const ProductDetails = () => {
                   <Button
                     variant="secondary"
                     size="icon"
-                    className="absolute left-4 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 md:glass-card hover:bg-accent/10 z-10 hover:scale-110"
+                    className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300 md:glass-card hover:bg-accent/10 z-10 hover:scale-110 bg-white/90 md:bg-white/70"
                     onClick={() => navigateImage('prev')}
+                    aria-label="Imagem anterior"
                   >
                     <ChevronLeft className="h-4 w-4 text-gray-700" />
                   </Button>
                   <Button
                     variant="secondary"
                     size="icon"
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 md:glass-card hover:bg-accent/10 z-10 hover:scale-110"
+                    className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300 md:glass-card hover:bg-accent/10 z-10 hover:scale-110 bg-white/90 md:bg-white/70"
                     onClick={() => navigateImage('next')}
+                    aria-label="Próxima imagem"
                   >
                     <ChevronRight className="h-4 w-4 text-foreground" />
                   </Button>
