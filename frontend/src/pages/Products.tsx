@@ -35,12 +35,12 @@ const Products = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-8 pt-24 md:pt-28">
         <h1 className="text-2xl font-bold mb-6">{title}</h1>
         {loading && <Loading label="Carregando produtos..." />}
         {error && <div className="text-red-600">Erro: {error}</div>}
         {!loading && !error && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
             {products?.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}

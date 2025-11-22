@@ -54,7 +54,7 @@ const BestSellers = () => {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
             {[...Array(4)].map((_, index) => (
               <div key={index} className="glass-card p-4 md:p-6 space-y-4" style={{ animationDelay: `${index * 0.1}s` }}>
                 <Skeleton className="h-48 md:h-64 w-full rounded-lg" />
@@ -66,7 +66,7 @@ const BestSellers = () => {
           </div>
         ) : Array.isArray(products) && products.length > 0 ? (
           <>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
               {products.slice(0, 8).map((product, index) => (
                 <div key={product.id} style={{ animationDelay: `${index * 0.1}s` }} className="animate-fade-in relative">
                   {/* Badge para Best Seller */}

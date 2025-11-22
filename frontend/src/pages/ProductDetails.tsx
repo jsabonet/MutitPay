@@ -425,7 +425,7 @@ const ProductDetails = () => {
         })()}
       </Helmet>
       <Header />
-      <main className="pt-20 pb-16">
+      <main className="pt-24 md:pt-28 pb-16">
         <div className="container mx-auto px-6">
         {isPreview && (
           <div className="mb-4 rounded-md border border-yellow-300 bg-yellow-50 px-4 py-2 text-sm text-yellow-800">
