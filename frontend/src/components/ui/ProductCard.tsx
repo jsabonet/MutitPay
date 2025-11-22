@@ -138,16 +138,16 @@ const ProductCard = ({ product, compactPrice = false }: ProductCardProps) => {
                 )}
               </div>
               
-              {/* Botão mobile - Ícone apenas */}
+              {/* Botão mobile - Compacto */}
               <div className="flex sm:hidden">
                 <Button
                   variant="gold"
                   size="sm"
                   onClick={handleAddToCart}
                   disabled={product.stock_quantity === 0}
-                  className="w-full h-8 px-2 text-xs"
+                  className="w-full h-7 px-2 text-[10px] py-0"
                 >
-                  <ShoppingCart className="h-3.5 w-3.5 mr-1.5" />
+                  <ShoppingCart className="h-3 w-3 mr-1" />
                   <span className="truncate">Adicionar</span>
                 </Button>
               </div>
