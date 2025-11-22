@@ -255,7 +255,6 @@ const EditProduct = () => {
         }
       }
     } catch (error) {
-      console.error('Error removing image:', error);
       setErrorMessage('Erro ao remover imagem');
     }
   };
@@ -402,7 +401,6 @@ const EditProduct = () => {
         navigate('/admin/products');
       }, 2000);
     } catch (error) {
-      console.error('Error updating product:', error);
       setErrorMessage('Erro ao atualizar produto. Tente novamente.');
     }
   };

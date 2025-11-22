@@ -278,15 +278,9 @@ class ApiClient {
         authHeaders = {
           'Authorization': `Bearer ${token}`,
         };
-        console.log('[Auth] Request authorized:', {
-          endpoint,
-          tokenPrefix: token.substring(0, 10) + '...'
-        });
-      } else {
-        console.warn('[Auth] No auth token available for request:', endpoint);
       }
     } catch (error) {
-      console.warn('Could not get Firebase token:', error);
+      // Authentication optional
     }
     
     // Try to include CSRF token (for Django session auth) and send cookies
@@ -362,10 +356,9 @@ class ApiClient {
         let errorMessage = `HTTP error! status: ${response.status}`;
         try {
           const errorData = await response.json();
-          console.error('API Error Details:', errorData);
           errorMessage += ` - ${JSON.stringify(errorData)}`;
         } catch (jsonError) {
-          console.error('Failed to parse error response as JSON');
+          // Failed to parse error response
         }
         throw new Error(errorMessage);
       }
@@ -383,7 +376,6 @@ class ApiClient {
 
       return await response.json();
     } catch (error) {
-      console.error('API request failed:', error);
       throw error;
     }
   }
@@ -399,7 +391,6 @@ class ApiClient {
   }
 
   async post<T>(endpoint: string, data: any): Promise<T> {
-    console.log('API POST to:', endpoint, 'with data:', data);
     return this.request<T>(endpoint, {
       method: 'POST',
       body: JSON.stringify(data),
@@ -407,7 +398,6 @@ class ApiClient {
   }
 
   async put<T>(endpoint: string, data: any): Promise<T> {
-    console.log('API PUT to:', endpoint, 'with data:', data);
     return this.request<T>(endpoint, {
       method: 'PUT',
       body: JSON.stringify(data),
@@ -457,10 +447,9 @@ class ApiClient {
         let errorMessage = `HTTP error! status: ${response.status}`;
         try {
           const errorData = await response.json();
-          console.error('API Error Details:', errorData);
           errorMessage += ` - ${JSON.stringify(errorData)}`;
         } catch (jsonError) {
-          console.error('Failed to parse error response as JSON');
+          // Failed to parse error response
         }
         throw new Error(errorMessage);
       }
@@ -472,7 +461,6 @@ class ApiClient {
       
       return await response.json();
     } catch (error) {
-      console.error('API request failed:', error);
       throw error;
     }
   }
@@ -504,7 +492,6 @@ class ApiClient {
         let errorMessage = `HTTP error! status: ${response.status}`;
         try {
           const errorData = await response.json();
-          console.error('API Error Details:', errorData);
           errorMessage += ` - ${JSON.stringify(errorData)}`;
         } catch {}
         throw new Error(errorMessage);
@@ -515,7 +502,6 @@ class ApiClient {
       }
       return await response.json();
     } catch (error) {
-      console.error('API request failed:', error);
       throw error;
     }
   }

@@ -115,7 +115,6 @@ export function useExport(): UseExportReturn {
       const errorMessage = err instanceof Error ? err.message : 'Erro desconhecido';
       setError(errorMessage);
       toast.error(`Erro ao exportar: ${errorMessage}`);
-      console.error('Export error:', err);
     } finally {
       setIsExporting(false);
     }

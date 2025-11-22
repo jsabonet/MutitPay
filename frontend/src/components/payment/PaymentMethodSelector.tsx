@@ -72,7 +72,7 @@ export default function PaymentMethodSelector({ isOpen, onClose, onSubmit, total
       // Parent (Cart) will redirect user to the checkout/details page where full info is collected.
       await onSubmit({ method: selectedMethod });
     } catch (error) {
-      console.error('Payment submission error:', error);
+      // Payment submission error
     } finally {
       setLoading(false);
     }

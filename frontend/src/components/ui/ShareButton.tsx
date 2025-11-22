@@ -99,7 +99,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
         setIsOpen(false);
       } catch (error) {
         // User cancelled sharing or share failed
-        console.log('Share cancelled or failed');
+        
       }
     }
   };

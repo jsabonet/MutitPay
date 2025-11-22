@@ -38,7 +38,7 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = ({
     try {
       await toggleFavorite(productId);
     } catch (error) {
-      console.error('Error toggling favorite:', error);
+      // Error toggling favorite
     }
   };
 

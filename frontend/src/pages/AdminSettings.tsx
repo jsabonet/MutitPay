@@ -87,7 +87,7 @@ const AdminSettings = () => {
         throw e;
       }
       // For other errors, fall back to fetch implementation below
-      console.warn('apiClient request failed, falling back to fetch', e);
+      
     }
 
     // Build absolute URL for fallback fetch
@@ -117,7 +117,7 @@ const AdminSettings = () => {
           setSettings((s: any) => ({ ...s, shippingMethods: data.map((m: any) => ({ ...m, isEditing: false })) }));
         }
       } catch (err) {
-        console.warn('Failed to load shipping methods', err);
+        
       } finally {
         if (mounted) setIsLoading(false);
       }
@@ -135,7 +135,7 @@ const AdminSettings = () => {
         setCoupons(data);
       }
     } catch (err) {
-      console.error('Failed to load coupons', err);
+      
       toast({ title: 'Erro', description: 'Não foi possível carregar os cupons.', variant: 'destructive' });
     } finally {
       setIsCouponsLoading(false);
@@ -227,7 +227,7 @@ const AdminSettings = () => {
         }));
       }
     } catch (err) {
-      console.error('Save shipping method failed', err);
+      
       toast({ title: 'Erro', description: 'Não foi possível salvar o método de envio.' });
     } finally {
       setIsSaving(false);
@@ -245,7 +245,7 @@ const AdminSettings = () => {
       await safeFetch(`/cart/admin/shipping-methods/${id}/`, { method: 'DELETE' });
       setSettings((s: any) => ({ ...s, shippingMethods: (s.shippingMethods || []).filter((m: any) => m.id !== id) }));
     } catch (err) {
-      console.error('Delete shipping method failed', err);
+      
       toast({ title: 'Erro', description: 'Não foi possível remover o método de envio.' });
     }
   };
@@ -317,8 +317,7 @@ const AdminSettings = () => {
       setEditingCoupon(null);
       setIsCreatingCoupon(false);
     } catch (err: any) {
-      console.error('Save coupon failed', err);
-      
+
       // Try to extract error message from response
       let errorMessage = 'Não foi possível salvar o cupom.';
       if (err?.message && err.message.includes('already exists')) {
@@ -339,7 +338,7 @@ const AdminSettings = () => {
       setCoupons(coupons.filter(c => c.id !== id));
       toast({ title: 'Sucesso', description: 'Cupom excluído com sucesso!' });
     } catch (err) {
-      console.error('Delete coupon failed', err);
+      
       toast({ title: 'Erro', description: 'Não foi possível excluir o cupom.', variant: 'destructive' });
     }
   };

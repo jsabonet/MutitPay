@@ -37,7 +37,6 @@ export function useAdminStatus() {
           const email = (currentUser as any).email || '';
           if (email && list.includes(email.toLowerCase())) {
             const envAdmin: AdminStatus = { isAdmin: true, isProtectedAdmin: true, canManageAdmins: true };
-            console.debug('[useAdminStatus] Instant admin from VITE_FIREBASE_ADMIN_EMAILS for', email);
             setAdminStatus(envAdmin);
             try {
               const uid = (currentUser as any).uid;
@@ -101,9 +100,7 @@ export function useAdminStatus() {
       while (attempt < maxAttempts) {
         attempt += 1;
         try {
-          console.debug('[useAdminStatus] Checking status for user:', currentUser.email, 'attempt', attempt);
           const response = await apiClient.get<AdminStatus>('/admin/check-status/');
-          console.debug('[useAdminStatus] /admin/check-status response:', response);
           setAdminStatus(response);
           // Persist authoritative status in sessionStorage for instant future renders
           try {
@@ -117,7 +114,6 @@ export function useAdminStatus() {
         } catch (err: any) {
           lastErr = err;
           const msg = String(err?.message || err);
-          console.warn('[useAdminStatus] attempt', attempt, 'failed:', msg);
           // If unauthorized, wait and retry (maybe token not ready). If other error
           // (500, 404, etc.) don't retry more than once.
           const isAuthError = msg.includes('status: 401') || msg.toLowerCase().includes('não autenticado') || msg.toLowerCase().includes('unauthorized');
@@ -129,7 +125,6 @@ export function useAdminStatus() {
       }
 
       if (lastErr) {
-        console.error('Erro ao verificar status de admin após tentativas:', lastErr);
         setError('Erro ao verificar permissões de administrador');
       }
       setLoading(false);

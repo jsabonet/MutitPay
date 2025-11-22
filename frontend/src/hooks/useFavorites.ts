@@ -38,7 +38,7 @@ const getAuthHeaders = async (): Promise<HeadersInit> => {
       };
     }
   } catch (error) {
-    console.warn('Could not get Firebase token:', error);
+    // Could not get Firebase token
   }
   
   return headers;
@@ -209,7 +209,7 @@ export const useFavoriteStatus = (productId?: number) => {
       const result = await favoritesApi.checkFavorite(id);
       setIsFavorite(result.is_favorite);
     } catch (err) {
-      console.error('Failed to check favorite status:', err);
+      // Failed to check favorite status
     } finally {
       setLoading(false);
     }

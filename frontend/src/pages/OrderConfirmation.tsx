@@ -61,7 +61,7 @@ export default function OrderConfirmation() {
         clearCart();
         clearedRef.current = true;
       } catch (e) {
-        console.warn('Failed to clear local cart after payment confirmation', e);
+        // Failed to clear local cart after payment confirmation
       }
     }
   }, [status, clearCart]);
@@ -80,10 +80,8 @@ export default function OrderConfirmation() {
         
         // Check if order exists (may be null if not yet created after payment)
         if (!res.order) {
-          console.log('⏳ Order not yet created, payment still processing...');
           const latestPayment = res.payments?.[0];
           if (latestPayment) {
-            console.log('💳 Payment status:', latestPayment.status);
             // Use payment status when order doesn't exist yet
             const paymentStatus = latestPayment.status;
             if (paymentStatus === 'paid' || paymentStatus === 'failed' || paymentStatus === 'cancelled') {
@@ -101,37 +99,18 @@ export default function OrderConfirmation() {
         let effectiveStatus: OrderStatus = res.order.status;
         
         if (latestPayment) {
-          console.log('💳 Latest Payment:', {
-            id: latestPayment.id,
-            status: latestPayment.status,
-            method: latestPayment.method,
-            paysuite_reference: latestPayment.paysuite_reference
-          });
-          
           // Se payment está paid/failed/cancelled, usar esse status
           // porque o webhook atualiza payment primeiro
           if (latestPayment.status === 'paid' || 
               latestPayment.status === 'failed' || 
               latestPayment.status === 'cancelled') {
             effectiveStatus = latestPayment.status as OrderStatus;
-            console.log(`✅ Using payment.status: ${latestPayment.status} (order.status was: ${res.order.status})`);
           }
         }
-        
-        // Log detalhado para debug
-        console.log('📊 Poll Response:', {
-          order_id: res.order.id,
-          order_status: res.order.status,
-          payment_status: latestPayment?.status,
-          effective_status: effectiveStatus,
-          payments: res.payments.map((p: any) => ({ id: p.id, status: p.status, method: p.method })),
-          timestamp: new Date().toLocaleTimeString()
-        });
         
         setStatus(effectiveStatus);
       } catch (e: any) {
         if (cancelled) return;
-        console.error('❌ Poll Error:', e);
         setError(e?.message || 'Falha ao consultar status do pagamento');
       }
     };
@@ -145,7 +124,6 @@ export default function OrderConfirmation() {
       if (elapsed > 2 * 60 * 1000) {
         // Timeout: marca como failed após 2 minutos sem confirmação
         if (status === 'pending' || status === 'processing') {
-          console.warn('⏰ TIMEOUT: 2 minutos sem confirmação - marcando como failed');
           setStatus('failed');
           setError('Tempo de confirmação excedido. Por favor, verifique o status do seu pagamento ou tente novamente.');
         }

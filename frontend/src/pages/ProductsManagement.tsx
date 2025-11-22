@@ -123,7 +123,7 @@ const ProductsManagement = () => {
       refreshProducts();
       navigate(`/admin/products/edit/${duplicated.id}`);
     } catch (error) {
-      console.error(error);
+      
       setErrorMessage('Erro ao duplicar produto.');
     }
   };

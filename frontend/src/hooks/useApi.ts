@@ -393,13 +393,10 @@ export const useCreateProduct = () => {
     try {
       setLoading(true);
       setError(null);
-      console.log('API: Creating product with data:', productData);
       const response = await productApi.createProduct(productData);
-      console.log('API: Product created successfully:', response);
       return response;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to create product';
-      console.error('API: Error creating product:', err);
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {

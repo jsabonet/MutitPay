@@ -53,8 +53,7 @@ const Register = () => {
       await signup(email, password, displayName);
       navigate('/');
     } catch (err: any) {
-      console.error('Registration error:', err);
-      
+
       // Firebase error handling
       switch (err.code) {
         case 'auth/email-already-in-use':
@@ -224,7 +223,7 @@ const Register = () => {
                       await loginWithGoogle();
                       navigate('/');
                     } catch (err: any) {
-                      console.error('Google signup error:', err);
+                      
                       if (err?.code === 'auth/popup-closed-by-user') {
                         setError('Janela de login fechada antes de concluir.');
                       } else if (err?.code === 'auth/cancelled-popup-request') {

@@ -123,7 +123,6 @@ const AccountOrders = () => {
       const data = await response.json();
       setOrders(data.orders || []);
     } catch (error: any) {
-      console.error('Error fetching orders:', error);
       toast({
         title: 'Erro',
         description: 'Não foi possível carregar seus pedidos.',
@@ -153,7 +152,6 @@ const AccountOrders = () => {
       const orderData = await response.json();
       setSelectedOrder(orderData);
     } catch (error: any) {
-      console.error('Error fetching order details:', error);
       toast({
         title: 'Erro',
         description: 'Não foi possível carregar os detalhes do pedido.',
@@ -190,7 +188,6 @@ const AccountOrders = () => {
         description: 'Pedido cancelado com sucesso.',
       });
     } catch (error: any) {
-      console.error('Error cancelling order:', error);
       toast({
         title: 'Erro',
         description: error.message || 'Não foi possível cancelar o pedido.',

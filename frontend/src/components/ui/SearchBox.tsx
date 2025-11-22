@@ -45,7 +45,7 @@ export const SearchBox: React.FC<SearchBoxProps> = ({ fullWidth = false }) => {
           setOnSaleProducts(sales);
         }
       } catch (error) {
-        console.error('Erro ao carregar recomendações:', error);
+        
       }
     };
 
@@ -74,7 +74,7 @@ export const SearchBox: React.FC<SearchBoxProps> = ({ fullWidth = false }) => {
           setSearchResults(results);
         }
       } catch (error) {
-        console.error('Erro na busca:', error);
+        
       } finally {
         if (active) {
           setLoading(false);

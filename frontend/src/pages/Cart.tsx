@@ -58,7 +58,6 @@ const Cart = () => {
         description: `Desconto de ${formatPrice(validation.discount_amount)} aplicado.`,
       });
     } catch (error) {
-      console.error('Error validating coupon:', error);
       toast({
         title: 'Erro',
         description: 'Não foi possível validar o cupom.',

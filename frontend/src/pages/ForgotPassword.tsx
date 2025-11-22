@@ -28,7 +28,6 @@ const ForgotPassword = () => {
       await resetPassword(email);
       setMessage('Se este email estiver cadastrado, enviamos um link para redefinição de senha.');
     } catch (err: any) {
-      console.error('Password reset error:', err);
       if (err?.code === 'auth/user-not-found') {
         // We intentionally show a generic message for security, but could customize.
         setMessage('Se este email estiver cadastrado, enviamos um link para redefinição de senha.');

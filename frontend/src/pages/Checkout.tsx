@@ -247,7 +247,7 @@ export default function Checkout() {
         }
       } catch (e) {
         // ignore failures and keep static defaults
-        console.warn('Failed to load shipping methods', e);
+        
       }
     })();
     return () => { mounted = false; };
@@ -292,7 +292,6 @@ export default function Checkout() {
       return false;
     }
   };
-
 
   const handleAddressChange = (field: keyof ShippingAddress, value: string) => {
     setShippingAddress(prev => ({
@@ -419,7 +418,6 @@ export default function Checkout() {
         }
       } catch (e) {
         // Do not block checkout on profile save failure
-        console.warn('Failed to persist profile during checkout', e);
       }
 
   // NOTE: do NOT clear the cart here — cart should only be cleared after the payment
@@ -436,7 +434,6 @@ export default function Checkout() {
       }
 
     } catch (error: any) {
-      console.error('Error creating order:', error);
       toast({
         title: 'Erro ao processar pedido',
         description: error.message || 'Tente novamente mais tarde.',

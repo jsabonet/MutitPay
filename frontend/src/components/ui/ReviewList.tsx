@@ -13,9 +13,6 @@ import ImageLightbox from '@/components/ui/ImageLightbox';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import ReviewFormModal from '@/components/ui/ReviewFormModal';
 
-
-
-
 export type ReviewSortOption = 'recent' | 'highest' | 'lowest' | 'helpful';
 
 interface ReviewListProps {
@@ -69,7 +66,7 @@ const ReviewList: React.FC<ReviewListProps> = ({
       }
       setHasMore(Boolean(data.next));
     } catch (error) {
-      console.error('Error loading reviews:', error);
+      
     } finally {
       setLoading(false);
     }
@@ -94,7 +91,7 @@ const ReviewList: React.FC<ReviewListProps> = ({
       const res = await api.post<any>(`/reviews/${reviewId}/helpful/`, {});
       setReviews(prev => prev.map(r => r.id === reviewId ? { ...r, helpful_count: res.helpful_count, user_has_voted_helpful: res.user_has_voted_helpful } as any : r));
     } catch (e) {
-      console.error('Error toggling helpful:', e);
+      
     }
   };
 
@@ -110,7 +107,7 @@ const ReviewList: React.FC<ReviewListProps> = ({
       // Optimistically remove from list
       setReviews(prev => prev.filter(r => r.id !== review.id));
     } catch (e) {
-      console.error('Failed to delete review', e);
+      
     } finally {
       setDeleting(null);
     }

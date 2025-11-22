@@ -33,10 +33,8 @@ export function usePayments() {
       if (!res.ok) throw new Error('Falha ao sincronizar carrinho');
       const json = await res.json().catch(() => ({} as any));
       const warnings = Array.isArray(json?.warnings) ? json.warnings : [];
-      console.log('🔄 Cart synced with server', warnings.length ? { warnings } : '');
       return { cart: json, warnings } as { cart: any; warnings: any[] };
     } catch (e) {
-      console.warn('⚠️ Cart sync failed (continuing):', e);
       return { cart: null, warnings: [] };
     }
   };
@@ -47,7 +45,6 @@ export function usePayments() {
       const user = auth.currentUser;
       if (user) {
         const token = await user.getIdToken();
-        console.log('🔐 Using Firebase token for payment request');
         return { Authorization: `Bearer ${token}` } as Record<string, string>;
       }
     } catch (e) {
@@ -55,7 +52,6 @@ export function usePayments() {
     }
     
     // Fallback: No user, no auth
-    console.log('⚠️ No Firebase user found, proceeding without authentication for payment request.');
     return {} as Record<string, string>;
   };
 
@@ -91,7 +87,6 @@ export function usePayments() {
       
       const authHeaders = await getAuthHeaders();
       const url = `${API_BASE_URL}/cart/payments/initiate/`;
-      console.log('💳 Initiating payment:', { method, url, headers: Object.keys(authHeaders) });
       
       const requestBody: any = {
         method,

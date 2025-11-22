@@ -156,7 +156,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
       }
     } catch (e) {
-      console.warn('Falha ao carregar carrinho', e);
+      // Failed to load cart
     }
   }, []); // Only on mount
 
@@ -190,7 +190,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
           dispatch({ type: 'SET', payload: userCart });
         }
       } catch (e) {
-        console.warn('Falha ao sincronizar carrinho', e);
+        // Failed to sync cart
       }
     }
   }, [currentUser?.uid]);
@@ -201,7 +201,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const key = getStorageKey(currentUser?.uid);
       localStorage.setItem(key, JSON.stringify(state));
     } catch (e) {
-      console.warn('Falha ao salvar carrinho', e);
+      // Failed to save cart
     }
   }, [state, currentUser?.uid]);
 

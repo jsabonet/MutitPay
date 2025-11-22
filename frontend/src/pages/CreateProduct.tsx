@@ -292,17 +292,13 @@ const CreateProduct = () => {
 
       // First create the product
       const createdProduct = await createProduct(productData);
-      console.log('Product created:', createdProduct);
       
       // Then upload images if any exist
       if (mainImage || thumbnails.length > 0) {
         // Extract product ID from response - handle different response structures
         const productId = createdProduct?.id || (createdProduct as any)?.data?.id;
         
-        console.log('Extracted product ID:', productId, 'from response:', createdProduct);
-        
         if (!productId) {
-          console.error('No product ID found in response:', createdProduct);
           setErrorMessage('Produto criado, mas houve erro ao obter ID para upload das imagens. Você pode adicioná-las depois na edição.');
           setSuccessMessage('Produto criado com sucesso!');
           setTimeout(() => navigate('/admin/products'), 2000);
@@ -322,7 +318,6 @@ const CreateProduct = () => {
             mainImageFormData.append('is_main', 'true');
             mainImageFormData.append('order', '1');
             
-            console.log('Uploading main image with product ID:', productId);
             uploadPromises.push(productImageApi.uploadImage(mainImageFormData));
           }
           
@@ -335,14 +330,11 @@ const CreateProduct = () => {
             thumbnailFormData.append('is_main', 'false');
             thumbnailFormData.append('order', (index + 2).toString());
             
-            console.log(`Uploading thumbnail ${index + 1} with product ID:`, productId);
             uploadPromises.push(productImageApi.uploadImage(thumbnailFormData));
           });
           
           await Promise.all(uploadPromises);
-          console.log('All images uploaded successfully');
         } catch (imageError) {
-          console.error('Error uploading images:', imageError);
           setErrorMessage('Produto criado, mas houve erro no upload das imagens. Você pode adicioná-las depois na edição.');
         }
       }
@@ -353,7 +345,6 @@ const CreateProduct = () => {
         navigate('/admin/products');
       }, 2000);
     } catch (error) {
-      console.error('Error creating product:', error);
       setErrorMessage('Erro ao criar produto. Tente novamente.');
     }
   };

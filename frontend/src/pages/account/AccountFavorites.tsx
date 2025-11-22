@@ -38,7 +38,7 @@ const AccountFavorites = () => {
     try {
       await removeFromFavorites(productId);
     } catch (error) {
-      console.error('Error removing favorite:', error);
+      // Error removing favorite
     }
   };
 

@@ -41,7 +41,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       await logout();
       navigate('/login');
     } catch (error) {
-      console.error('Erro ao fazer logout:', error);
+      // Error logging out
     }
   };
 

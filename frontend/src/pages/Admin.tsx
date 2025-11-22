@@ -183,7 +183,7 @@ const QuickStats = () => {
           setCustomersCount(res.count);
         }
       } catch (err) {
-        console.error('Failed to fetch customers count', err);
+        // Failed to fetch customers count
       }
     };
 
@@ -222,7 +222,7 @@ const QuickStats = () => {
           }
         }
       } catch (err) {
-        console.error('Failed to fetch orders stats', err);
+        // Failed to fetch orders stats
       } finally {
         setLoadingToday(false);
       }

@@ -35,7 +35,7 @@ const ReviewManagement = () => {
       const data = response as { results?: (Review & { product_name?: string })[] };
       setReviews(data.results ?? (data as any[]));
     } catch (error) {
-      console.error('Error loading reviews:', error);
+      
       // If API returns 403, inform the user they need admin privileges
       const err = (error as any);
       const msg = err?.message || 'Não foi possível carregar as avaliações.';

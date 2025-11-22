@@ -40,7 +40,6 @@ const Login = () => {
       await login(email, password);
       navigate('/');
     } catch (err: any) {
-      console.error('Login error:', err);
       
       // Firebase error handling
       switch (err.code) {
@@ -87,7 +86,6 @@ const Login = () => {
       await resetPassword(forgotEmail);
       setForgotSuccess('Se o email estiver cadastrado, enviamos um link para redefinir sua senha. Verifique sua caixa de entrada.');
     } catch (err: any) {
-      console.error('Reset password error:', err);
       switch (err?.code) {
         case 'auth/invalid-email':
           setForgotError('Email inválido.');
@@ -218,7 +216,6 @@ const Login = () => {
                       await loginWithGoogle();
                       navigate('/');
                     } catch (err: any) {
-                      console.error('Google login error:', err);
                       if (err?.code === 'auth/popup-closed-by-user') {
                         setError('Janela de login fechada antes de concluir.');
                       } else if (err?.code === 'auth/cancelled-popup-request') {

@@ -127,18 +127,32 @@ const ProductCard = ({ product, compactPrice = false }: ProductCardProps) => {
             {/* Price Section - Sempre inline */}
             <div className="mt-auto pt-1 sm:pt-2">
               {/* Preços sempre inline */}
-              <div className="flex items-baseline gap-2 mb-2 sm:mb-3">
+              <div className="flex items-baseline gap-1.5 sm:gap-2 mb-2 sm:mb-3">
                 <span className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-gradient-gold whitespace-nowrap">
                   {formatPrice(product.price)}
                 </span>
                 {product.original_price && product.original_price !== product.price && (
-                  <span className="text-xs sm:text-sm text-muted-foreground line-through whitespace-nowrap">
+                  <span className="text-[10px] sm:text-sm text-muted-foreground line-through whitespace-nowrap">
                     {formatPrice(product.original_price)}
                   </span>
                 )}
               </div>
               
-              {/* Stock Badge e Botão - Ocultos em mobile */}
+              {/* Botão mobile - Ícone apenas */}
+              <div className="flex sm:hidden">
+                <Button
+                  variant="gold"
+                  size="sm"
+                  onClick={handleAddToCart}
+                  disabled={product.stock_quantity === 0}
+                  className="w-full h-8 px-2 text-xs"
+                >
+                  <ShoppingCart className="h-3.5 w-3.5 mr-1.5" />
+                  <span className="truncate">Adicionar</span>
+                </Button>
+              </div>
+
+              {/* Stock Badge e Botão - Desktop */}
               <div className="hidden sm:flex items-center justify-between gap-2">
                 {/* Stock Badge - Apenas desktop */}
                 <div className="flex-shrink-0">
@@ -154,7 +168,7 @@ const ProductCard = ({ product, compactPrice = false }: ProductCardProps) => {
                   )}
                 </div>
                 
-                {/* Add to cart button - Apenas desktop */}
+                {/* Add to cart button - Desktop */}
                 <Button
                   variant="gold"
                   size="sm"

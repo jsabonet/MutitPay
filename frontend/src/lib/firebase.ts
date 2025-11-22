@@ -17,20 +17,10 @@ const firebaseConfig = {
 
 // Debug: print firebase config at runtime to validate configuration (remove in production)
 try {
-  // eslint-disable-next-line no-console
-  console.debug('[Firebase] config:', {
-    apiKey_present: Boolean(firebaseConfig.apiKey),
-    apiKey_prefix: firebaseConfig.apiKey ? `${firebaseConfig.apiKey.slice(0,8)}...` : null,
-    authDomain: firebaseConfig.authDomain,
-    projectId: firebaseConfig.projectId,
-  });
-
   // Initialize Firebase
   var app = initializeApp(firebaseConfig);
 } catch (err) {
   // Provide clearer runtime error when initialization fails (e.g., invalid API key)
-  // eslint-disable-next-line no-console
-  console.error('[Firebase] initialization error:', err);
   throw err;
 }
 

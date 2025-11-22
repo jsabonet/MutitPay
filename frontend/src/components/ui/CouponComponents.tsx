@@ -49,7 +49,7 @@ export const CouponInput: React.FC<CouponInputProps> = ({ onCouponApplied }) => 
       onCouponApplied?.(couponCode.trim(), validation.discount_amount);
       setCouponCode('');
     } catch (error) {
-      console.error('Error applying coupon:', error);
+      // Error applying coupon
     } finally {
       setIsValidating(false);
     }
@@ -130,7 +130,7 @@ export const AppliedCoupon: React.FC<AppliedCouponProps> = ({
       await removeCoupon();
       onRemove();
     } catch (error) {
-      console.error('Error removing coupon:', error);
+      // Error removing coupon
     }
   }, [removeCoupon, onRemove]);
 

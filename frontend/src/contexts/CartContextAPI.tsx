@@ -270,11 +270,11 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
             const serverCart = await cartAPI.getCart();
             dispatch({ type: 'SYNC_SERVER', payload: serverCart });
           } catch (error) {
-            console.warn('Failed to sync with server cart:', error);
+            // Failed to sync with server cart
           }
         }
       } catch (e) {
-        console.warn('Failed to load cart:', e);
+        // Failed to load cart
       }
     };
 
@@ -287,7 +287,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const key = getStorageKey(currentUser?.uid);
       localStorage.setItem(key, JSON.stringify(state));
     } catch (e) {
-      console.warn('Failed to save cart:', e);
+      // Failed to save cart
     }
   }, [state, currentUser?.uid]);
 
@@ -311,7 +311,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         dispatch({ type: 'SYNC_SERVER', payload: serverCart });
       }
     } catch (error) {
-      console.warn('Failed to sync with server:', error);
+      // Failed to sync with server
     }
   }, [currentUser, state.synced_with_server, state.items, cartAPI]);
 
@@ -345,7 +345,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       } catch (error) {
         // Revert local change on server error
         dispatch({ type: 'REMOVE_ITEM', payload: { id: newItem.id, color_id: newItem.color_id } });
-        console.error('Failed to add item to server cart:', error);
+        
       }
     }
   }, [currentUser, cartAPI]);
@@ -366,7 +366,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
           dispatch({ type: 'SYNC_SERVER', payload: updatedCart });
         }
       } catch (error) {
-        console.error('Failed to remove item from server cart:', error);
+        // Failed to remove item from server cart
       }
     }
   }, [currentUser, state.server_cart, cartAPI]);
@@ -393,11 +393,11 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         
         if (cartItem) {
           const newQuantity = cartItem.quantity + quantity;
-          const updatedCart = await cartAPI.updateCartItem(cartItem.id, newQuantity);
+          const updatedCart = await cartAPI.updateCartItem(cartItem.id, quantity);
           dispatch({ type: 'SYNC_SERVER', payload: updatedCart });
         }
       } catch (error) {
-        console.error('Failed to update item in server cart:', error);
+        // Failed to update item in server cart
       }
     }
   }, [currentUser, state.items, state.server_cart, cartAPI]);
@@ -427,7 +427,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
           dispatch({ type: 'SYNC_SERVER', payload: updatedCart });
         }
       } catch (error) {
-        console.error('Failed to set item quantity in server cart:', error);
+        // Failed to set item quantity in server cart
       }
     }
   }, [currentUser, state.items, state.server_cart, cartAPI]);
@@ -439,7 +439,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         await cartAPI.clearCart();
       } catch (error) {
-        console.error('Failed to clear server cart:', error);
+        // Failed to clear server cart
       }
     }
   }, [currentUser, cartAPI]);
@@ -458,7 +458,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const result = await cartAPI.applyCoupon(code);
       dispatch({ type: 'SYNC_SERVER', payload: result.cart });
     } catch (error) {
-      console.error('Failed to apply coupon:', error);
+      // Failed to apply coupon
     }
   }, [currentUser, cartAPI]);
 
@@ -469,7 +469,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const updatedCart = await cartAPI.removeCoupon();
       dispatch({ type: 'SYNC_SERVER', payload: updatedCart });
     } catch (error) {
-      console.error('Failed to remove coupon:', error);
+      // Failed to remove coupon
     }
   }, [currentUser, cartAPI]);
 

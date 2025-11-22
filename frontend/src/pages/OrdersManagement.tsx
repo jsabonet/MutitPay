@@ -188,7 +188,6 @@ const OrdersManagement = () => {
       setOrders(data.orders || []);
       setPagination(data.pagination);
     } catch (error: any) {
-      console.error('Error fetching orders:', error);
       toast({
         title: 'Erro',
         description: 'Não foi possível carregar os pedidos.',
@@ -243,7 +242,6 @@ const OrdersManagement = () => {
       setTodayOrdersCount(list.length);
       setTodayRevenue(revenue);
     } catch (err) {
-      console.error('Error fetching today metrics:', err);
       setTodayOrdersCount(null);
       setTodayRevenue(null);
     }
@@ -325,7 +323,6 @@ const OrdersManagement = () => {
         description: `Status do pedido alterado para ${statusConfig[newStatus]?.label || newStatus}.`,
       });
     } catch (error: any) {
-      console.error('Error updating order status:', error);
       toast({
         title: 'Erro',
         description: error.message || 'Não foi possível atualizar o status do pedido.',
@@ -372,7 +369,6 @@ const OrdersManagement = () => {
         description: 'Código de rastreamento foi atualizado com sucesso.',
       });
     } catch (error: any) {
-      console.error('Error updating tracking:', error);
       toast({
         title: 'Erro',
         description: error.message || 'Não foi possível atualizar o rastreamento.',
@@ -419,7 +415,6 @@ const OrdersManagement = () => {
         description: 'Observações do pedido foram atualizadas com sucesso.',
       });
     } catch (error: any) {
-      console.error('Error updating notes:', error);
       toast({
         title: 'Erro',
         description: error.message || 'Não foi possível atualizar as observações.',

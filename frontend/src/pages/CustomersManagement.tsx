@@ -208,7 +208,6 @@ const CustomersManagement = () => {
   // Loader (stable) - supports pagination and filters
   const loadCustomers = useCallback(async (pageToLoad = page) => {
     try {
-      console.debug('[CustomersManagement] adminStatus at loadCustomers:', { isAdmin, isProtectedAdmin, canManageAdmins, adminStatusLoading });
       setLoading(true);
       setError(null);
       const params: Record<string, string> = { page: String(pageToLoad), page_size: String(pageSize) };
@@ -217,7 +216,6 @@ const CustomersManagement = () => {
       if (provinceFilter && provinceFilter !== 'all') params.province = provinceFilter;
       if (searchTerm) params.search = searchTerm;
   const response = await customersApi.listAdmin(params);
-  console.debug('[CustomersManagement] customersApi.listAdmin returned:', response);
       // Handle both paginated responses and direct arrays
       if (Array.isArray(response)) {
         setCustomers(response);
@@ -281,16 +279,13 @@ const CustomersManagement = () => {
         if (user) {
           // Force refresh token to ensure we have latest claims
           await user.getIdToken(true);
-          console.debug('[Auth] Logged in as:', user.email);
           loadCustomers(page);
         } else {
-          console.debug('[Auth] No user logged in');
           setError('Você precisa estar logado como admin para acessar esta página');
         }
         if (unsub) unsub();
       });
     } catch (e) {
-      console.error('[Auth] Error:', e);
       setError('Erro ao verificar autenticação');
     }
 
@@ -383,7 +378,7 @@ const CustomersManagement = () => {
       });
       setIsCreateModalOpen(false);
     } catch (err) {
-      console.error('Erro ao criar cliente:', err);
+      // Error creating customer
     } finally {
       setSaving(false);
     }
@@ -445,7 +440,7 @@ const CustomersManagement = () => {
       setEditingCustomer(null);
       setIsEditModalOpen(false);
     } catch (err) {
-      console.error('Erro ao editar cliente:', err);
+      // Error editing customer
     } finally {
       setSaving(false);
     }
@@ -469,13 +464,11 @@ const CustomersManagement = () => {
       const history = await customersApi.getPermissionHistory(customerId);
       setPermissionHistory(history);
     } catch (err) {
-      console.error('Erro ao carregar histórico de permissões:', err);
       setPermissionHistory([]);
     }
   }, []);
 
   const openViewModal = useCallback((customer: CustomerProfile) => {
-    console.log('Abrindo modal para cliente:', customer);
     setViewingCustomer(customer);
     setIsViewModalOpen(true);
     if (customer.isFirebaseUser) {
@@ -560,7 +553,6 @@ const CustomersManagement = () => {
         description: updated.isAdmin ? 'Usuário promovido a administrador.' : 'Acesso de administrador removido.',
       });
     } catch (err: any) {
-      console.error('Erro ao alterar permissões de admin:', err);
       toast({ title: 'Erro', description: err.response?.data?.detail || 'Erro ao alterar permissões do usuário', variant: 'destructive' });
     } finally {
       setAdminActionLoading(false);
@@ -1063,7 +1055,6 @@ const CustomersManagement = () => {
                   setDeleteTarget(null);
                   toast({ title: 'Cliente excluído', description: 'O cliente foi removido com sucesso.' });
                 } catch (err: any) {
-                  console.error('Erro ao excluir cliente:', err);
                   toast({ title: 'Erro', description: err?.message || 'Erro ao excluir cliente', variant: 'destructive' });
                 } finally {
                   setDeleteLoading(false);
@@ -1365,8 +1356,7 @@ const CustomersManagement = () => {
                                       prev.map(c => c.id === updated.id ? updated : c)
                                     );
                                   } catch (err) {
-                                    // TODO: Add error handling
-                                    console.error('Erro ao sincronizar com Firebase:', err);
+                                    // Error syncing with Firebase
                                   }
                                 }}
                               >
@@ -1409,7 +1399,6 @@ const CustomersManagement = () => {
                                       description: updated.isAdmin ? 'Usuário promovido a administrador.' : 'Acesso de administrador removido.',
                                     });
                                   } catch (err: any) {
-                                    console.error('Erro ao alterar permissões:', err);
                                     toast({ title: 'Erro', description: err.response?.data?.detail || 'Erro ao alterar permissões do usuário', variant: 'destructive' });
                                   }
                                 }}
@@ -1484,7 +1473,7 @@ const CustomersManagement = () => {
                                           setAdminActionTarget(null);
                                           setAdminActionNotes('');
                                         } catch (error) {
-                                          console.error('Erro ao alterar permissões:', error);
+                                          // Error changing permissions
                                         } finally {
                                           setAdminActionLoading(false);
                                         }
